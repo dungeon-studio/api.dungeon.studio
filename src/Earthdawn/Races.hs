@@ -3,6 +3,7 @@ module Earthdawn.Races where
 import Numeric.Natural (Natural)
 
 import Earthdawn.Attributes
+import Earthdawn.RacialAbilities
 
 data Race = Dwarf
           | Elf
@@ -12,18 +13,6 @@ data Race = Dwarf
           | Troll
           | T'Skrang
           | Windling
-
-data RacialAbility = AstralSight
-                   | Flight
-                   | Gahad
-                   | HeatSight
-                   | IncreasedPhysicalDefense
-                   | IncreasedWoundThreshold
-                   | LowLightVision
-                   | NaturalArmor
-                   | StrongBack
-                   | TailCombat
-                   | Versatility
 
 startingAttributes :: Race -> Attributes
 startingAttributes Dwarf     = Attributes { dexterity  =  9

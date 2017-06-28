@@ -14,6 +14,7 @@ data Race = Dwarf
           | T'Skrang
           | Windling
 
+-- TODO Move to configuration files?
 startingAttributes :: Race -> Attributes
 startingAttributes Dwarf     = Attributes { dexterity  =  9
                                           , strength   = 10

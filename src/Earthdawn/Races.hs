@@ -5,8 +5,7 @@ import Numeric.Natural (Natural)
 import Earthdawn.Attributes
 import Earthdawn.RacialAbilities
 
-data Race = Dwarf
-          | Elf
+data Race = Elf
           | Human
           | Obsidiman
           | Ork
@@ -16,13 +15,6 @@ data Race = Dwarf
 
 -- TODO Move to configuration files?
 startingAttributes :: Race -> Attributes
-startingAttributes Dwarf     = Attributes { dexterity  =  9
-                                          , strength   = 10
-                                          , toughness  = 12
-                                          , perception = 11
-                                          , willpower  = 11
-                                          , charisma   = 10
-                                          }
 startingAttributes Elf       = Attributes { dexterity  = 12
                                           , strength   = 10
                                           , toughness  =  8
@@ -74,7 +66,6 @@ startingAttributes Windling  = Attributes { dexterity  = 11
                                           }
 
 movementRate :: Race -> Natural
-movementRate Dwarf     = 10
 movementRate Elf       = 14
 movementRate Human     = 12
 movementRate Obsidiman = 10
@@ -88,7 +79,6 @@ flyingRate Windling = 16
 flyingRate _        = 0
 
 karmaModifier :: Race -> Natural
-karmaModifier Dwarf     = 4
 karmaModifier Elf       = 4
 karmaModifier Human     = 5
 karmaModifier Obsidiman = 3
@@ -98,7 +88,6 @@ karmaModifier T'Skrang  = 4
 karmaModifier Windling  = 6
 
 racialAbilities :: Race -> [RacialAbility]
-racialAbilities Dwarf     = [ HeatSight, StrongBack ]
 racialAbilities Elf       = [ LowLightVision ]
 racialAbilities Human     = [ Versatility ]
 racialAbilities Obsidiman = [ IncreasedWoundThreshold, NaturalArmor ]

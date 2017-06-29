@@ -1,0 +1,13 @@
+{ "collection":
+    { "version": "1.0",
+      "href": "/earthdawn/4e/abilities/increased-wound-threshold",
+
+      "items":
+        [ { "href": "/earthdawn/4e/abilities/increased-wound-threshold",
+            "data":
+              [ { "prompt": "Name", "name": "name", "value": "Increased Wound Threshold" }
+              ]
+     	  }
+        ]
+    }
+}

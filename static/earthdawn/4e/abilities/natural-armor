@@ -1,0 +1,13 @@
+{ "collection":
+    { "version": "1.0",
+      "href": "/earthdawn/4e/abilities/natural-armor",
+
+      "items":
+	[ { "href": "/earthdawn/4e/abilities/natural-armor",
+	    "data":
+	      [ { "prompt": "Name", "name": "name", "value": "Natural Armor" }
+	      ]
+          }
+        ]
+    }
+}

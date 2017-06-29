@@ -5,21 +5,13 @@ import Numeric.Natural (Natural)
 import Earthdawn.Attributes
 import Earthdawn.RacialAbilities
 
-data Race = Obsidiman
-          | Ork
+data Race = Ork
           | Troll
           | T'Skrang
           | Windling
 
 -- TODO Move to configuration files?
 startingAttributes :: Race -> Attributes
-startingAttributes Obsidiman = Attributes { dexterity  =  8
-                                          , strength   = 18
-                                          , toughness  = 13
-                                          , perception =  9
-                                          , willpower  = 10
-                                          , charisma   =  9
-                                          }
 startingAttributes Ork       = Attributes { dexterity  = 10
                                           , strength   = 13
                                           , toughness  = 11
@@ -50,7 +42,6 @@ startingAttributes Windling  = Attributes { dexterity  = 11
                                           }
 
 movementRate :: Race -> Natural
-movementRate Obsidiman = 10
 movementRate Ork       = 12
 movementRate Troll     = 14
 movementRate T'Skrang  = 12
@@ -61,14 +52,12 @@ flyingRate Windling = 16
 flyingRate _        = 0
 
 karmaModifier :: Race -> Natural
-karmaModifier Obsidiman = 3
 karmaModifier Ork       = 5
 karmaModifier Troll     = 3
 karmaModifier T'Skrang  = 4
 karmaModifier Windling  = 6
 
 racialAbilities :: Race -> [RacialAbility]
-racialAbilities Obsidiman = [ IncreasedWoundThreshold, NaturalArmor ]
 racialAbilities Ork       = [ Gahad, LowLightVision ]
 racialAbilities Troll     = [ HeatSight ]
 racialAbilities T'Skrang  = [ TailCombat ]

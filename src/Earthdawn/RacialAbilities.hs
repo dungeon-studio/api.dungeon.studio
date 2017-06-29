@@ -4,6 +4,4 @@ data RacialAbility = AstralSight
                    | Flight
                    | Gahad
                    | IncreasedPhysicalDefense
-                   | IncreasedWoundThreshold
-                   | NaturalArmor
                    | TailCombat

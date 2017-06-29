@@ -5,19 +5,11 @@ import Numeric.Natural (Natural)
 import Earthdawn.Attributes
 import Earthdawn.RacialAbilities
 
-data Race = Troll
-          | T'Skrang
+data Race = T'Skrang
           | Windling
 
 -- TODO Move to configuration files?
 startingAttributes :: Race -> Attributes
-startingAttributes Troll     = Attributes { dexterity  = 10
-                                          , strength   = 14
-                                          , toughness  = 12
-                                          , perception =  9
-                                          , willpower  = 11
-                                          , charisma   = 10
-                                          }
 startingAttributes T'Skrang  = Attributes { dexterity  = 11
                                           , strength   = 10
                                           , toughness  = 11
@@ -34,7 +26,6 @@ startingAttributes Windling  = Attributes { dexterity  = 11
                                           }
 
 movementRate :: Race -> Natural
-movementRate Troll     = 14
 movementRate T'Skrang  = 12
 movementRate Windling  =  6
 
@@ -43,11 +34,9 @@ flyingRate Windling = 16
 flyingRate _        = 0
 
 karmaModifier :: Race -> Natural
-karmaModifier Troll     = 3
 karmaModifier T'Skrang  = 4
 karmaModifier Windling  = 6
 
 racialAbilities :: Race -> [RacialAbility]
-racialAbilities Troll     = [ HeatSight ]
 racialAbilities T'Skrang  = [ TailCombat ]
 racialAbilities Windling  = [ AstralSight, Flight, IncreasedPhysicalDefense ]

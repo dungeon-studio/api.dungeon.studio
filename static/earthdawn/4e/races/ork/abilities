@@ -1,0 +1,18 @@
+{ "collection":
+    { "version": "1.0",
+      "href": "/earthdawn/4e/races/ork/abilities",
+
+      "items":
+        [ { "href": "/earthdawn/4e/abilities/gahad",
+            "data":
+              [ { "prompt": "Name", "name": "name", "value": "Gahad" }
+              ]
+     	  },
+	      { "href": "/earthdawn/4e/abilities/low-light-vision",
+	        "data":
+	          [ { "prompt": "Name", "name": "name", "value": "Low-Light Vision" }
+	          ]
+          }
+        ]
+    }
+}

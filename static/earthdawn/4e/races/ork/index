@@ -1,0 +1,23 @@
+{ "collection":
+    { "version": "1.0",
+      "href": "/earthdawn/4e/races/ork/",
+
+      "items":
+        [ { "href": "/earthdawn/4e/races/ork/",
+            "data":
+              [ { "prompt": "DEX", "name": "dexterity", "value": 10 },
+                { "prompt": "STR", "name": "strength", "value": 13 },
+                { "prompt": "TOU", "name": "toughness", "value": 11 },
+                { "prompt": "PER", "name": "perception", "value": 10 },
+                { "prompt": "WIL", "name": "willpower", "value": 8 },
+                { "prompt": "CHA", "name": "charisma", "value": 9 },
+                { "prompt": "Movement Rate", "name": "movement_rate", "value": 12 },
+                { "prompt": "Karma Modifier", "name": "karma_modifier", "value": 5 }
+              ],
+            "links":
+              [ { "prompt": "Racial Abilities", "rel": "abilities", "href": "/earthdawn/4e/races/ork/abilities" }
+              ]
+          }
+        ]
+    }
+}

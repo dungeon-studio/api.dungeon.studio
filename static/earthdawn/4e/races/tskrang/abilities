@@ -1,0 +1,13 @@
+{ "collection":
+    { "version": "1.0",
+      "href": "/earthdawn/4e/races/tskrang/abilities",
+
+      "items":
+        [ { "href": "/earthdawn/4e/abilities/tail-combat",
+            "data":
+              [ { "prompt": "Name", "name": "name", "value": "Tail Combat" }
+              ]
+     	    }
+        ]
+    }
+}

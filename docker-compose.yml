@@ -1,0 +1,4 @@
+dungeon-studio:
+  build: .
+  ports:
+    - "8000:80"

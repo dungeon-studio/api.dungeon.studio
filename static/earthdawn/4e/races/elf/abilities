@@ -1,0 +1,13 @@
+{ "collection":
+    { "version": "1.0",
+      "href": "/earthdawn/4e/races/elf/abilities",
+
+      "items":
+        [ { "href": "/earthdawn/4e/abilities/low-light-vision",
+            "data":
+              [ { "prompt": "Name", "name": "name", "value": "Heat Sight" }
+              ]
+          }
+        ]
+    }
+}

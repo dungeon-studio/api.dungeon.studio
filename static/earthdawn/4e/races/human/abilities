@@ -1,0 +1,13 @@
+{ "collection":
+    { "version": "1.0",
+      "href": "/earthdawn/4e/races/human/abilities",
+
+      "items":
+        [ { "href": "/earthdawn/4e/abilities/versatility",
+            "data":
+              [ { "prompt": "Name", "name": "name", "value": "Versatility" }
+              ]
+     	  }
+        ]
+    }
+}

@@ -1,3 +1,0 @@
-steps:
-  - name: "gcr.io/cloud-builders/gsutil"
-    args: [ "-m", "-h", "Content-Type:application/collection+json", "rsync", "-r", "-d", "static/", "gs://static.dungeon.studio/" ]

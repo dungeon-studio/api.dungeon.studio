@@ -7,4 +7,3 @@ data RacialAbility = AstralSight
                    | IncreasedWoundThreshold
                    | NaturalArmor
                    | TailCombat
-                   | Versatility

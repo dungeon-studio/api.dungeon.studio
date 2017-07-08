@@ -25,7 +25,7 @@ type Api = "races" :> ( Get '[CollectionJSON, JSON] [Race]
                    :<|> Capture "race" Text :> Get '[CollectionJSON, JSON] Race
                       )
 
-data Settings = Settings
+newtype Settings = Settings
   { raceMap :: Map.Map Text (Text -> Race)
   }
 

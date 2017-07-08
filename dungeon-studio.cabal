@@ -22,13 +22,17 @@ tested-with:         GHC ==8.0.1
 
 executable dungeon-studio
   main-is:             Main.hs
-  other-modules:       Collection.JSON
-                     , Collection.Type
+  other-modules:       Data.Amundsen.Collection.JSON
+                     , Data.Amundsen.Collection.Type
                      , Earthdawn.Api
                      , Earthdawn.FourthEdition.Api
                      , Earthdawn.FourthEdition.Race
                      , Servant.API.ContentTypes.Collection
   other-extensions:    DataKinds
+                     , FlexibleInstances
+                     , MultiParamTypeClasses
+                     , OverloadedStrings
+                     , RecordWildCards
                      , TypeOperators
   build-depends:       aeson           ==1.0.2.*
                      , base            ==4.9.*

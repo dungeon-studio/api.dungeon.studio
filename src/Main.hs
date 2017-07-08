@@ -16,9 +16,7 @@ main :: IO ()
 main = run 45753 application -- TODO port as environment parameter
 
 application :: Application
-application = serve p server
-              where p :: Proxy DungeonStudioApi
-                    p = Proxy
+application = serve (Proxy :: Proxy DungeonStudioApi) server
 
 server :: Server DungeonStudioApi
 server = Earthdawn.server "/earthdawn" earthdawnSettings

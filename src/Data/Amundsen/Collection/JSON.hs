@@ -14,7 +14,7 @@ Lifted and updated from Daniel Choi's original works which can be found here:
 https://github.com/danchoi/collection-json.hs
 
 -}
-module Collection.JSON where
+module Data.Amundsen.Collection.JSON where
 
 import Data.Aeson hiding (Error)
 

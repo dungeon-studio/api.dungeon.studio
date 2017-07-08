@@ -11,7 +11,7 @@ Lifted and updated from Daniel Choi's original works which can be found here:
 https://github.com/danchoi/collection-json.hs
 
 -}
-module Collection.Type where
+module Data.Amundsen.Collection.Type where
 
 import Data.Text (Text)
 

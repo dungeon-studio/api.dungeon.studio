@@ -19,7 +19,7 @@ import qualified Earthdawn.FourthEdition.Api as FourthEdition
 
 type Api = "4e" :> FourthEdition.Api
 
-data Settings = Settings
+newtype Settings = Settings
   { fourthEditionSettings :: FourthEdition.Settings
   }
 

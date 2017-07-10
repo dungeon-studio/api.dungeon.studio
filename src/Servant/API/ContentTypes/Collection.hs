@@ -5,12 +5,11 @@
 module Servant.API.ContentTypes.Collection where
 
 import Control.Arrow (right)
-import Data.Aeson (encode, eitherDecode)
+import Data.Aeson (eitherDecode, encode)
 import Network.HTTP.Media ((//))
-import Servant.API (Accept(..), MimeRender(..), MimeUnrender(..))
+import Servant.API (Accept (..), MimeRender (..), MimeUnrender (..))
 
-import Collection.JSON
-import Collection.Type
+import Data.Amundsen.Collection
 
 data CollectionJSON
 

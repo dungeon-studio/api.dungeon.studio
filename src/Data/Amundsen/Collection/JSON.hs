@@ -18,7 +18,7 @@ module Data.Amundsen.Collection.JSON where
 
 import Data.Aeson hiding (Error)
 
-import Collection.Type
+import Data.Amundsen.Collection.Types
 
 instance FromJSON Collection where
   parseJSON (Object v) = Collection

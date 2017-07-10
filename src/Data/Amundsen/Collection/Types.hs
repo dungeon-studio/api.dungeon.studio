@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 {-|
 
 Copyright:   (c) 2015 Daniel Choi
@@ -11,7 +13,7 @@ Lifted and updated from Daniel Choi's original works which can be found here:
 https://github.com/danchoi/collection-json.hs
 
 -}
-module Data.Amundsen.Collection.Type where
+module Data.Amundsen.Collection.Types where
 
 import Data.Text (Text)
 
@@ -68,3 +70,14 @@ data Error = Error
   , eCode    :: Maybe Text
   , eMessage :: Maybe Text
   } deriving Show
+
+collectionError :: Text -> Text -> Maybe Text -> Maybe Text -> Collection
+collectionError u t c m = Collection
+  { cVersion  = "1.0"
+  , cHref     = u
+  , cLinks    = []
+  , cItems    = []
+  , cQueries  = []
+  , cTemplate = Nothing
+  , cError    = Just Error { eTitle = t, eCode = c, eMessage = m }
+  }

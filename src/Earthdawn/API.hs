@@ -15,8 +15,6 @@ module Earthdawn.API
   , server
   ) where
 
-import Data.Maybe (fromJust)
-import Network.URI (URI, parseURIReference, relativeTo)
 import Servant ((:>), Server)
 
 import qualified Earthdawn.FourthEdition.API as FourthEdition
@@ -25,5 +23,5 @@ import qualified Earthdawn.FourthEdition.API as FourthEdition
 type API = "4e" :> FourthEdition.API
 
 -- | Constructs an Earthdawn 'Servant' 'Server' given a URL path prefix.
-server :: URI -> Server API
-server b = FourthEdition.server $ fromJust (parseURIReference "4e") `relativeTo` b
+server :: String -> Server API
+server b = FourthEdition.server $ b ++ "/4e"

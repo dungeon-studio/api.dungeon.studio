@@ -17,7 +17,7 @@ module Earthdawn.FourthEdition.Races.API
 
 import Control.Monad (when)
 import Data.Maybe (fromJust, isNothing)
-import Network.URI (URI, parseURI, relativeTo)
+import Network.URI (parseURIReference)
 import Servant
 
 import qualified Data.Text as T (pack)
@@ -29,24 +29,24 @@ import Errors
 import Servant.API.ContentTypes.Collection
 
 -- | An API type for Earthdawn 4th Edition races.
-type API = Header "host" String :> ( Get '[CollectionJSON] RaceCollection
-                              :<|> Capture "race" String :> Get '[CollectionJSON] RaceCollection
-                                 )
+type API = ( Get '[CollectionJSON] RaceCollection
+        :<|> Capture "race" String :> Get '[CollectionJSON] RaceCollection
+           )
 
 -- | Constructs an Earthdawn 4th Edition races 'Servant' 'Server' given a URL path prefix.
-server :: URI -> Server API
-server b h = races u
-        :<|> race u
-             where u = b `relativeTo` (fromJust . parseURI . fromJust $ h)
+server :: String -> Server API
+server b = races b
+      :<|> race b
 
-races :: URI -> Handler RaceCollection
-races = return . flip RaceCollection playerRaces
+races :: String -> Handler RaceCollection
+races = return . flip RaceCollection playerRaces . fromJust . parseURIReference
 
-race :: URI -> String -> Handler RaceCollection
-race u n =
+race :: String -> String -> Handler RaceCollection
+race b n =
   do when (isNothing r) $ throwError $ collection404 u e
      return $ RaceCollection u [fromJust r]
   where r = fromName n
+        u = fromJust $ parseURIReference b
         e = Error
               { eTitle   = Just . T.pack $ "Race, " ++ n ++ ", Not Found"
               , eCode    = Just "404"

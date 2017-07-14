@@ -22,6 +22,7 @@ import Servant
 
 import qualified Data.Text as T (pack)
 
+import Data.CollectionJSON
 import Earthdawn.FourthEdition.Races.Queries
 import Earthdawn.FourthEdition.Races.Types
 import Errors
@@ -43,6 +44,11 @@ races = return . flip RaceCollection playerRaces
 
 race :: URI -> String -> Handler RaceCollection
 race u n =
-  do when (isNothing r) $ throwError $ collection404 u (Just . T.pack $ "Race, " ++ n ++ ", Not Found") (Just "404") Nothing
+  do when (isNothing r) $ throwError $ collection404 u e
      return $ RaceCollection u [fromJust r]
   where r = fromName n
+        e = Error
+              { eTitle   = Just . T.pack $ "Race, " ++ n ++ ", Not Found"
+              , eCode    = Just "404"
+              , eMessage = Nothing
+              }

@@ -12,8 +12,6 @@ Standard 'Main' module with nothing special.
 -}
 module Main (main) where
 
-import Data.Maybe (fromJust)
-import Network.URI (parseURIReference)
 import Network.Wai.Handler.Warp (run)
 import Servant ((:>), Application, Proxy(Proxy), serve, Server)
 
@@ -29,4 +27,4 @@ application :: Application
 application = serve (Proxy :: Proxy DungeonStudioApi) server
 
 server :: Server DungeonStudioApi
-server = Earthdawn.server $ fromJust (parseURIReference "earthdawn")
+server = Earthdawn.server "/earthdawn"

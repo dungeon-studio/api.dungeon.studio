@@ -21,7 +21,7 @@ module Earthdawn.FourthEdition.Races.Types
   ) where
 
 import Data.Maybe (fromJust)
-import Network.URI (URI, parseRelativeReference, relativeTo)
+import Network.URI (URI, parseURIReference, uriToString)
 import Numeric.Natural (Natural)
 
 import qualified Data.Text as T (pack)
@@ -55,7 +55,7 @@ data Race = Race
 
 toItem :: URI -> Race -> Item
 toItem u r = Item
-  { iHref = (fromJust . parseRelativeReference . name $ r) `relativeTo` u
+  { iHref = append $ name r
   , iData = [ Datum { dName = "dexterity",      dValue = Just . T.pack . show $ dexterity r,     dPrompt = Just "DEX"            }
             , Datum { dName = "strength",       dValue = Just . T.pack . show $ strength r,      dPrompt = Just "STR"            }
             , Datum { dName = "toughness",      dValue = Just . T.pack . show $ toughness r,     dPrompt = Just "TOU"            }
@@ -65,8 +65,10 @@ toItem u r = Item
             , Datum { dName = "movement_rate",  dValue = Just . T.pack . show $ movementRate r,  dPrompt = Just "Movement Rate"  }
             , Datum { dName = "karma_modifier", dValue = Just . T.pack . show $ karmaModifier r, dPrompt = Just "Karma Modifier" }
             ]
-  , iLinks = [ Link { lHref = (fromJust . parseRelativeReference $ "abilities") `relativeTo` u, lRel = "abilities", lName = Nothing, lRender = Nothing, lPrompt = Nothing } ]
+  , iLinks = [ Link { lHref = append "abilities", lRel = "abilities", lName = Nothing, lRender = Nothing, lPrompt = Nothing } ]
   }
+  where append :: String -> URI
+        append = fromJust . parseURIReference . uriToString id u . ("/" ++)
 
 data MovementRate = MovementRate Natural Natural
 

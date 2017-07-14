@@ -55,7 +55,7 @@ data Race = Race
 
 toItem :: URI -> Race -> Item
 toItem u r = Item
-  { iHref = append $ name r
+  { iHref = u'
   , iData = [ Datum { dName = "dexterity",      dValue = Just . T.pack . show $ dexterity r,     dPrompt = Just "DEX"            }
             , Datum { dName = "strength",       dValue = Just . T.pack . show $ strength r,      dPrompt = Just "STR"            }
             , Datum { dName = "toughness",      dValue = Just . T.pack . show $ toughness r,     dPrompt = Just "TOU"            }
@@ -65,10 +65,11 @@ toItem u r = Item
             , Datum { dName = "movement_rate",  dValue = Just . T.pack . show $ movementRate r,  dPrompt = Just "Movement Rate"  }
             , Datum { dName = "karma_modifier", dValue = Just . T.pack . show $ karmaModifier r, dPrompt = Just "Karma Modifier" }
             ]
-  , iLinks = [ Link { lHref = append "abilities", lRel = "abilities", lName = Nothing, lRender = Nothing, lPrompt = Nothing } ]
+  , iLinks = [ Link { lHref = append u' "abilities", lRel = "abilities", lName = Nothing, lRender = Nothing, lPrompt = Nothing } ]
   }
-  where append :: String -> URI
-        append = fromJust . parseURIReference . uriToString id u . ("/" ++)
+  where u' = append u $ name r
+        append :: URI -> String -> URI
+        append b = fromJust . parseURIReference . uriToString id b . ("/" ++)
 
 data MovementRate = MovementRate Natural Natural
 

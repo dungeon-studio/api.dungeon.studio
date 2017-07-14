@@ -1,4 +1,4 @@
 dungeon-studio:
   build: .
   ports:
-    - "8000:80"
+    - "45753:45753"

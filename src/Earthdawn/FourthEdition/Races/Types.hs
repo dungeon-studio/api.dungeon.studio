@@ -2,36 +2,47 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Earthdawn.FourthEdition.Races.Types
-  ( charisma
-  , collectionURL
-  , dexterity
-  , karmaModifier
-  , movementRate
+  ( RaceCollection
+      ( RaceCollection
+      )
+  , Race
+      ( Race
+      , name
+      , dexterity
+      , strength
+      , toughness
+      , perception
+      , willpower
+      , charisma
+      , movementRate
+      , karmaModifier
+      )
   , MovementRate(MovementRate)
-  , name
-  , perception
-  , Race(Race)
-  , strength
-  , toughness
-  , willpower
   ) where
 
-import Data.Text (Text)
+import Data.Maybe (fromJust)
+import Network.URI (URI, parseRelativeReference, relativeTo)
 import Numeric.Natural (Natural)
 
-import qualified Data.Text as T (concat, pack)
+import qualified Data.Text as T (pack)
 
-import Data.Amundsen.Collection
+import Data.CollectionJSON
 
-data MovementRate = MovementRate Natural Natural
+data RaceCollection = RaceCollection URI [Race]
 
-instance Show MovementRate where
-  show (MovementRate w 0) = show w
-  show (MovementRate w f) = show w ++ "/" ++ show f
+instance ToCollection RaceCollection where
+  toCollection (RaceCollection u rs) = Collection
+    { cVersion  = "1.0"
+    , cHref     = u
+    , cLinks    = []
+    , cItems    = map (toItem u) rs
+    , cQueries  = []
+    , cTemplate = Nothing
+    , cError    = Nothing
+    }
 
 data Race = Race
-  { collectionURL :: Text
-  , name          :: Text
+  { name          :: String
   , dexterity     :: Natural
   , strength      :: Natural
   , toughness     :: Natural
@@ -42,33 +53,23 @@ data Race = Race
   , karmaModifier :: Natural
   }
 
-url :: Race -> Text
-url r = T.concat [collectionURL r, "/", name r]
+toItem :: URI -> Race -> Item
+toItem u r = Item
+  { iHref = (fromJust . parseRelativeReference . name $ r) `relativeTo` u
+  , iData = [ Datum { dName = "dexterity",      dValue = Just . T.pack . show $ dexterity r,     dPrompt = Just "DEX"            }
+            , Datum { dName = "strength",       dValue = Just . T.pack . show $ strength r,      dPrompt = Just "STR"            }
+            , Datum { dName = "toughness",      dValue = Just . T.pack . show $ toughness r,     dPrompt = Just "TOU"            }
+            , Datum { dName = "perception",     dValue = Just . T.pack . show $ perception r,    dPrompt = Just "PER"            }
+            , Datum { dName = "willpower",      dValue = Just . T.pack . show $ willpower r,     dPrompt = Just "WIL"            }
+            , Datum { dName = "charisma",       dValue = Just . T.pack . show $ charisma r,      dPrompt = Just "CHA"            }
+            , Datum { dName = "movement_rate",  dValue = Just . T.pack . show $ movementRate r,  dPrompt = Just "Movement Rate"  }
+            , Datum { dName = "karma_modifier", dValue = Just . T.pack . show $ karmaModifier r, dPrompt = Just "Karma Modifier" }
+            ]
+  , iLinks = [ Link { lHref = (fromJust . parseRelativeReference $ "abilities") `relativeTo` u, lRel = "abilities", lName = Nothing, lRender = Nothing, lPrompt = Nothing } ]
+  }
 
-instance ToCollection [Race] where
-  toCollection rs = Collection
-    { cVersion  = "1.0"
-    , cHref     = collectionURL (head rs) -- TODO what happens when the collection is empty?
-    , cLinks    = []
-    , cItems    = map toItem rs
-    , cQueries  = []
-    , cTemplate = Nothing
-    , cError    = Nothing
-    } where toItem :: Race -> Item
-            toItem r = Item
-              { iHref = url r
-              , iData = [ Data { dName = "dexterity",      dValue = Just . T.pack . show $ dexterity r,     dPrompt = Just "DEX"            }
-                        , Data { dName = "strength",       dValue = Just . T.pack . show $ strength r,      dPrompt = Just "STR"            }
-                        , Data { dName = "toughness",      dValue = Just . T.pack . show $ toughness r,     dPrompt = Just "TOU"            }
-                        , Data { dName = "perception",     dValue = Just . T.pack . show $ perception r,    dPrompt = Just "PER"            }
-                        , Data { dName = "willpower",      dValue = Just . T.pack . show $ willpower r,     dPrompt = Just "WIL"            }
-                        , Data { dName = "charisma",       dValue = Just . T.pack . show $ charisma r,      dPrompt = Just "CHA"            }
-                        , Data { dName = "movement_rate",  dValue = Just . T.pack . show $ movementRate r,  dPrompt = Just "Movement Rate"  }
-                        , Data { dName = "karma_modifier", dValue = Just . T.pack . show $ karmaModifier r, dPrompt = Just "Karma Modifier" }
-                        ]
-              , iLinks = [ Link { lHref = T.concat [url r, "/abilities"], lRel = "abilities", lName = Nothing, lRender = Nothing, lPrompt = Nothing } ]
-              }
+data MovementRate = MovementRate Natural Natural
 
-instance ToCollection Race where
-  toCollection r = toCollection [r]
-
+instance Show MovementRate where
+  show (MovementRate w 0) = show w
+  show (MovementRate w f) = show w ++ "/" ++ show f

@@ -1,30 +1,36 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Earthdawn.FourthEdition.Races.Queries
-  ( fromName
-  , playerRaces
-  ) where
+{-|
+Module      : Earthdawn.FourthEdition.Races.Queries
+Description : Earthdawn 4th Edition Race Persistence Accessors
+Copyright   : (c) Alex Brandt, 2017
+License     : MIT
 
-import Data.Text (Text, concat)
-import Numeric.Natural (Natural)
+Accessors for race resources that are persisted by internal means.
+-}
+module Earthdawn.FourthEdition.Races.Queries
+  ( playerRaces
+  , fromName
+  ) where
 
 import qualified Data.Map as Map (elems, fromList, Map, lookup)
 
 import Earthdawn.FourthEdition.Races.Types
 
+-- | A list of all races.
 playerRaces :: [Race]
 playerRaces = Map.elems races
 
-fromName :: Text -> Maybe Race
+-- | A particular race with the given name.
+fromName :: String -> Maybe Race
 fromName = flip Map.lookup races
 
-races :: Map.Map Text Race
+races :: Map.Map String Race
 races = Map.fromList [ (name r, r) | r <- [elf, dwarf, human, obsidiman, ork, troll, tSkrang, windling] ]
 
 elf :: Race
 elf = Race
-  { collectionURL   = ""
-  , name            = "elf"
+  { name            = "elf"
   , dexterity       = 12
   , strength        = 10
   , toughness       = 8
@@ -37,8 +43,7 @@ elf = Race
 
 dwarf :: Race
 dwarf = Race
-  { collectionURL   = ""
-  , name            = "dwarf"
+  { name            = "dwarf"
   , dexterity       = 9
   , strength        = 10
   , toughness       = 12
@@ -51,8 +56,7 @@ dwarf = Race
 
 human :: Race
 human = Race
-  { collectionURL   = ""
-  , name            = "human"
+  { name            = "human"
   , dexterity       = 10
   , strength        = 10
   , toughness       = 10
@@ -65,8 +69,7 @@ human = Race
 
 obsidiman :: Race
 obsidiman = Race
-  { collectionURL   = ""
-  , name            = "obsidiman"
+  { name            = "obsidiman"
   , dexterity       = 8
   , strength        = 18
   , toughness       = 13
@@ -79,8 +82,7 @@ obsidiman = Race
 
 ork :: Race
 ork = Race
-  { collectionURL   = ""
-  , name            = "ork"
+  { name            = "ork"
   , dexterity       = 10
   , strength        = 13
   , toughness       = 11
@@ -93,8 +95,7 @@ ork = Race
 
 troll :: Race
 troll = Race
-  { collectionURL   = ""
-  , name            = "troll"
+  { name            = "troll"
   , dexterity       = 10
   , strength        = 14
   , toughness       = 12
@@ -107,8 +108,7 @@ troll = Race
 
 tSkrang :: Race
 tSkrang = Race
-  { collectionURL   = ""
-  , name            = "tskrang" -- URL friendly
+  { name            = "tskrang" -- URL friendly
   , dexterity       = 11
   , strength        = 10
   , toughness       = 11
@@ -121,8 +121,7 @@ tSkrang = Race
 
 windling :: Race
 windling = Race
-  { collectionURL   = ""
-  , name            = "windling"
+  { name            = "windling"
   , dexterity       = 11
   , strength        = 4
   , toughness       = 8

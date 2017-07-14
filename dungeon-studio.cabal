@@ -17,18 +17,18 @@ build-type:          Simple
 extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 tested-with:         GHC ==8.0.1
+                   , GHC ==8.0.2
 
 -- data-files:          Earthdawn/FourthEdition/*.yaml
 
 executable dungeon-studio
   main-is:             Main.hs
-  other-modules:       Data.Amundsen.Collection
-                     , Data.Amundsen.Collection.JSON
-                     , Data.Amundsen.Collection.Types
+  other-modules:       Data.CollectionJSON
                      , Earthdawn.API
                      , Earthdawn.FourthEdition.API
                      , Earthdawn.FourthEdition.Races.API
                      , Earthdawn.FourthEdition.Races.Queries
+                     , Errors
                      , Servant.API.ContentTypes.Collection
   other-extensions:    DataKinds
                      , FlexibleInstances
@@ -41,11 +41,13 @@ executable dungeon-studio
                      , containers      ==0.5.*
                      , http-media      ==0.6.*
                      , http-types      ==0.9.*
+                     , network-uri     ==2.6.1.*
                      , servant         ==0.9.*
                      , servant-server  ==0.9.*
                      , text            ==1.2.2.*
                      , warp            ==3.2.*
 -- TODO add parameter for static compilation
 -- ghc-options:         -optl-static -optl-pthread
+  ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction -fwarn-unused-do-bind
   hs-source-dirs:      src
   default-language:    Haskell2010

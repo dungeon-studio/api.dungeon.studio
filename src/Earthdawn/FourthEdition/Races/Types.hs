@@ -16,6 +16,7 @@ module Earthdawn.FourthEdition.Races.Types
       , charisma
       , movementRate
       , karmaModifier
+      , abilities
       )
   , MovementRate(MovementRate)
   ) where
@@ -27,6 +28,7 @@ import Numeric.Natural (Natural)
 import qualified Data.Text as T (pack)
 
 import Data.CollectionJSON
+import Earthdawn.FourthEdition.Abilities.Types (Ability)
 
 data RaceCollection = RaceCollection URI [Race]
 
@@ -51,6 +53,7 @@ data Race = Race
   , charisma      :: Natural
   , movementRate  :: MovementRate
   , karmaModifier :: Natural
+  , abilities     :: [Ability]
   }
 
 toItem :: URI -> Race -> Item

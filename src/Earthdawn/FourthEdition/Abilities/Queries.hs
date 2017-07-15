@@ -16,6 +16,7 @@ module Earthdawn.FourthEdition.Abilities.Queries
 import qualified Data.Map as Map (elems, fromList, Map, lookup)
 
 import Earthdawn.FourthEdition.Abilities.Types
+import Earthdawn.FourthEdition.Abilities.Values
 
 playerRaceAbilities :: [Ability]
 playerRaceAbilities = Map.elems abilities
@@ -25,58 +26,3 @@ fromName = flip Map.lookup abilities
 
 abilities :: Map.Map String Ability
 abilities = Map.fromList [ (name a, a) | a <- [heatSight, strongBack, lowLightVision, versatility, increasedWoundThreshold, naturalArmor, gahad, tailCombat, astralSight, flight, increasedPhysicalDefense] ]
-
-heatSight :: Ability
-heatSight = Ability
-  { name = "heat-sight"
-  }
-
-strongBack :: Ability
-strongBack = Ability
-  { name = "strong-back"
-  }
-
-lowLightVision :: Ability
-lowLightVision = Ability
-  { name = "low-light-vision"
-  }
-
-versatility :: Ability
-versatility = Ability
-  { name = "versatility"
-  }
-
-increasedWoundThreshold :: Ability
-increasedWoundThreshold = Ability
-  { name = "increased-wound-threshold"
-  }
-
-naturalArmor :: Ability
-naturalArmor = Ability
-  { name = "natural-armor"
-  }
-
-gahad :: Ability
-gahad = Ability
-  { name = "gahad"
-  }
-
-tailCombat :: Ability
-tailCombat = Ability
-  { name = "tail-combat"
-  }
-
-astralSight :: Ability
-astralSight = Ability
-  { name = "astral-sight"
-  }
-
-flight :: Ability
-flight = Ability
-  { name = "flight"
-  }
-
-increasedPhysicalDefense :: Ability
-increasedPhysicalDefense = Ability
-  { name = "increased-physical-defense"
-  }

@@ -38,9 +38,8 @@ type API = ( Get '[CollectionJSON] RaceCollection
 
 server :: String -> Server API
 server b = races b
-      :<|> ( race b
-        :<|> abilities (b ++ "/abilities")
-           )
+      :<|> race b
+      :<|> abilities (b ++ "/abilities")
 
 races :: String -> Handler RaceCollection
 races = return . flip RaceCollection playerRaces . fromJust . parseURIReference

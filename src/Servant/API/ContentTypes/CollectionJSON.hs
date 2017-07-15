@@ -12,7 +12,7 @@ Servant ContentType for 'application/vnd.collection+json'---a content type
 created by M. Amundsen and documented at
 http://amundsen.com/media-types/collection/.
 -}
-module Servant.API.ContentTypes.Collection where
+module Servant.API.ContentTypes.CollectionJSON where
 
 import Control.Arrow (right)
 import Data.Aeson (eitherDecode, encode)

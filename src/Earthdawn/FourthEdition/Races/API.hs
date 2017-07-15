@@ -26,14 +26,12 @@ import Data.CollectionJSON
 import Earthdawn.FourthEdition.Races.Queries
 import Earthdawn.FourthEdition.Races.Types
 import Errors
-import Servant.API.ContentTypes.Collection
+import Servant.API.ContentTypes.CollectionJSON
 
--- | An API type for Earthdawn 4th Edition races.
 type API = ( Get '[CollectionJSON] RaceCollection
         :<|> Capture "race" String :> Get '[CollectionJSON] RaceCollection
            )
 
--- | Constructs an Earthdawn 4th Edition races 'Servant' 'Server' given a URL path prefix.
 server :: String -> Server API
 server b = races b
       :<|> race b

@@ -25,11 +25,15 @@ executable dungeon-studio
   main-is:             Main.hs
   other-modules:       Data.CollectionJSON
                      , Earthdawn.API
+                     , Earthdawn.FourthEdition.Abilities.API
+                     , Earthdawn.FourthEdition.Abilities.Queries
+                     , Earthdawn.FourthEdition.Abilities.Types
                      , Earthdawn.FourthEdition.API
                      , Earthdawn.FourthEdition.Races.API
                      , Earthdawn.FourthEdition.Races.Queries
+                     , Earthdawn.FourthEdition.Races.Types
                      , Errors
-                     , Servant.API.ContentTypes.Collection
+                     , Servant.API.ContentTypes.CollectionJSON
   other-extensions:    DataKinds
                      , FlexibleInstances
                      , MultiParamTypeClasses

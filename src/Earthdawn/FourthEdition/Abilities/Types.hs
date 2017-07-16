@@ -1,4 +1,3 @@
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Earthdawn.FourthEdition.Abilities.Types
@@ -11,8 +10,7 @@ module Earthdawn.FourthEdition.Abilities.Types
       )
   ) where
 
-import Data.Maybe (fromJust)
-import Network.URI (URI, parseURIReference, uriToString)
+import Network.URI (URI, uriPath)
 
 import Data.CollectionJSON
 
@@ -41,4 +39,4 @@ toItem u a = Item
   }
   where u' = append u $ name a
         append :: URI -> String -> URI  -- TODO Move somewhere sensible.
-        append b = fromJust . parseURIReference . uriToString id b . ("/" ++)
+        append b c = b { uriPath = uriPath b ++ "/" ++ c }

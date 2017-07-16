@@ -1,5 +1,4 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
 
 {-|
@@ -15,13 +14,11 @@ module Earthdawn.API
   , server
   ) where
 
-import Servant ((:>), Server)
+import Servant
 
 import qualified Earthdawn.FourthEdition.API as FourthEdition
 
--- | An API type for Earthdawn.
 type API = "4e" :> FourthEdition.API
 
--- | Constructs an Earthdawn 'Servant' 'Server' given a URL path prefix.
 server :: String -> Server API
 server b = FourthEdition.server $ b ++ "/4e"

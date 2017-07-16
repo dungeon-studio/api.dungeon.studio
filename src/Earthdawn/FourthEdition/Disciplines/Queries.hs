@@ -11,7 +11,7 @@ module Earthdawn.FourthEdition.Disciplines.Queries
   , fromName
   ) where
 
-import qualified Data.Map.Strict as Map
+import qualified Data.Map.Strict as Map (elems, lookup)
 
 import Earthdawn.FourthEdition.Disciplines.Types
 import Earthdawn.FourthEdition.Disciplines.Values

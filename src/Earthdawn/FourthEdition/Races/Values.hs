@@ -11,8 +11,13 @@ a datastore.
 -}
 module Earthdawn.FourthEdition.Races.Values where
 
+import Data.Map.Strict as Map (fromList, Map)
+
 import Earthdawn.FourthEdition.Abilities.Values
 import Earthdawn.FourthEdition.Races.Types
+
+racesMap :: Map.Map String Race
+racesMap = Map.fromList [ (name r, r) | r <- [elf, dwarf, human, obsidiman, ork, troll, tSkrang, windling] ]
 
 elf :: Race
 elf = Race

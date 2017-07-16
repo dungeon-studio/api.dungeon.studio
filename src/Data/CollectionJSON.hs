@@ -71,8 +71,8 @@ A link to a related resource (not necessarily an
 -}
 data Link = Link
   { lHref   :: URI        -- ^ Address of the resource.
-  , lRel    :: Text       -- ^ Relation---the following are suggested relation
-                          --   values:
+  , lRel    :: Text       -- ^ Relation---the following contain suggested
+                          --   relation values:
                           --
                           --   * [IANA Link Relations](http://www.iana.org/assignments/link-relations/link-relations.xml)
                           --   * [Microformat Existing Rel Values](http://microformats.org/wiki/existing-rel-values)
@@ -106,8 +106,8 @@ instance ToJSON Link where
 
 -- | An element in the 'Collection'
 data Item = Item
-  { iHref  :: URI    -- ^ Address of the resource and to modify or delete the
-                     --   element.
+  { iHref  :: URI    -- ^ Address of the resource used to retrieve, modify, or
+                     --   delete the element.
   , iData  :: [Datum]
   , iLinks :: [Link]
   }
@@ -143,8 +143,8 @@ Corresponds with the following URI for an HTTP GET:
 -}
 data Query = Query
   { qHref   :: URI        -- ^ Address of reqeust's target.
-  , qRel    :: Text       -- ^ Relation---the following are suggested relation
-                          --   values:
+  , qRel    :: Text       -- ^ Relation---the following contain suggested
+                          --   relation values:
                           --
                           --   * [IANA Link Relations](http://www.iana.org/assignments/link-relations/link-relations.xml)
                           --   * [Microformat Existing Rel Values](http://microformats.org/wiki/existing-rel-values)

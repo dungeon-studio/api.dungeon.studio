@@ -10,7 +10,7 @@ If this resource becomes more dynamic we'll figure out a datastore.
 -}
 module Earthdawn.FourthEdition.Disciplines.Values where
 
-import qualified Data.Map.Strict as Map
+import qualified Data.Map.Strict as Map (fromList, Map)
 
 import Earthdawn.FourthEdition.Disciplines.Types
 

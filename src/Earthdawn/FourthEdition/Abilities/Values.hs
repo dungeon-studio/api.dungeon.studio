@@ -11,7 +11,12 @@ turns out we stop using it then it is what it is.
 -}
 module Earthdawn.FourthEdition.Abilities.Values where
 
+import qualified Data.Map.Strict as Map (fromList, Map)
+
 import Earthdawn.FourthEdition.Abilities.Types
+
+abilitiesMap :: Map.Map String Ability
+abilitiesMap = Map.fromList [ (name a, a) | a <- [heatSight, strongBack, lowLightVision, versatility, increasedWoundThreshold, naturalArmor, gahad, tailCombat, astralSight, flight, increasedPhysicalDefense] ]
 
 heatSight :: Ability
 heatSight = Ability

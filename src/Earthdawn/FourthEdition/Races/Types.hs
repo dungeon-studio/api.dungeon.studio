@@ -1,4 +1,3 @@
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Earthdawn.FourthEdition.Races.Types
@@ -21,8 +20,7 @@ module Earthdawn.FourthEdition.Races.Types
   , MovementRate(MovementRate)
   ) where
 
-import Data.Maybe (fromJust)
-import Network.URI (URI, parseURIReference, uriToString)
+import Network.URI (URI, uriPath)
 import Numeric.Natural (Natural)
 
 import qualified Data.Text as T (pack)
@@ -72,7 +70,7 @@ toItem u r = Item
   }
   where u' = append u $ name r
         append :: URI -> String -> URI
-        append b = fromJust . parseURIReference . uriToString id b . ("/" ++)
+        append b c = b { uriPath = uriPath b ++ "/" ++ c }
 
 data MovementRate = MovementRate Natural Natural
 

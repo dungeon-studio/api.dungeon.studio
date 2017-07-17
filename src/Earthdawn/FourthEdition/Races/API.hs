@@ -40,7 +40,7 @@ type API = Get '[CollectionJSON] RaceCollection
 server :: String -> Server API
 server b = races b
       :<|> race b
-      :<|> abilities (b ++ "/abilities")
+      :<|> abilities (((b ++ "/") ++) . (++ "/abilities"))
 
 races :: String -> Handler RaceCollection
 races = return . flip RaceCollection RQ.races . fromJust . parseURIReference
@@ -57,5 +57,5 @@ race b n =
               , eMessage = Nothing
               }
 
-abilities :: String -> String -> Handler AbilityCollection
-abilities b = return . AbilityCollection (fromJust $ parseURIReference b) . RT.abilities . fromJust . fromName
+abilities :: (String -> String) -> String -> Handler AbilityCollection
+abilities b n = return . AbilityCollection (fromJust $ parseURIReference $ b n) . RT.abilities . fromJust . fromName $ n

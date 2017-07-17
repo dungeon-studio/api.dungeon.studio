@@ -37,7 +37,7 @@ instance ToCollection DisciplineCollection where
     }
 
 -- | Earthdawn discipline representation type.
-data Discipline = Discipline
+newtype Discipline = Discipline
   { name :: String
   }
 

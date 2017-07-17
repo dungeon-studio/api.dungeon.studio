@@ -17,7 +17,7 @@ import Servant
 
 import Data.CollectionJSON
 
--- | Collection (@application/vnd.collection+json@) item not found.
+-- | 'Collection' (@application/vnd.collection+json@) item not found.
 collection404 :: URI -> Error -> ServantErr
 collection404 u e = err404
   { errHeaders = [ (hContentType, "application/vnd.collection+json") ]

@@ -29,9 +29,11 @@ import Servant.API.ContentTypes.CollectionJSON
 
 import qualified Earthdawn.FourthEdition.Abilities.Queries as A (abilities)
 
+-- | "Servant" API for Earthdawn 4th Edition Abilities.
 type API = Get '[CollectionJSON] AbilityCollection
       :<|> Capture "ability" String :> Get '[CollectionJSON] AbilityCollection
 
+-- | "Servant" "Server" for Earthdawn 4th Edition Disciplines.
 server :: String -> Server API
 server b = abilities b
       :<|> ability b

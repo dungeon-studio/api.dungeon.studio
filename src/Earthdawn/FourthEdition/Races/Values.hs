@@ -6,16 +6,18 @@ License     : MIT
 
 Hard-coded values for race resources.
 
-If this requires more dynamic content we'll figure out how to replace this with
-a datastore.
+These will be removed if a non-static set of values are required.
 -}
-module Earthdawn.FourthEdition.Races.Values where
+module Earthdawn.FourthEdition.Races.Values
+  ( racesMap
+  ) where
 
 import Data.Map.Strict as Map (fromList, Map)
 
 import Earthdawn.FourthEdition.Abilities.Values
 import Earthdawn.FourthEdition.Races.Types
 
+-- | Static 'Map.Map' of name to 'Race'.
 racesMap :: Map.Map String Race
 racesMap = Map.fromList [ (name r, r) | r <- [elf, dwarf, human, obsidiman, ork, troll, tSkrang, windling] ]
 

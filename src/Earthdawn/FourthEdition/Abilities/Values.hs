@@ -6,8 +6,7 @@ License     : MIT
 
 Hard-coded values for ability resourcs.
 
-If this resource becomes more dynamic we'll figure out a datastore, but if it
-turns out we stop using it then it is what it is.
+These will be removed if a non-static set of values are required.
 -}
 module Earthdawn.FourthEdition.Abilities.Values where
 
@@ -15,6 +14,7 @@ import qualified Data.Map.Strict as Map (fromList, Map)
 
 import Earthdawn.FourthEdition.Abilities.Types
 
+-- | Static 'Map.Map' of name to 'Abililty'.
 abilitiesMap :: Map.Map String Ability
 abilitiesMap = Map.fromList [ (name a, a) | a <- [heatSight, strongBack, lowLightVision, versatility, increasedWoundThreshold, naturalArmor, gahad, tailCombat, astralSight, flight, increasedPhysicalDefense] ]
 

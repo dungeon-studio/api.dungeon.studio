@@ -1,5 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+{-|
+Module      : Earthdawn.FourthEdition.Disciplines.Types
+Description : Earthdawn 4th Edition Discipline Types
+Copyright   : (c) Alex Brandt, 2017
+License     : MIT
+
+Discipline and Collection Types.
+-}
 module Earthdawn.FourthEdition.Disciplines.Types
   ( DisciplineCollection
       ( DisciplineCollection
@@ -14,6 +22,7 @@ import Network.URI (URI, uriPath)
 
 import Data.CollectionJSON
 
+-- | @application/vnd.collection+json@ for 'Discipline'.
 data DisciplineCollection = DisciplineCollection URI [Discipline]
 
 instance ToCollection DisciplineCollection where
@@ -27,6 +36,7 @@ instance ToCollection DisciplineCollection where
     , cError    = Nothing
     }
 
+-- | Earthdawn discipline representation type.
 data Discipline = Discipline
   { name :: String
   }

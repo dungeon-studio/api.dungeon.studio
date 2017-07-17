@@ -16,8 +16,10 @@ import qualified Data.Map.Strict as Map (elems, lookup)
 import Earthdawn.FourthEdition.Disciplines.Types
 import Earthdawn.FourthEdition.Disciplines.Values
 
+-- | Retrieves all 'Dsicipline's.
 disciplines :: [Discipline]
 disciplines = Map.elems disciplinesMap
 
+-- | Retrive a 'Discipline' by name.
 fromName :: String -> Maybe Discipline
 fromName = flip Map.lookup disciplinesMap

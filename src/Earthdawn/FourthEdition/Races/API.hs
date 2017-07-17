@@ -31,10 +31,12 @@ import Servant.API.ContentTypes.CollectionJSON
 import qualified Earthdawn.FourthEdition.Races.Queries as RQ (races)
 import qualified Earthdawn.FourthEdition.Races.Types as RT (abilities)
 
+-- | "Servant" API for Earthdawn 4th Edition Races.
 type API = Get '[CollectionJSON] RaceCollection
       :<|> Capture "race" String :>  Get '[CollectionJSON] RaceCollection
       :<|> Capture "race" String :> "abilities" :> Get '[CollectionJSON] AbilityCollection
 
+-- | "Servant" "Server" for Earthdawn 4th Edition Races.
 server :: String -> Server API
 server b = races b
       :<|> race b

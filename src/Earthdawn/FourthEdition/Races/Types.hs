@@ -1,5 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+{-|
+Module      : Earthdawn.FourthEdition.Races.Types
+Description : Earthdawn 4th Edition Race Types
+Copyright   : (c) Alex Brandt, 2017
+License     : MIT
+
+Race and Collection Types.
+-}
 module Earthdawn.FourthEdition.Races.Types
   ( RaceCollection
       ( RaceCollection
@@ -28,6 +36,7 @@ import qualified Data.Text as T (pack)
 import Data.CollectionJSON
 import Earthdawn.FourthEdition.Abilities.Types (Ability)
 
+-- | @application/vnd.collection+json for 'Race'@
 data RaceCollection = RaceCollection URI [Race]
 
 instance ToCollection RaceCollection where
@@ -41,6 +50,7 @@ instance ToCollection RaceCollection where
     , cError    = Nothing
     }
 
+-- | Earthdawn race representation type.
 data Race = Race
   { name          :: String
   , dexterity     :: Natural
@@ -72,6 +82,7 @@ toItem u r = Item
         append :: URI -> String -> URI
         append b c = b { uriPath = uriPath b ++ "/" ++ c }
 
+-- | Convenience type for movement rate.
 data MovementRate = MovementRate Natural Natural
 
 instance Show MovementRate where

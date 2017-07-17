@@ -18,7 +18,13 @@ import Servant
 
 import qualified Earthdawn.FourthEdition.API as FourthEdition
 
+-- | "Servant" API for Earthdawn.
+--
+--   Implemented Editions:
+--
+--   * "Earthdawn.FourthEdition.API"
 type API = "4e" :> FourthEdition.API
 
+-- | "Servant" 'Server' for Earthdawn.
 server :: String -> Server API
 server b = FourthEdition.server $ b ++ "/4e"

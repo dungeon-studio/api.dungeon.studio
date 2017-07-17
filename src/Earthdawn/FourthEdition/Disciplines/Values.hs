@@ -8,12 +8,15 @@ Hard-coded values for ability resources.
 
 If this resource becomes more dynamic we'll figure out a datastore.
 -}
-module Earthdawn.FourthEdition.Disciplines.Values where
+module Earthdawn.FourthEdition.Disciplines.Values
+  ( disciplinesMap
+  ) where
 
 import qualified Data.Map.Strict as Map (fromList, Map)
 
 import Earthdawn.FourthEdition.Disciplines.Types
 
+-- | Static 'Map.Map' of name to 'Discipline'.
 disciplinesMap :: Map.Map String Discipline
 disciplinesMap = Map.fromList [(name d, d) | d <- [airSailor, archer, beastmaster, cavalryman, elementalist, illusionist, nethermancer, scout, skyRaider, swordmaster, thief, troubadour, warrior, weaponsmith, wizard]]
 

@@ -1,5 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+{-|
+Module      : Earthdawn.FourthEdition.Abilities.Types
+Description : Earthdawn 4th Edition Abilities Types
+Copyright   : (c) Alex Brandt, 2017
+License     : MIT
+
+Ability and Collection Types.
+-}
 module Earthdawn.FourthEdition.Abilities.Types
   ( AbilityCollection
       ( AbilityCollection
@@ -14,6 +22,7 @@ import Network.URI (URI, uriPath)
 
 import Data.CollectionJSON
 
+-- | @application/vnd.collection+json@ for 'Ability'.
 data AbilityCollection = AbilityCollection URI [Ability]
 
 instance ToCollection AbilityCollection where
@@ -27,6 +36,7 @@ instance ToCollection AbilityCollection where
     , cError    = Nothing
     }
 
+-- | Earthdawn ability represenation type.
 newtype Ability = Ability
   { name :: String
   }

@@ -3,22 +3,30 @@
 
 {-|
 Module      : Main
-Description : Main Module for dungeon.studio
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-Standard 'Main' module with nothing special.
+"Main" Module for dungeon.studio.
 -}
-module Main (main) where
+module Main
+  ( DungeonStudioApi
+  , main
+  ) where
 
 import Network.Wai.Handler.Warp (run)
 import Servant ((:>), Application, Proxy(Proxy), serve, Server)
 
 import qualified Earthdawn.API as Earthdawn
 
+-- | "Servant" API for our various games.
+--
+--   Implemented Games:
+--
+--   * "Earthdawn.API"
 type DungeonStudioApi = "earthdawn" :> Earthdawn.API
 
--- | 'main' sets up and runs an HTTP API server.
+-- | Sets up and runs a "Network.Wai.Handler.Warp" server with our "Servant"
+--   'API'.
 main :: IO ()
 main = run 45753 application -- TODO port as environment parameter
 

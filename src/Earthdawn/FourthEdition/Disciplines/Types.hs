@@ -16,6 +16,9 @@ module Earthdawn.FourthEdition.Disciplines.Types
       ( Discipline
       , name
       )
+  , CirclesCollection
+      ( CirclesCollection
+      )
   ) where
 
 import Network.URI (URI)

@@ -18,9 +18,10 @@ module Earthdawn.FourthEdition.Abilities.Types
       )
   ) where
 
-import Network.URI (URI, uriPath)
+import Network.URI (URI)
 
 import Data.CollectionJSON
+import Internal.URI
 
 -- | @application/vnd.collection+json@ for 'Ability'.
 data AbilityCollection = AbilityCollection URI [Ability]
@@ -48,5 +49,3 @@ toItem u a = Item
   , iLinks = []
   }
   where u' = append u $ name a
-        append :: URI -> String -> URI  -- TODO Move somewhere sensible.
-        append b c = b { uriPath = uriPath b ++ "/" ++ c }

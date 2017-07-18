@@ -39,6 +39,7 @@ executable dungeon-studio
                      , Earthdawn.FourthEdition.Races.Types
                      , Earthdawn.FourthEdition.Races.Values
                      , Errors
+                     , Internal.URI
                      , Servant.API.ContentTypes.CollectionJSON
   other-extensions:    DataKinds
                      , FlexibleInstances

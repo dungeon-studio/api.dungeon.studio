@@ -28,13 +28,14 @@ module Earthdawn.FourthEdition.Races.Types
   , MovementRate(MovementRate)
   ) where
 
-import Network.URI (URI, uriPath)
+import Network.URI (URI)
 import Numeric.Natural (Natural)
 
 import qualified Data.Text as T (pack)
 
 import Data.CollectionJSON
 import Earthdawn.FourthEdition.Abilities.Types (Ability)
+import Internal.URI
 
 -- | @application/vnd.collection+json for 'Race'@
 data RaceCollection = RaceCollection URI [Race]
@@ -79,8 +80,6 @@ toItem u r = Item
   , iLinks = [ Link { lHref = append u' "abilities", lRel = "abilities", lName = Nothing, lRender = Nothing, lPrompt = Nothing } ]
   }
   where u' = append u $ name r
-        append :: URI -> String -> URI
-        append b c = b { uriPath = uriPath b ++ "/" ++ c }
 
 -- | Convenience type for movement rate.
 data MovementRate = MovementRate Natural Natural

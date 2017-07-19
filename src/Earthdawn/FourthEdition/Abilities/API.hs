@@ -1,5 +1,4 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
 
 {-|
@@ -23,21 +22,24 @@ import Servant
 import qualified Data.Text as T (pack)
 
 import Data.CollectionJSON
-import Earthdawn.FourthEdition.Abilities.Queries
+import Earthdawn.FourthEdition.Abilities.Queries hiding (abilities)
 import Earthdawn.FourthEdition.Abilities.Types
 import Errors
 import Servant.API.ContentTypes.CollectionJSON
 
-type API = ( Get '[CollectionJSON] AbilityCollection
-        :<|> Capture "ability" String :> Get '[CollectionJSON] AbilityCollection
-           )
+import qualified Earthdawn.FourthEdition.Abilities.Queries as A (abilities)
 
+-- | "Servant" API for Earthdawn 4th Edition Abilities.
+type API = Get '[CollectionJSON] AbilityCollection
+      :<|> Capture "ability" String :> Get '[CollectionJSON] AbilityCollection
+
+-- | "Servant" "Server" for Earthdawn 4th Edition Disciplines.
 server :: String -> Server API
 server b = abilities b
       :<|> ability b
 
 abilities :: String -> Handler AbilityCollection
-abilities = return . flip AbilityCollection playerRaceAbilities . fromJust . parseURIReference
+abilities = return . flip AbilityCollection A.abilities . fromJust . parseURIReference
 
 ability :: String -> String -> Handler AbilityCollection
 ability b n =
@@ -47,6 +49,6 @@ ability b n =
         u = fromJust $ parseURIReference b
         e = Error
               { eTitle   = Just . T.pack $ "Ability, " ++ n ++ ", Not Found"
-              , eCode    = Just "404"
+              , eCode    = Nothing
               , eMessage = Nothing
               }

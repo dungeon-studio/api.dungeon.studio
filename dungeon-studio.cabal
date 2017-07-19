@@ -30,11 +30,16 @@ executable dungeon-studio
                      , Earthdawn.FourthEdition.Abilities.Types
                      , Earthdawn.FourthEdition.Abilities.Values
                      , Earthdawn.FourthEdition.API
+                     , Earthdawn.FourthEdition.Disciplines.API
+                     , Earthdawn.FourthEdition.Disciplines.Queries
+                     , Earthdawn.FourthEdition.Disciplines.Types
+                     , Earthdawn.FourthEdition.Disciplines.Values
                      , Earthdawn.FourthEdition.Races.API
                      , Earthdawn.FourthEdition.Races.Queries
                      , Earthdawn.FourthEdition.Races.Types
                      , Earthdawn.FourthEdition.Races.Values
                      , Errors
+                     , Internal.URI
                      , Servant.API.ContentTypes.CollectionJSON
   other-extensions:    DataKinds
                      , FlexibleInstances

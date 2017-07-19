@@ -1,5 +1,4 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
 
 {-|
@@ -24,25 +23,27 @@ import qualified Data.Text as T (pack)
 
 import Data.CollectionJSON
 import Earthdawn.FourthEdition.Abilities.Types
-import Earthdawn.FourthEdition.Races.Queries
+import Earthdawn.FourthEdition.Races.Queries hiding (races)
 import Earthdawn.FourthEdition.Races.Types hiding (abilities)
 import Errors
 import Servant.API.ContentTypes.CollectionJSON
 
-import qualified Earthdawn.FourthEdition.Races.Types as R (abilities)
+import qualified Earthdawn.FourthEdition.Races.Queries as RQ (races)
+import qualified Earthdawn.FourthEdition.Races.Types as RT (abilities)
 
-type API = ( Get '[CollectionJSON] RaceCollection
-        :<|> Capture "race" String :>  Get '[CollectionJSON] RaceCollection
-        :<|> Capture "race" String :> "abilities" :> Get '[CollectionJSON] AbilityCollection
-           )
+-- | "Servant" API for Earthdawn 4th Edition Races.
+type API = Get '[CollectionJSON] RaceCollection
+      :<|> Capture "race" String :>  Get '[CollectionJSON] RaceCollection
+      :<|> Capture "race" String :> "abilities" :> Get '[CollectionJSON] AbilityCollection
 
+-- | "Servant" "Server" for Earthdawn 4th Edition Races.
 server :: String -> Server API
 server b = races b
       :<|> race b
-      :<|> abilities (b ++ "/abilities")
+      :<|> abilities (((b ++ "/") ++) . (++ "/abilities"))
 
 races :: String -> Handler RaceCollection
-races = return . flip RaceCollection playerRaces . fromJust . parseURIReference
+races = return . flip RaceCollection RQ.races . fromJust . parseURIReference
 
 race :: String -> String -> Handler RaceCollection
 race b n =
@@ -52,9 +53,9 @@ race b n =
         u = fromJust $ parseURIReference b
         e = Error
               { eTitle   = Just . T.pack $ "Race, " ++ n ++ ", Not Found"
-              , eCode    = Just "404"
+              , eCode    = Nothing
               , eMessage = Nothing
               }
 
-abilities :: String -> String -> Handler AbilityCollection
-abilities b = return . AbilityCollection (fromJust $ parseURIReference b) . R.abilities . fromJust . fromName
+abilities :: (String -> String) -> String -> Handler AbilityCollection
+abilities b n = return . AbilityCollection (fromJust $ parseURIReference $ b n) . RT.abilities . fromJust . fromName $ n

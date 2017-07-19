@@ -1,6 +1,13 @@
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+{-|
+Module      : Earthdawn.FourthEdition.Abilities.Types
+Description : Earthdawn 4th Edition Abilities Types
+Copyright   : (c) Alex Brandt, 2017
+License     : MIT
+
+Ability and Collection Types.
+-}
 module Earthdawn.FourthEdition.Abilities.Types
   ( AbilityCollection
       ( AbilityCollection
@@ -11,11 +18,12 @@ module Earthdawn.FourthEdition.Abilities.Types
       )
   ) where
 
-import Data.Maybe (fromJust)
-import Network.URI (URI, parseURIReference, uriToString)
+import Network.URI (URI)
 
 import Data.CollectionJSON
+import Internal.URI
 
+-- | @application/vnd.collection+json@ for 'Ability'.
 data AbilityCollection = AbilityCollection URI [Ability]
 
 instance ToCollection AbilityCollection where
@@ -29,6 +37,7 @@ instance ToCollection AbilityCollection where
     , cError    = Nothing
     }
 
+-- | Earthdawn ability represenation type.
 newtype Ability = Ability
   { name :: String
   }
@@ -40,5 +49,3 @@ toItem u a = Item
   , iLinks = []
   }
   where u' = append u $ name a
-        append :: URI -> String -> URI  -- TODO Move somewhere sensible.
-        append b = fromJust . parseURIReference . uriToString id b . ("/" ++)

@@ -1,30 +1,25 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 {-|
 Module      : Earthdawn.FourthEdition.Races.Queries
-Description : Earthdawn 4th Edition Race Persistence Accessors
+Description : Earthdawn 4th Edition Race Queries
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-Accessors for race resources that are persisted by internal means.
+Accessors for presisted race resources.
 -}
 module Earthdawn.FourthEdition.Races.Queries
-  ( playerRaces
+  ( races
   , fromName
   ) where
 
-import qualified Data.Map as Map (elems, fromList, Map, lookup)
+import qualified Data.Map as Map (elems, lookup)
 
 import Earthdawn.FourthEdition.Races.Types
 import Earthdawn.FourthEdition.Races.Values
 
--- | A list of all races.
-playerRaces :: [Race]
-playerRaces = Map.elems races
+-- | Retrieve all 'Race's.
+races :: [Race]
+races = Map.elems racesMap
 
--- | A particular race with the given name.
+-- | Retrieve a 'Race' by name.
 fromName :: String -> Maybe Race
-fromName = flip Map.lookup races
-
-races :: Map.Map String Race
-races = Map.fromList [ (name r, r) | r <- [elf, dwarf, human, obsidiman, ork, troll, tSkrang, windling] ]
+fromName = flip Map.lookup racesMap

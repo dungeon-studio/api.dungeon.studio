@@ -6,8 +6,7 @@ Description : Error Types and Functions
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-A collection of types and functions for various APIs provided by dungeon.studio
-and in various formats.
+A collection of types and functions for the various APIs of dungeon.studio.
 -}
 module Errors where
 
@@ -18,6 +17,7 @@ import Servant
 
 import Data.CollectionJSON
 
+-- | 'Collection' (@application/vnd.collection+json@) item not found.
 collection404 :: URI -> Error -> ServantErr
 collection404 u e = err404
   { errHeaders = [ (hContentType, "application/vnd.collection+json") ]

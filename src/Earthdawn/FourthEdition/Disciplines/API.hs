@@ -33,12 +33,14 @@ import qualified Earthdawn.FourthEdition.Disciplines.Queries as D (disciplines)
 type API = Get '[CollectionJSON] DisciplineCollection
       :<|> Capture "discipline" String :> Get '[CollectionJSON] DisciplineCollection
       :<|> Capture "discipline" String :> "circles" :> Get '[CollectionJSON] CirclesCollection
+      :<|> Capture "discipline" String :> "circles" :> Capture "circle" Int :> Get '[CollectionJSON] CircleCollection
 
 -- | "Servant" "Server" for Earthdawn 4th Edition Disciplines.
 server :: String -> Server API
 server b = disciplines b
       :<|> discipline b
       :<|> circles (((b ++ "/") ++) . (++ "/circles"))
+      :<|> circle (((b ++ "/") ++) . (++ "/circles"))
 
 disciplines :: String -> Handler DisciplineCollection
 disciplines = return . flip DisciplineCollection D.disciplines . fromJust . parseURIReference
@@ -57,3 +59,15 @@ discipline b n =
 
 circles :: (String -> String) -> String -> Handler CirclesCollection
 circles b n = return $ CirclesCollection (fromJust $ parseURIReference $ b n)
+
+circle :: (String -> String) -> String -> Int -> Handler CircleCollection
+circle b n c =
+  do when (isNothing d) $ throwError $ collection404 u e
+     return $ CircleCollection u $ DT.circle c d
+  where u  = fromJust $ parseURIReference $ b n
+        d  = fromName n
+        e  = Error
+               { eTitle   = Just . T.pack $ "Discipline, " ++ show c ++ ", Not Found"
+               , eCode    = Nothing
+               , eMessage = Nothing
+               }

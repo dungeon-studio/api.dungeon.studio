@@ -19,6 +19,7 @@ import Servant
 import qualified Earthdawn.FourthEdition.Abilities.API as Abilities
 import qualified Earthdawn.FourthEdition.Disciplines.API as Disciplines
 import qualified Earthdawn.FourthEdition.Races.API as Races
+import qualified Earthdawn.FourthEdition.Talents.API as Talents
 
 -- | "Servant" API for Earthdawn 4th Edition.
 --
@@ -30,9 +31,11 @@ import qualified Earthdawn.FourthEdition.Races.API as Races
 type API = "abilities" :> Abilities.API
       :<|> "disciplines" :> Disciplines.API
       :<|> "races" :> Races.API
+      :<|> "talents" :> Talents.API
 
 -- | "Servant" "Server" for Earthdawn 4th Edition.
 server :: String -> Server API
 server b = Abilities.server (b ++ "/abilities")
       :<|> Disciplines.server (b ++ "/disciplines")
       :<|> Races.server (b ++ "/races")
+      :<|> Talents.server (b ++ "/talents")

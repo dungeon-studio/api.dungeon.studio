@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 {-|
 Module      : Internal.Network.HTTP.Media
 Description : HTTP Media Helper Functions

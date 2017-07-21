@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 {-|
 Module      : Internal.Network.URI
 Description : URI Helper Functions

@@ -13,13 +13,15 @@ A collection of types and instances for @application/vnd.collection+json@.
 This module is based on [Daniel Choi's work](https://github.com/danchoi/collection-json.hs).
 
 Full documentation for @application/vnd.collection+json@ can be found at
-<https://amundsen.com/media-types/collection/>
+<https://amundsen.com/media-types/collection/>.
 -}
 module Data.CollectionJSON where
 
 import Data.Aeson hiding (Error)
 import Data.Text (Text)
-import Network.URI (URI, parseURIReference)
+import Network.URI (URI)
+
+import Internal.Network.URI ()
 
 -- * Core Data Types
 
@@ -41,9 +43,6 @@ instance FromJSON Collection where
 
     cVersion  <- v .:  "version"
     cHref     <- v .:  "href"
-    cHref     <- case parseURIReference cHref of  -- TODO instance FromJSON URI
-                   Nothing -> fail "invalid URI"
-                   Just x  -> return x
     cLinks    <- v .:? "links"    .!= []
     cItems    <- v .:? "items"    .!= []
     cQueries  <- v .:? "queries"  .!= []
@@ -56,7 +55,7 @@ instance ToJSON Collection where
   toJSON Collection{..} = object
     [ "collection" .= object
       [ "version"  .= cVersion
-      , "href"     .= show cHref
+      , "href"     .= cHref
       , "links"    .= cLinks
       , "items"    .= cItems
       , "queries"  .= cQueries
@@ -85,9 +84,6 @@ data Link = Link
 instance FromJSON Link where
   parseJSON = withObject "Link" $ \ v -> do
     lHref   <- v .:  "href"
-    lHref   <- case parseURIReference lHref of  -- TODO instance FromJSON URI
-                 Nothing -> fail "invalid URI"
-                 Just x  -> return x
     lRel    <- v .:  "rel"
     lName   <- v .:? "name"
     lRender <- v .:? "render"
@@ -97,7 +93,7 @@ instance FromJSON Link where
 
 instance ToJSON Link where
   toJSON Link{..} = object
-    [ "href"   .= show lHref
+    [ "href"   .= lHref
     , "rel"    .= lRel
     , "name"   .= lName
     , "render" .= lRender
@@ -115,9 +111,6 @@ data Item = Item
 instance FromJSON Item where
   parseJSON = withObject "Item" $ \ v -> do
     iHref  <- v .:  "href"
-    iHref  <- case parseURIReference iHref of  -- TODO instance FromJSON URI
-                Nothing -> fail "invalid URI"
-                Just x  -> return x
     iData  <- v .:? "data"  .!= []
     iLinks <- v .:? "links" .!= []
 
@@ -125,7 +118,7 @@ instance FromJSON Item where
 
 instance ToJSON Item where
   toJSON Item{..} = object
-    [ "href"  .= show iHref
+    [ "href"  .= iHref
     , "data"  .= iData
     , "links" .= iLinks
     ]
@@ -157,9 +150,6 @@ data Query = Query
 instance FromJSON Query where
   parseJSON = withObject "Query" $ \ v -> do
     qHref   <- v .:  "href"
-    qHref   <- case parseURIReference qHref of  -- TODO instance FromJSON URI
-                 Nothing -> fail "invalid URI"
-                 Just x  -> return x
     qRel    <- v .:  "rel"
     qName   <- v .:? "name"
     qPrompt <- v .:? "prompt"
@@ -169,7 +159,7 @@ instance FromJSON Query where
 
 instance ToJSON Query where
   toJSON Query{..} = object
-    [ "href"   .= show qHref
+    [ "href"   .= qHref
     , "rel"    .= qRel
     , "name"   .= qName
     , "prompt" .= qPrompt

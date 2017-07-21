@@ -4,7 +4,7 @@
 
 {-|
 Module      : Servant.API.ContentTypes.Collection
-Description : Servant ContentType for 'application/vnd.collection+json'
+Description : Servant ContentType for @application/vnd.collection+json@
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 

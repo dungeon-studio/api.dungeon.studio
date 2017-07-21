@@ -35,7 +35,7 @@ import qualified Data.Text as T (pack)
 
 import Data.CollectionJSON
 import Earthdawn.FourthEdition.Abilities.Types (Ability)
-import Internal.URI
+import Internal.Network.URI
 
 -- | @application/vnd.collection+json for 'Race'@
 data RaceCollection = RaceCollection URI [Race]

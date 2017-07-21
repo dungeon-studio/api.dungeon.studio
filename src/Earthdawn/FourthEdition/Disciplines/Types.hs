@@ -21,7 +21,7 @@ module Earthdawn.FourthEdition.Disciplines.Types
 import Network.URI (URI)
 
 import Data.CollectionJSON
-import Internal.URI
+import Internal.Network.URI
 
 -- | @application/vnd.collection+json@ for 'Discipline'.
 data DisciplineCollection = DisciplineCollection URI [Discipline]

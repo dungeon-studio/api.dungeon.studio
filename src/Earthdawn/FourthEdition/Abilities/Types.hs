@@ -21,7 +21,7 @@ module Earthdawn.FourthEdition.Abilities.Types
 import Network.URI (URI)
 
 import Data.CollectionJSON
-import Internal.URI
+import Internal.Network.URI (append)
 
 -- | @application/vnd.collection+json@ for 'Ability'.
 data AbilityCollection = AbilityCollection URI [Ability]

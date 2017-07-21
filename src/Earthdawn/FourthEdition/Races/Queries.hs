@@ -4,7 +4,7 @@ Description : Earthdawn 4th Edition Race Queries
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-Accessors for presisted race resources.
+Accessors for persisted race resources.
 -}
 module Earthdawn.FourthEdition.Races.Queries
   ( races

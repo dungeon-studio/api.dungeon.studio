@@ -6,7 +6,7 @@ Description : Error Types and Functions
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-A collection of types and functions for the various APIs of dungeon.studio.
+A collection of types and functions that generalize API error handling.
 -}
 module Errors where
 

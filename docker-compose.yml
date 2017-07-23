@@ -1,4 +1,29 @@
-dungeon-studio:
-  build: .
-  ports:
-    - "45753:45753"
+version: "3"
+
+services:
+  dungeon-studio:
+    build: .
+    environment:
+      - COUCHDB_URI=http://couchdb:5984
+      - DUNGEON_STUDIO_PORT=45753
+    image: alunduil/dugneon-studio:latest
+    links:
+      - couchdb:couchdb
+    logging:
+      driver: journald
+    ports:
+      - "45753:45753"
+    networks:
+      - dungeon-studio
+
+  couchdb:
+    image: klaemo/couchdb:latest
+    logging:
+      driver: none
+    ports:
+      - "5984:5984"
+    networks:
+      - dungeon-studio
+
+networks:
+  dungeon-studio:

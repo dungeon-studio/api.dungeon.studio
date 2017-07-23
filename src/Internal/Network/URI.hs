@@ -6,7 +6,7 @@ Description : URI Helper Functions
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-URI utility functions that don't belond anywhere else.
+URI utility functions that don't belong anywhere else.
 -}
 module Internal.Network.URI where
 

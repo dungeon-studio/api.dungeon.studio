@@ -15,6 +15,7 @@ module Earthdawn.FourthEdition.Characters.API
   ) where
 
 import Control.Monad (when)
+import Control.Monad.Trans (liftIO)
 import Data.Maybe (fromJust, isNothing)
 import Data.UUID (UUID)
 import Network.URI (parseURIReference)
@@ -22,6 +23,8 @@ import Servant
 
 import Earthdawn.FourthEdition.Characters.Queries hiding (characters)
 import Earthdawn.FourthEdition.Characters.Types
+import Earthdawn.Settings
+import Internal.Network.URI
 import Servant.API.ContentTypes.SirenJSON
 
 import qualified Earthdawn.FourthEdition.Characters.Queries as C (characters)
@@ -31,15 +34,19 @@ type API = Get '[SirenJSON] CharacterCollection
       :<|> Capture "character" UUID :> Get '[SirenJSON] Character
 
 -- | "Servant" 'Server' for Earthdawn 4th Edition Characters.
-server :: String -> Server API
-server b = characters b
-      :<|> character b
+server :: String -> Settings -> Server API
+server b s = characters b s
+      :<|> character b s
 
-characters :: String -> Handler CharacterCollection
-characters = return . flip CharacterCollection C.characters . fromJust . parseURIReference
+characters :: String -> Settings -> Handler CharacterCollection
+characters u s = 
+  do cs <- liftIO . C.characters $ couch s
+     return $ CharacterCollection u' cs
+  where u' = fromJust $ parseURIReference u
 
-character :: String -> UUID -> Handler Character
-character b u =
-  do when (isNothing c) $ throwError err404
-     return $ fromJust c
-  where c = fromUUID u (fromJust $ parseURIReference b)
+character :: String -> Settings -> UUID -> Handler Character
+character b s u =
+  do c <- liftIO . fromUUID (couch s) $ u
+     when (isNothing c) $ throwError err404
+     return . (\ x -> x { url = u' }) $ fromJust c
+  where u' = append (fromJust $ parseURIReference b) $ show u

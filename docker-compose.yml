@@ -9,8 +9,6 @@ services:
     image: alunduil/dugneon-studio:latest
     links:
       - couchdb:couchdb
-    logging:
-      driver: journald
     ports:
       - "45753:45753"
     networks:

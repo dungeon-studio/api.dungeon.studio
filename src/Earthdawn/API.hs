@@ -12,9 +12,12 @@ HTTP API for Earthdawn resources.
 module Earthdawn.API
   ( API
   , server
+  , module Earthdawn.Settings
   ) where
 
 import Servant
+
+import Earthdawn.Settings
 
 import qualified Earthdawn.FourthEdition.API as FourthEdition
 
@@ -26,5 +29,5 @@ import qualified Earthdawn.FourthEdition.API as FourthEdition
 type API = "4e" :> FourthEdition.API
 
 -- | "Servant" 'Server' for Earthdawn.
-server :: String -> Server API
+server :: String -> Settings -> Server API
 server b = FourthEdition.server $ b ++ "/4e"

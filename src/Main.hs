@@ -18,11 +18,12 @@ module Main
       )
   ) where
 
-import Control.Exception (SomeException)
+import Control.Monad.Catch (Handler (Handler))
 import Control.Monad (when)
-import Control.Retry (constantDelay, defaultLogMsg, limitRetriesByDelay, logRetries, recovering, RetryPolicy)
+import Control.Retry (constantDelay, limitRetries, recovering, RetryPolicy)
 import Database.CouchDB (CouchConn, closeCouchConn, createCouchConnFromURI, getAllDBs, runCouchDBWith)
 import Data.Maybe (fromJust, fromMaybe, isNothing)
+import Data.Monoid ((<>))
 import Data.Pool (Pool, createPool, withResource)
 import Network.URI (parseURI)
 import Network.Wai.Handler.Warp (run)
@@ -96,20 +97,19 @@ main :: IO ()
 main = 
   do s <- settings
 
-     _ <- recovering p hs $ \ _ -> withResource (couch s) $ flip runCouchDBWith getAllDBs
-     putStrLn "connected to couchdb"
+     -- TODO put recovering inside connection pool
+     _ <- recovering policy [h "connecting to CouchDB failed: "] $ const $ withResource (couch s) $ flip runCouchDBWith getAllDBs
+     putStrLn "connected to CouchDB"
 
-     run (port s) application
-  where p :: RetryPolicy
-        p  = limitRetriesByDelay l $ constantDelay d
-        l  = 30 * (10 :: Int) ^ (6 :: Int)
-        d  = 3 * (10 :: Int) ^ (6 :: Int)
-        hs = [ logRetries (\ (_ :: IOError) -> return True) $ \ a b c -> putStrLn $ defaultLogMsg a b c
-             , logRetries (\ (_ :: SomeException) -> return False) $ \ a b c -> putStrLn $ defaultLogMsg a b c
-             ]
+     run (port s) $ application s
+  where policy :: RetryPolicy
+        policy = limitRetries 10 <> constantDelay 3000000
+        h p    = const . Handler $ \ (e :: IOError) -> do
+                   putStrLn $ p ++ show e
+                   return True
 
-application :: Application
-application = serve (Proxy :: Proxy DungeonStudioApi) server
+application :: Settings -> Application
+application s = serve (Proxy :: Proxy DungeonStudioApi) $ server s
 
-server :: Server DungeonStudioApi
-server = Earthdawn.server "/earthdawn"
+server :: Settings -> Server DungeonStudioApi
+server = Earthdawn.server "/earthdawn" . Earthdawn.defaultSettings . couch

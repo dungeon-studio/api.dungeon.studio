@@ -94,7 +94,7 @@ instance ToJSON SubEntity where
 
 -- | Link to a related resource.
 data Link = Link
-  { lClass :: [Text]        -- ^ Nature of 'Entity''s content---
+  { lClass :: [Text]          -- ^ Nature of 'Entity''s content---
                               --   implementation dependant and should be
                               --   documented
   , lRel   :: [Text]

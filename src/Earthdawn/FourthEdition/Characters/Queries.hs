@@ -11,15 +11,25 @@ module Earthdawn.FourthEdition.Characters.Queries
   , fromUUID
   ) where
 
+import Database.CouchDB (CouchConn, DB, db, doc, getAllDocs, getDoc, runCouchDBWith)
+import Data.Pool (Pool, withResource)
 import Data.UUID (UUID)
-import Network.URI (URI)
 
 import Earthdawn.FourthEdition.Characters.Types
 
 -- | Retrieve all 'Character's.
-characters :: [Character]
-characters = undefined
+characters :: Pool CouchConn -> IO [Character]
+characters p = withResource p $ \ c -> do
+  ds <- runCouchDBWith c $ getAllDocs charactersDB []
+  return $ snd <$> ds
 
 -- | Retrieve a 'Character' by uuid.
-fromUUID :: UUID -> URI -> Maybe Character
-fromUUID = undefined
+fromUUID :: Pool CouchConn -> UUID -> IO (Maybe Character)
+fromUUID p u = withResource p $ \ c -> do
+  character <- runCouchDBWith c $ getDoc charactersDB (doc $ show u)
+  return $ case character of
+    Just (_, _, x) -> Just x
+    Nothing        -> Nothing
+
+charactersDB :: DB
+charactersDB = db "characters"

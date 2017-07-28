@@ -24,7 +24,7 @@ check pull requests before a manual review.
 
 The `COPYRIGHT` file contains a list of contributors with their respective
 copyrights and other information.  If you submit a pull request and would like
-attributino; please, add yourself to the `COPYRIGHT` file.
+attribution; please, add yourself to the `COPYRIGHT` file.
 
 [git flow]: http://nvie.com/posts/a-successful-gti-branching-model/
 [issues]: https://github.com/alunduil/dungeon.studio/issues

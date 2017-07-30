@@ -24,11 +24,12 @@ module Earthdawn.FourthEdition.Characters.Types
 
 import Data.UUID (UUID)
 import Network.HTTP.Media ((//))
+import Network.HTTP.Types (methodPost)
 import Network.URI (URI)
 
 import qualified Data.Map.Strict as Map (empty)
 
-import Internal.Data.SirenJSON (Entity (..), Link (..), SubEntity (EmbeddedRepresentation), ToEntity (toEntity))
+import Internal.Data.SirenJSON (Action (..), Entity (..), Field (..), Link (..), SubEntity (EmbeddedRepresentation), ToEntity (toEntity), InputType (URL))
 import Internal.Network.URI (append)
 
 -- | @application/vnd.siren+json@ compatible 'Character' collection.
@@ -42,13 +43,13 @@ instance ToEntity CharacterCollection where
     , eLinks      = [ Link { lClass = [ "CharacterCollection" ], lRel = [ "self" ], lHref = u, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
                     ]
     , eActions    = [ Action { aName   = "create-character"
-                             , aClass  = [ "add" ]
+                             , aClass  = [ "Add" ]
                              , aMethod = methodPost
                              , aHref   = u
                              , aTitle  = Just "Create Character"
                              , aType   = Just $ "application" // "x-www-form-urlencoded"
-                             , aFields = [ Field { fName = "discipline", fClass = [], fType = URL, fValue = Nothing, fTitle = "Discipline" }
-                                         , Field { fName = "race", fClass = [], fType = URL, fValue = Nothing, fTitle = "Race" }
+                             , aFields = [ Field { fName = "discipline", fClass = [], fType = URL, fValue = Nothing, fTitle = Just "Discipline" }
+                                         , Field { fName = "race", fClass = [], fType = URL, fValue = Nothing, fTitle = Just "Race" }
                                          ]
                              }
                     ]

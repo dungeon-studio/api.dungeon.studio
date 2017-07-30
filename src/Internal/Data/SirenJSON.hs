@@ -149,10 +149,10 @@ instance ToJSON Action where
   toJSON Action{..} = object
     [ "name"   .= aName
     , "class"  .= aClass
-    , "method" .= show aMethod
+    , "method" .= (read . show $ aMethod :: String)
     , "href"   .= show aHref
     , "title"  .= aTitle
-    , "type"   .= show aType
+    , "type"   .= (show <$> aType)
     , "fields" .= aFields
     ]
 

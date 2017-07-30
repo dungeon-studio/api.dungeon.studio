@@ -14,18 +14,18 @@ module Earthdawn.FourthEdition.Characters.API
   , server
   ) where
 
-import Control.Monad (when)
 import Control.Monad.Trans (liftIO)
+import Control.Monad (when)
 import Data.Maybe (fromJust, isNothing)
 import Data.UUID (UUID)
 import Network.URI (parseURIReference)
-import Servant
+import Servant ((:>), (:<|>) ((:<|>)), Capture, err404, Get, Handler, Server, throwError)
 
 import Earthdawn.FourthEdition.Characters.Queries hiding (characters)
 import Earthdawn.FourthEdition.Characters.Types
 import Earthdawn.Settings
-import Internal.Network.URI
-import Servant.API.ContentTypes.SirenJSON
+import Internal.Network.URI (append)
+import Internal.Servant.API.ContentTypes.SirenJSON (SirenJSON)
 
 import qualified Earthdawn.FourthEdition.Characters.Queries as C (characters)
 
@@ -40,13 +40,13 @@ server b s = characters b s
 
 characters :: String -> Settings -> Handler CharacterCollection
 characters u s = 
-  do cs <- liftIO . C.characters $ couch s
+  do cs <- liftIO . C.characters $ neo4j s
      return $ CharacterCollection u' cs
   where u' = fromJust $ parseURIReference u
 
 character :: String -> Settings -> UUID -> Handler Character
 character b s u =
-  do c <- liftIO . fromUUID (couch s) $ u
+  do c <- liftIO . fromUUID (neo4j s) $ u
      when (isNothing c) $ throwError err404
      return . (\ x -> x { url = u' }) $ fromJust c
   where u' = append (fromJust $ parseURIReference b) $ show u

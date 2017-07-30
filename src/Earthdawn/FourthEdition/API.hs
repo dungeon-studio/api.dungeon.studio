@@ -14,7 +14,7 @@ module Earthdawn.FourthEdition.API
   , server
   ) where
 
-import Servant
+import Servant ((:>), (:<|>) ((:<|>)), Server)
 
 import Earthdawn.Settings
 

@@ -33,9 +33,9 @@ import Numeric.Natural (Natural)
 
 import qualified Data.Text as T (pack)
 
-import Data.CollectionJSON
 import Earthdawn.FourthEdition.Abilities.Types (Ability)
-import Internal.Network.URI
+import Internal.Data.CollectionJSON (Collection (..), Datum (..), Item (..), Link (..), ToCollection (toCollection))
+import Internal.Network.URI (append)
 
 -- | @application/vnd.collection+json for 'Race'@
 data RaceCollection = RaceCollection URI [Race]

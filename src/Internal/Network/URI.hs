@@ -12,8 +12,7 @@ module Internal.Network.URI where
 
 import Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import Data.Text (unpack)
-import Network.URI (URI, parseURIReference, uriPath)
-import Text.JSON (JSON (showJSON, readJSON), JSValue (JSString), fromJSString, toJSString)
+import Network.URI (parseURIReference, URI, uriPath)
 
 instance FromJSON URI where
   parseJSON = withText "URI" $ \ v ->
@@ -23,15 +22,6 @@ instance FromJSON URI where
 
 instance ToJSON URI where
   toJSON = toJSON . show
-
-instance JSON URI where
-  showJSON = JSString . toJSString . show
-
-  readJSON (JSString v) =
-    case parseURIReference (fromJSString v) of
-      Nothing -> fail "invalid URI"
-      Just x  -> return x
-  readJSON _            = fail "invalid URI"
 
 -- | Add 'String' to 'URI''s 'uriPath'.
 append :: URI -> String -> URI

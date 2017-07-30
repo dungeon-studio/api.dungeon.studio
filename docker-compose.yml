@@ -4,22 +4,26 @@ services:
   dungeon-studio:
     build: .
     environment:
-      - COUCHDB_URI=http://couchdb:5984
+      - BOLT_HOST=neo4j
+      - BOLT_PORT=7687
       - DUNGEON_STUDIO_PORT=45753
-    image: alunduil/dugneon-studio:latest
+    image: alunduil/dungeon-studio:latest
     links:
-      - couchdb:couchdb
+      - neo4j:neo4j
     ports:
       - "45753:45753"
     networks:
       - dungeon-studio
 
-  couchdb:
-    image: klaemo/couchdb:latest
+  neo4j:
+    environment:
+      - NEO4J_AUTH=none
+    image: neo4j:3.2
     logging:
       driver: none
     ports:
-      - "5984:5984"
+      - "7474:7474"
+      - "7687:7687"
     networks:
       - dungeon-studio
 

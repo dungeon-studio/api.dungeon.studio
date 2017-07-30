@@ -17,15 +17,15 @@ module Earthdawn.FourthEdition.Disciplines.API
 import Control.Monad (when)
 import Data.Maybe (fromJust, isNothing)
 import Network.URI (parseURIReference)
-import Servant
+import Servant ((:>), (:<|>) ((:<|>)), Capture, Get, Handler, Server, throwError)
 
 import qualified Data.Text as T (pack)
 
-import Data.CollectionJSON
 import Earthdawn.FourthEdition.Disciplines.Queries hiding (disciplines)
 import Earthdawn.FourthEdition.Disciplines.Types
 import Errors
-import Servant.API.ContentTypes.CollectionJSON
+import Internal.Data.CollectionJSON (Error (..))
+import Internal.Servant.API.ContentTypes.CollectionJSON (CollectionJSON)
 
 import qualified Earthdawn.FourthEdition.Disciplines.Queries as D (disciplines)
 

@@ -21,12 +21,12 @@ import Servant
 
 import qualified Data.Text as T (pack)
 
-import Data.CollectionJSON
 import Earthdawn.FourthEdition.Abilities.Types
 import Earthdawn.FourthEdition.Races.Queries hiding (races)
 import Earthdawn.FourthEdition.Races.Types hiding (abilities)
 import Errors
-import Servant.API.ContentTypes.CollectionJSON
+import Internal.Data.CollectionJSON (Error (..))
+import Internal.Servant.API.ContentTypes.CollectionJSON (CollectionJSON)
 
 import qualified Earthdawn.FourthEdition.Races.Queries as RQ (races)
 import qualified Earthdawn.FourthEdition.Races.Types as RT (abilities)

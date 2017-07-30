@@ -22,14 +22,14 @@ module Earthdawn.FourthEdition.Characters.Types
       )
   ) where
 
-import Data.Map.Strict as Map (empty)
-import Data.UUID (UUID, nil)
+import Data.UUID (UUID)
 import Network.HTTP.Media ((//))
-import Network.URI (URI, nullURI)
-import Text.JSON (JSON (showJSON, readJSON), JSValue (JSObject), valFromObj)
+import Network.URI (URI)
 
-import Data.SirenJSON
-import Internal.Network.URI
+import qualified Data.Map.Strict as Map (empty)
+
+import Internal.Data.SirenJSON (Entity (..), Link (..), SubEntity (EmbeddedRepresentation), ToEntity (toEntity))
+import Internal.Network.URI (append)
 
 -- | @application/vnd.siren+json@ compatible 'Character' collection.
 data CharacterCollection = CharacterCollection URI [Character]
@@ -65,17 +65,3 @@ instance ToEntity Character where
     , eActions    = []
     , eTitle      = Nothing
     }
-
--- | JSON Instance for Character---used by CouchDB to store documents.
-instance JSON Character where
-  showJSON = undefined
-
-  readJSON (JSObject o) = do
-    let url = nullURI -- Not stored in CouchDB
-    let uuid = nil    -- Name of CouchDB document
-
-    discipline <- valFromObj "discipline" o
-    race       <- valFromObj "race" o
-
-    return Character{..}
-  readJSON _           = fail "invalid Character"

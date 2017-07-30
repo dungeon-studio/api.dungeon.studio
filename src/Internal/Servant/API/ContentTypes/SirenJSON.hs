@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 {-|
-Module      : Servant.API.ContentTypes.Siren
+Module      : Internal.Servant.API.ContentTypes.Siren
 Description : Servant ContentType for @application/vnd.siren+json@
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
@@ -12,14 +12,14 @@ Servant ContentType for @application/vnd.siren+json@---a content type
 created by Kevin Swiber and documented at
 <https://github.com/kevinswiber/siren>
 -}
-module Servant.API.ContentTypes.SirenJSON where
+module Internal.Servant.API.ContentTypes.SirenJSON where
 
 import Control.Arrow (right)
 import Data.Aeson (eitherDecode, encode)
 import Network.HTTP.Media ((//))
 import Servant.API (Accept (..), MimeRender (..), MimeUnrender (..))
 
-import Data.SirenJSON
+import Internal.Data.SirenJSON (FromEntity (fromEntity), ToEntity (toEntity))
 
 -- | Content type suitable for use with "Servant"
 data SirenJSON

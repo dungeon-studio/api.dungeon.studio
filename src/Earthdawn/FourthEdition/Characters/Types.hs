@@ -36,12 +36,22 @@ data CharacterCollection = CharacterCollection URI [Character]
 
 instance ToEntity CharacterCollection where
   toEntity (CharacterCollection u cs) = Entity
-    { eClass      = [ "CharacterCollection" ]
+    { eClass      = [ "CharacterCollection", "Earthdawn" ]
     , eProperties = Map.empty
     , eEntities   = map (\ c -> EmbeddedRepresentation (toEntity $ c { url = append u ( show $ uuid c ) }) ["item"]) cs
     , eLinks      = [ Link { lClass = [ "CharacterCollection" ], lRel = [ "self" ], lHref = u, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
                     ]
-    , eActions    = []
+    , eActions    = [ Action { aName   = "create-character"
+                             , aClass  = [ "add" ]
+                             , aMethod = methodPost
+                             , aHref   = u
+                             , aTitle  = Just "Create Character"
+                             , aType   = Just $ "application" // "x-www-form-urlencoded"
+                             , aFields = [ Field { fName = "discipline", fClass = [], fType = URL, fValue = Nothing, fTitle = "Discipline" }
+                                         , Field { fName = "race", fClass = [], fType = URL, fValue = Nothing, fTitle = "Race" }
+                                         ]
+                             }
+                    ]
     , eTitle      = Nothing
     }
 
@@ -55,7 +65,7 @@ data Character = Character
 
 instance ToEntity Character where
   toEntity Character{..} = Entity
-    { eClass      = [ "Character" ]
+    { eClass      = [ "Character", "Earthdawn" ]
     , eProperties = Map.empty
     , eEntities   = []
     , eLinks      = [ Link { lClass = [ "Character" ], lRel = [ "self" ], lHref = url, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }

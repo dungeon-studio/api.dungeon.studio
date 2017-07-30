@@ -36,7 +36,7 @@ type API = Get '[SirenJSON] CharacterCollection
 -- | "Servant" 'Server' for Earthdawn 4th Edition Characters.
 server :: String -> Settings -> Server API
 server b s = characters b s
-      :<|> character b s
+        :<|> character b s
 
 characters :: String -> Settings -> Handler CharacterCollection
 characters u s = 

@@ -46,16 +46,17 @@ fromUUID p u = withResource p $ \ c -> do
         cypher = "MATCH (character:Character {uuid:{uuid}}) " <>
                  "RETURN character " <>
                  "LIMIT 1"
+
         ps :: Map.Map Text Value
-        ps     = Map.fromList [("uuid", T . pack $ toString u)]
+        ps = Map.fromList [("uuid", T . pack $ toString u)]
 
 toCharacter :: Monad m => Value -> m Character
 toCharacter v =
   do ps         <- nodeProps <$> exact v
 
+     uuid       <- (fromJust . fromString . unpack) <$> ((ps `at` "uuid") >>= exact)
+     let url = nullURI
      discipline <- (fromJust . parseURI . unpack) <$> ((ps `at` "discipline") >>= exact)
      race       <- (fromJust . parseURI . unpack) <$> ((ps `at` "race") >>= exact)
-     uuid       <- (fromJust . fromString . unpack) <$> ((ps `at` "uuid") >>= exact)
 
      return Character{..}
-  where url = nullURI

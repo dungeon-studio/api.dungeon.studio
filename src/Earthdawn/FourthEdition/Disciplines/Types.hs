@@ -45,7 +45,7 @@ newtype Discipline = Discipline
 
 toItem :: URI -> Discipline -> Item
 toItem u d = Item
-  { iHref = append u $ name d
-  , iData = []
+  { iHref  = append u $ name d
+  , iData  = []
   , iLinks = []
   }

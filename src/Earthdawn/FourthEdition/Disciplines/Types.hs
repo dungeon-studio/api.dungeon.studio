@@ -18,10 +18,11 @@ module Earthdawn.FourthEdition.Disciplines.Types
       )
   ) where
 
+
 import Network.URI (URI)
 
-import Data.CollectionJSON
-import Internal.Network.URI
+import Internal.Data.CollectionJSON (Collection (..), Item (..), ToCollection (toCollection))
+import Internal.Network.URI (append)
 
 -- | @application/vnd.collection+json@ for 'Discipline'.
 data DisciplineCollection = DisciplineCollection URI [Discipline]
@@ -44,8 +45,7 @@ newtype Discipline = Discipline
 
 toItem :: URI -> Discipline -> Item
 toItem u d = Item
-  { iHref = u'
-  , iData = []
+  { iHref  = append u $ name d
+  , iData  = []
   , iLinks = []
   }
-  where u' = append u $ name d

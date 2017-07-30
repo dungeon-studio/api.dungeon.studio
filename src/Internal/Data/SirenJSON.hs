@@ -3,7 +3,7 @@
 {-# LANGUAGE RecordWildCards #-}
 
 {-|
-Module      : Data.SirenJSON
+Module      : Internal.Data.SirenJSON
 Description : Types and Instances for @application/vnd.siren+json@
 Copyright   : (c) Alex Brandt 2017
 License     : MIT
@@ -13,7 +13,7 @@ A collection of types and instances for @application/vnd.siren+json@.
 Full documentation for @application/vnd.siren+json@ can be found at
 <https://github.com/kevinswiber/siren/>.
 -}
-module Data.SirenJSON where
+module Internal.Data.SirenJSON where
 
 import Data.Aeson hiding (Number)
 import Data.Foldable (asum)
@@ -23,8 +23,8 @@ import Network.HTTP.Media (MediaType)
 import Network.HTTP.Types (Method, methodGet)
 import Network.URI (URI)
 
-import qualified Data.Map.Strict as Map
 import qualified Data.HashMap.Lazy as HashMap (fromList)
+import qualified Data.Map.Strict as Map (Map)
 
 import Internal.Network.HTTP.Media ()
 import Internal.Network.HTTP.Types ()
@@ -94,7 +94,7 @@ instance ToJSON SubEntity where
 
 -- | Link to a related resource.
 data Link = Link
-  { lClass :: [Text]        -- ^ Nature of 'Entity''s content---
+  { lClass :: [Text]          -- ^ Nature of 'Entity''s content---
                               --   implementation dependant and should be
                               --   documented
   , lRel   :: [Text]

@@ -14,7 +14,9 @@ module Earthdawn.FourthEdition.API
   , server
   ) where
 
-import Servant
+import Servant ((:>), (:<|>) ((:<|>)), Server)
+
+import Earthdawn.Settings
 
 import qualified Earthdawn.FourthEdition.Abilities.API as Abilities
 import qualified Earthdawn.FourthEdition.Characters.API as Characters
@@ -35,8 +37,8 @@ type API = "abilities" :> Abilities.API
       :<|> "races" :> Races.API
 
 -- | "Servant" "Server" for Earthdawn 4th Edition.
-server :: String -> Server API
-server b = Abilities.server (b ++ "/abilities")
-      :<|> Characters.server (b ++ "/characters")
-      :<|> Disciplines.server (b ++ "/disciplines")
-      :<|> Races.server (b ++ "/races")
+server :: String -> Settings -> Server API
+server b s = Abilities.server (b ++ "/abilities")
+        :<|> Characters.server (b ++ "/characters") s
+        :<|> Disciplines.server (b ++ "/disciplines")
+        :<|> Races.server (b ++ "/races")

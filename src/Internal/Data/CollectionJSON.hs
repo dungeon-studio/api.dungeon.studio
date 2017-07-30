@@ -2,7 +2,7 @@
 {-# LANGUAGE RecordWildCards #-}
 
 {-|
-Module      : Data.CollectionJSON
+Module      : Internal.Data.CollectionJSON
 Description : Types and Instances for @application/vnd.collection+json@
 Copyright   : (c) Daniel Choi, 2015
               (c) Alex Brandt, 2017
@@ -15,7 +15,7 @@ This module is based on [Daniel Choi's work](https://github.com/danchoi/collecti
 Full documentation for @application/vnd.collection+json@ can be found at
 <https://amundsen.com/media-types/collection/>.
 -}
-module Data.CollectionJSON where
+module Internal.Data.CollectionJSON where
 
 import Data.Aeson hiding (Error)
 import Data.Text (Text)

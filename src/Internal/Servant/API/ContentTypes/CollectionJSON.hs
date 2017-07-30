@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 {-|
-Module      : Servant.API.ContentTypes.Collection
+Module      : Internal.Servant.API.ContentTypes.Collection
 Description : Servant ContentType for @application/vnd.collection+json@
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
@@ -12,14 +12,14 @@ Servant ContentType for @application/vnd.collection+json@---a content type
 created by M. Amundsen and documented at
 <http://amundsen.com/media-types/collection/>.
 -}
-module Servant.API.ContentTypes.CollectionJSON where
+module Internal.Servant.API.ContentTypes.CollectionJSON where
 
 import Control.Arrow (right)
 import Data.Aeson (eitherDecode, encode)
 import Network.HTTP.Media ((//))
 import Servant.API (Accept (..), MimeRender (..), MimeUnrender (..))
 
-import Data.CollectionJSON
+import Internal.Data.CollectionJSON (FromCollection (fromCollection), ToCollection (toCollection))
 
 -- | Content type suitable for use with "Servant".
 data CollectionJSON

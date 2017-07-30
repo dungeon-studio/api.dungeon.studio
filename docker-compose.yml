@@ -1,4 +1,31 @@
-dungeon-studio:
-  build: .
-  ports:
-    - "45753:45753"
+version: "3"
+
+services:
+  dungeon-studio:
+    build: .
+    environment:
+      - BOLT_HOST=neo4j
+      - BOLT_PORT=7687
+      - DUNGEON_STUDIO_PORT=45753
+    image: alunduil/dungeon-studio:latest
+    links:
+      - neo4j:neo4j
+    ports:
+      - "45753:45753"
+    networks:
+      - dungeon-studio
+
+  neo4j:
+    environment:
+      - NEO4J_AUTH=none
+    image: neo4j:3.2
+    logging:
+      driver: none
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    networks:
+      - dungeon-studio
+
+networks:
+  dungeon-studio:

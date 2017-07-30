@@ -6,13 +6,13 @@ Description : URI Helper Functions
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-URI utility functions that don't belond anywhere else.
+URI utility functions that don't belong anywhere else.
 -}
 module Internal.Network.URI where
 
 import Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import Data.Text (unpack)
-import Network.URI (URI, parseURIReference, uriPath)
+import Network.URI (parseURIReference, URI, uriPath)
 
 instance FromJSON URI where
   parseJSON = withText "URI" $ \ v ->

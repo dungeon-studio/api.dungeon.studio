@@ -20,7 +20,7 @@ module Earthdawn.FourthEdition.Abilities.Types
 
 import Network.URI (URI)
 
-import Data.CollectionJSON
+import Internal.Data.CollectionJSON (Collection (..), Item (..), ToCollection (toCollection))
 import Internal.Network.URI (append)
 
 -- | @application/vnd.collection+json@ for 'Ability'.
@@ -44,8 +44,7 @@ newtype Ability = Ability
 
 toItem :: URI -> Ability -> Item
 toItem u a = Item
-  { iHref  = u'
+  { iHref  = append u $ name a
   , iData  = []
   , iLinks = []
   }
-  where u' = append u $ name a

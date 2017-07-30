@@ -15,18 +15,21 @@ module Earthdawn.FourthEdition.Characters.Types
       )
   , Character
       ( Character
+      , url
       , uuid
       , discipline
       , race
       )
   ) where
 
-import Data.Map.Strict as Map (empty)
 import Data.UUID (UUID)
 import Network.HTTP.Media ((//))
 import Network.URI (URI)
 
-import Data.SirenJSON
+import qualified Data.Map.Strict as Map (empty)
+
+import Internal.Data.SirenJSON (Entity (..), Link (..), SubEntity (EmbeddedRepresentation), ToEntity (toEntity))
+import Internal.Network.URI (append)
 
 -- | @application/vnd.siren+json@ compatible 'Character' collection.
 data CharacterCollection = CharacterCollection URI [Character]
@@ -35,7 +38,7 @@ instance ToEntity CharacterCollection where
   toEntity (CharacterCollection u cs) = Entity
     { eClass      = [ "CharacterCollection" ]
     , eProperties = Map.empty
-    , eEntities   = map (\ c -> EmbeddedRepresentation (toEntity c) ["item"]) cs
+    , eEntities   = map (\ c -> EmbeddedRepresentation (toEntity $ c { url = append u ( show $ uuid c ) }) ["item"]) cs
     , eLinks      = [ Link { lClass = [ "CharacterCollection" ], lRel = [ "self" ], lHref = u, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
                     ]
     , eActions    = []

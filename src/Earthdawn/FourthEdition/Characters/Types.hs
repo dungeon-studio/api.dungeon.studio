@@ -43,7 +43,7 @@ instance ToEntity CharacterCollection where
     , eLinks      = [ Link { lClass = [ "CharacterCollection" ], lRel = [ "self" ], lHref = u, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
                     ]
     , eActions    = [ Action { aName   = "create-character"
-                             , aClass  = [ "Add" ]
+                             , aClass  = [ "Create" ]
                              , aMethod = methodPost
                              , aHref   = u
                              , aTitle  = Just "Create Character"

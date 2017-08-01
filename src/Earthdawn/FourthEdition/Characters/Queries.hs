@@ -11,6 +11,7 @@ Accessors for persisted character resources.
 -}
 module Earthdawn.FourthEdition.Characters.Queries
   ( characters
+  , create
   , fromUUID
   ) where
 
@@ -21,6 +22,7 @@ import Data.Pool (Pool, withResource)
 import Data.Text (Text, pack, unpack)
 import Data.Traversable (traverse)
 import Data.UUID (UUID, fromString, toString)
+import Data.UUID.V4 (nextRandom)
 import Network.URI (nullURI, parseURI)
 
 import qualified Data.Map.Lazy as Map (Map, fromList)
@@ -35,6 +37,21 @@ characters p = withResource p $ \ c -> do
   where cypher :: Text
         cypher = "MATCH (character:Character) " <>
                  "WHERE character:Earthdawn " <>
+                 "RETURN character"
+
+-- | Create a 'Character'.
+create :: Pool Pipe -> NewCharacter -> IO Character
+create p n = withResource p $ \ c -> do
+    u <- nextRandom
+    let ps :: Map.Map Text Value
+        ps = Map.fromList [ ("uuid",       T . pack . toString $ u)
+                          , ("race",       T . pack . show . nRace $ n)
+                          , ("discipline", T . pack . show . nDiscipline $ n)
+                          ]
+    ns <- run c $ queryP cypher ps >>= traverse (`at` "character")
+    toCharacter $ head ns
+  where cypher :: Text
+        cypher = "CREATE (character:Character:Earthdawn {uuid:{uuid}, discipline:{discipline}, race:{race}}) " <>
                  "RETURN character"
   
 -- | Retrieve a 'Character' by uuid.

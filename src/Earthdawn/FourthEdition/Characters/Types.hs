@@ -20,12 +20,19 @@ module Earthdawn.FourthEdition.Characters.Types
       , discipline
       , race
       )
+  , NewCharacter
+      ( NewCharacter
+      , nDiscipline
+      , nRace
+      )
   ) where
 
+import Data.Aeson ((.:), FromJSON (parseJSON), withObject)
 import Data.UUID (UUID)
 import Network.HTTP.Media ((//))
 import Network.HTTP.Types (methodPost)
 import Network.URI (URI)
+import Web.FormUrlEncoded (FromForm (fromForm), parseUnique)
 
 import qualified Data.Map.Strict as Map (empty)
 
@@ -76,3 +83,21 @@ instance ToEntity Character where
     , eActions    = []
     , eTitle      = Nothing
     }
+
+-- | Earthdawn new character representation type.
+data NewCharacter = NewCharacter
+  { nDiscipline :: URI
+  , nRace       :: URI
+  }
+
+instance FromForm NewCharacter where
+  fromForm f = NewCharacter
+    <$> parseUnique "discipline" f
+    <*> parseUnique "race" f
+
+instance FromJSON NewCharacter where
+  parseJSON = withObject "NewCharacter" $ \ v -> do
+    nDiscipline <- v .: "discipline"
+    nRace       <- v .: "race"
+
+    return NewCharacter{..}

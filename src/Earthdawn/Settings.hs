@@ -24,6 +24,8 @@ import Database.Bolt (Pipe, query_, run)
 import Data.Monoid ((<>))
 import Data.Pool (Pool, withResource)
 
+import Earthdawn.FourthEdition.Characters.Queries (constraints)
+
 -- | Earthdawn Settings.
 newtype Settings = Settings
   { neo4j :: Pool Pipe
@@ -37,8 +39,11 @@ settings = Settings
 --   TODO move this to where it's used?
 --   TODO de-duplicate this compositionally?
 configure :: Settings -> IO ()
-configure Settings{..} = recovering p hs $ \ _ -> do
-    withResource neo4j $ \ c -> run c $ query_ "RETURN 1"
+configure Settings{..} =
+  recovering p hs $ \ _ -> do
+    withResource neo4j $ \ c -> do
+      run c $ query_ "RETURN 1"
+      mapM_ (run c . query_) constraints 
     putStrLn "Neo4j check passed"
   where p  :: RetryPolicy
         p  = limitRetries 10 <> constantDelay 3000000

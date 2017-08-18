@@ -63,6 +63,7 @@ executable dungeon-studio
     , Earthdawn.Settings
     , Environment
     , Errors
+    , Internal.Auth0
     , Internal.Database.Bolt.Environment
     , Internal.Data.CollectionJSON
     , Internal.Data.SirenJSON
@@ -84,8 +85,11 @@ executable dungeon-studio
     , exceptions           ==0.8.*
     , hasbolt              ==0.1.*
     , http-api-data        ==0.3.*
+    , http-conduit         ==2.2.*
     , http-media           ==0.6.*
     , http-types           ==0.9.*
+    , jose                 ==0.5.*
+    , lens                 ==4.15.*
     , MissingH             ==1.4.*
     , mtl                  ==2.2.*
     , network-uri          ==2.6.*
@@ -95,8 +99,11 @@ executable dungeon-studio
     , servant-server       ==0.9.*
     , text                 ==1.2.*
     , time                 ==1.6.*
+    , transformers         ==0.5.*
     , unordered-containers ==0.2.*
     , uuid                 ==1.3.*
+    , wai                  ==3.2.*
+    , wai-logger           ==2.3.*
     , warp                 ==3.2.*
 
   other-extensions:

@@ -50,8 +50,8 @@ instance Show BoltPoolEnvironment where
 instance FromEnv BoltPoolEnvironment where
   fromEnv = BoltPoolEnvironment
     <$> fromEnv
-    <*> envMaybe "BOLT_POOL_STRIPE_COUNT"          .!= 1
-    <*> envMaybe "BOLT_POOL_IDLE_TIME"             .!= 30
+    <*> envMaybe "BOLT_POOL_STRIPE_COUNT"           .!= 1
+    <*> envMaybe "BOLT_POOL_IDLE_TIME"              .!= 30
     <*> envMaybe "BOLT_POOL_CONNECTIONS_PER_STRIPE" .!= 1
 
 -- | Convert 'BoltPoolEnvironment' to 'Pool' 'Pipe'.

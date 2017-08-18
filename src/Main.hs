@@ -19,28 +19,36 @@ module Main
       )
   ) where
 
-import Data.Either.Combinators (whenLeft, whenRight)
-import Network.Wai.Handler.Warp (run)
-import Servant ((:>), Application, Proxy(Proxy), serve, Server)
+import Control.Lens ((.~), (&))
+import Crypto.JWT (audiencePredicate, defaultJWTValidationSettings, fromURI, issuerPredicate)
+import Data.Either.Combinators (whenLeft)
+import Network.Wai.Handler.Warp (defaultSettings, runSettings, setLogger, setPort)
+import Network.Wai.Logger (withStdoutLogger)
+import Network.Wai (Request)
+import Servant ((:>), Application, Context ((:.), EmptyContext), Proxy (Proxy), serveWithContext, Server)
+import Servant.Server.Experimental.Auth (AuthHandler)
 import System.Envy ((.!=), decodeEnv, envMaybe, FromEnv (fromEnv))
 
 import Environment
 
 import qualified Earthdawn.API as Earthdawn
+import qualified Internal.Auth0 as Auth0 (Claims, Environment (audience, issuer, jwksURI), handler)
 
 data Environment = Environment
-  { port :: Int                 -- ^ HTTP API port
-                                --   environment variable: DUNGEON_STUDIO_PORT
-                                --   default: 45753
-  , bolt :: BoltPoolEnvironment -- ^ Neo4j Configuration
+  { port     :: Int                 -- ^ HTTP API port
+                                    --   environment variable: DUNGEON_STUDIO_PORT
+                                    --   default: 45753
+  , bolt     :: BoltPoolEnvironment -- ^ Neo4j Configuration
+  , auth0    :: Auth0.Environment   -- ^ Auth0 Configuration
   }
 
 instance Show Environment where
-  show Environment{..} = "DUNGEON_STUDIO_PORT=" ++ show port ++ "\n" ++ show bolt
+  show Environment{..} = "DUNGEON_STUDIO_PORT=" ++ show port ++ "\n" ++ show bolt ++ show auth0
 
 instance FromEnv Environment where
   fromEnv = Environment
     <$> envMaybe "DUNGEON_STUDIO_PORT" .!= 45753
+    <*> fromEnv
     <*> fromEnv
 
 newtype Settings = Settings
@@ -49,6 +57,13 @@ newtype Settings = Settings
 
 configure :: Settings -> IO ()
 configure = Earthdawn.configure . earthdawn
+
+context :: Environment -> Context (AuthHandler Request Auth0.Claims ': '[])
+context e = Auth0.handler u s :. EmptyContext
+  where u = Auth0.jwksURI $ auth0 e
+        s = defaultJWTValidationSettings
+              & audiencePredicate .~ (== (fromURI . Auth0.audience . auth0 $ e))
+              & issuerPredicate   .~ (== (fromURI . Auth0.issuer . auth0 $ e ))
 
 -- | "Servant" API for our various games.
 --
@@ -63,21 +78,24 @@ main :: IO ()
 main = 
   do e <- decodeEnv :: IO (Either String Environment)
      whenLeft e fail
-     whenRight e $ \ e' -> do
-       print e'
 
-       b <- toPool $ bolt e'
+     let (Right e') = e
+     print e'
 
-       let s = Settings
-                 { earthdawn = Earthdawn.settings b
-                 }
+     b <- toPool $ bolt e'
 
-       configure s
+     let s = Settings
+               { earthdawn = Earthdawn.settings b
+               }
 
-       run (port e') $ application s
+     configure s
 
-application :: Settings -> Application
-application s = serve (Proxy :: Proxy DungeonStudioApi) $ server s
+     withStdoutLogger $ \ l -> do
+       let ws = setPort (port e') .  setLogger l $ defaultSettings
+       runSettings ws $ application s e'
+
+application :: Settings -> Environment -> Application
+application s e = serveWithContext (Proxy :: Proxy DungeonStudioApi) (context e) $ server s
 
 server :: Settings -> Server DungeonStudioApi
 server = Earthdawn.server "/earthdawn" . earthdawn

@@ -4,6 +4,9 @@ services:
   dungeon-studio:
     build: .
     environment:
+      - AUTH0_AUDIENCE=https://api.dungeon.studio
+      - AUTH0_ISSUER=https://alunduil.auth0.com/
+      - AUTH0_JWKS_URI=https://alunduil.auth0.com/.well-known/jwks.json
       - BOLT_HOST=neo4j
       - BOLT_PORT=7687
       - DUNGEON_STUDIO_PORT=45753

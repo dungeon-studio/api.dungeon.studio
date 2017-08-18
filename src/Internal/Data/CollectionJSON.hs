@@ -4,20 +4,17 @@
 {-|
 Module      : Internal.Data.CollectionJSON
 Description : Types and Instances for @application/vnd.collection+json@
-Copyright   : (c) Daniel Choi, 2015
-              (c) Alex Brandt, 2017
+Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
 A collection of types and instances for @application/vnd.collection+json@.
 
-This module is based on [Daniel Choi's work](https://github.com/danchoi/collection-json.hs).
-
 Full documentation for @application/vnd.collection+json@ can be found at
-<https://amundsen.com/media-types/collection/>.
+<http://amundsen.com/media-types/collection/>.
 -}
 module Internal.Data.CollectionJSON where
 
-import Data.Aeson hiding (Error)
+import Data.Aeson ((.=), (.:?), (.!=), (.:), FromJSON (parseJSON), object, ToJSON (toJSON), withObject)
 import Data.Text (Text)
 import Network.URI (URI)
 
@@ -27,7 +24,7 @@ import Internal.Network.URI ()
 
 -- | The top-level object for an @application/vnd.collection+json@ resource.
 data Collection = Collection
-  { cVersion  :: Text           -- ^ Always "1.0".
+  { cVersion  :: Text           -- ^ Currently, always "1.0".
   , cHref     :: URI            -- ^ Address used to retrieve the 'Collection'
                                 --   and to add new elements.
   , cLinks    :: [Link]
@@ -35,13 +32,13 @@ data Collection = Collection
   , cQueries  :: [Query]
   , cTemplate :: Maybe Template
   , cError    :: Maybe Error
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Collection where
   parseJSON = withObject "Collection" $ \ c -> do
     v <- c .: "collection"
 
-    cVersion  <- v .:  "version"
+    cVersion  <- v .:? "version"  .!= "1.0"
     cHref     <- v .:  "href"
     cLinks    <- v .:? "links"    .!= []
     cItems    <- v .:? "items"    .!= []
@@ -79,7 +76,7 @@ data Link = Link
   , lName   :: Maybe Text
   , lRender :: Maybe Text
   , lPrompt :: Maybe Text
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Link where
   parseJSON = withObject "Link" $ \ v -> do
@@ -106,7 +103,7 @@ data Item = Item
                      --   delete the element.
   , iData  :: [Datum]
   , iLinks :: [Link]
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Item where
   parseJSON = withObject "Item" $ \ v -> do
@@ -142,10 +139,10 @@ data Query = Query
                           --   * [IANA Link Relations](http://www.iana.org/assignments/link-relations/link-relations.xml)
                           --   * [Microformat Existing Rel Values](http://microformats.org/wiki/existing-rel-values)
                           --   * [RFC5988](http://tools.ietf.org/html/rfc5988)
-  , qName   :: Maybe Text -- ^ Identifier for this 'Query'
+  , qName   :: Maybe Text -- ^ Identifier for this 'Query'.
   , qPrompt :: Maybe Text -- ^ Suggested user prompt.
-  , qData   :: [Datum]
-  }
+  , qData   :: [Datum]    -- ^ Query parameters for this 'Query'.
+  } deriving (Eq, Show)
 
 instance FromJSON Query where
   parseJSON = withObject "Query" $ \ v -> do
@@ -169,7 +166,7 @@ instance ToJSON Query where
 -- | A fillable template for creation of a new object in the 'Collection'.
 newtype Template = Template
   { tData :: [Datum]
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Template where
   parseJSON = withObject "Template" $ \ v -> do
@@ -188,7 +185,7 @@ data Error = Error
   , eCode    :: Maybe Text -- ^ Unique identifier (e.g. session identifier,
                            --   request tracker, etc).
   , eMessage :: Maybe Text
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Error where
   parseJSON = withObject "Error" $ \ v -> do
@@ -210,7 +207,7 @@ data Datum = Datum
   { dName   :: Text       -- ^ Identifier for this 'Datum'.
   , dValue  :: Maybe Text
   , dPrompt :: Maybe Text -- ^ Suggested user prompt.
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Datum where
   parseJSON = withObject "Datum" $ \ v -> do

@@ -139,3 +139,43 @@ test-suite collection-json-Properties
       OverloadedStrings
     , RecordWildCards
     , TemplateHaskell
+
+test-suite siren-Properties
+  default-language: Haskell2010
+  hs-source-dirs:   src test/siren
+
+  type:             exitcode-stdio-1.0
+  main-is:          Test.hs
+
+  ghc-options: -Wall -fwarn-tabs -fwarn-monomorphism-restriction
+               -fwarn-unused-do-bind
+
+  other-modules:
+      Internal.Data.SirenJSON
+    , Internal.Data.SirenJSON.Tests
+
+    , Internal.Network.HTTP.Media
+    , Internal.Network.HTTP.Types
+    , Internal.Network.URI
+    , Internal.Network.URI.Tests
+
+  build-depends:
+      aeson                == 1.0.*
+    , base                 == 4.9.*
+    , bytestring           == 0.10.*
+    , containers           == 0.5.*
+    , http-api-data        == 0.3.*
+    , http-media           == 0.6.*
+    , http-types           == 0.9.*
+    , MissingH             == 1.4.*
+    , network-uri          == 2.6.*
+    , QuickCheck           == 2.9.*
+    , quickcheck-instances == 0.3.*
+    , test-invariant       == 0.4.*
+    , text                 == 1.2.*
+    , unordered-containers == 0.2.*
+
+  other-extensions:
+      OverloadedStrings
+    , RecordWildCards
+    , TemplateHaskell

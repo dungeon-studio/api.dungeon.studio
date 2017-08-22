@@ -11,12 +11,13 @@ License     : MIT
 
 Tests for "Internal.Data.SirenJSON".
 -}
-module Internal.Data.SirenJSON.Tests (runTests) where
+module Internal.Data.SirenJSON.Tests where
 
 import Data.Aeson (decode, encode)
 import Data.Maybe (fromJust)
+import Network.HTTP.Types (methodConnect, methodDelete, methodGet, methodHead, methodOptions, methodPatch, methodPost, methodPut, methodTrace)
 import Test.Invariant ((<=>))
-import Test.QuickCheck (Arbitrary (arbitrary), forAllProperties, frequency, maxSize, oneof, sized, stdArgs, quickCheckWithResult)
+import Test.QuickCheck (Arbitrary (arbitrary), elements, forAllProperties, maxSize, oneof, scale, stdArgs, quickCheckWithResult)
 import Test.QuickCheck.Instances ()
 
 import Internal.Data.SirenJSON
@@ -49,7 +50,7 @@ instance Arbitrary Entity where
   arbitrary =
     do eClass      <- arbitrary
        eProperties <- arbitrary
-       eEntities   <- arbitrary
+       eEntities   <- scale (`div` 2) arbitrary
        eLinks      <- arbitrary
        eActions    <- arbitrary
        eTitle      <- arbitrary
@@ -57,9 +58,9 @@ instance Arbitrary Entity where
        return Entity{..}
 
 instance Arbitrary SubEntity where
-  arbitrary = sized $ \n -> frequency [ (n, EmbeddedLink <$> arbitrary)
-                                      , (1, EmbeddedRepresentation <$> arbitrary <*> arbitrary)
-                                      ]
+  arbitrary = oneof [ EmbeddedLink <$> arbitrary
+                    , EmbeddedRepresentation <$> arbitrary <*> arbitrary
+                    ]
 
 instance Arbitrary Link where
   arbitrary =
@@ -75,13 +76,23 @@ instance Arbitrary Action where
   arbitrary =
     do aName   <- arbitrary
        aClass  <- arbitrary
-       aMethod <- arbitrary
+       aMethod <- elements ms
        aHref   <- arbitrary
        aTitle  <- arbitrary
        aType   <- arbitrary
        aFields <- arbitrary
 
        return Action{..}
+    where ms = [ methodGet
+               , methodPost
+               , methodHead
+               , methodPut
+               , methodDelete
+               , methodTrace
+               , methodConnect
+               , methodOptions
+               , methodPatch
+               ]
 
 instance Arbitrary Field where
   arbitrary =

@@ -45,7 +45,7 @@ data Entity = Entity
   , eLinks      :: [Link]
   , eActions    :: [Action]
   , eTitle      :: Maybe Text        -- ^ Descriptive text about 'Entity'
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Entity where
   parseJSON = withObject "Entity" $ \ v -> do
@@ -74,6 +74,7 @@ data SubEntity = EmbeddedLink Link
                    { sEntity :: Entity
                    , sRel   :: [Text]
                    }
+  deriving (Eq, Show)
 
 instance FromJSON SubEntity where
   parseJSON = withObject "SubEntity" $ \ v -> asum
@@ -101,7 +102,7 @@ data Link = Link
   , lHref  :: URI
   , lType  :: Maybe MediaType
   , lTitle :: Maybe Text
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Link where
   parseJSON = withObject "Link" $ \ v -> do
@@ -131,7 +132,7 @@ data Action = Action
   , aTitle  :: Maybe Text
   , aType   :: Maybe MediaType
   , aFields :: [Field]
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Action where
   parseJSON = withObject "Action" $ \ v -> do
@@ -163,7 +164,7 @@ data Field = Field
   , fType  :: InputType
   , fValue :: Maybe Text
   , fTitle :: Maybe Text
-  }
+  } deriving (Eq, Show)
 
 instance FromJSON Field where
   parseJSON = withObject "Field" $ \ v -> do
@@ -203,6 +204,7 @@ data InputType = Hidden
                | CheckBox
                | Radio
                | File
+  deriving (Eq, Show)
 
 instance FromJSON InputType where
   parseJSON = withText "InputType" $ \ v ->

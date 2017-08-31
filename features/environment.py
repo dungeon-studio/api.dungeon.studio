@@ -1,13 +1,12 @@
 import logging
 
-def after_step(context, step):
-    pass  # TODO ensure all created resources are cleaned up
-
 def before_tag(context, tag):
-    pass  # TODO setup docker-compose services for tags
+    if 'dungeon-studio' == tag:
+        pass  # TODO setup docker-compose dungeon-studio
 
 def after_tag(context, tag):
-    pass  # TODO stop docker-compose services for tags
+    if 'dungeon-studio' == tag:
+        pass  # TODO stop docker-compose dungeon-studio
 
 def before_all(context):
     if not context.config.log_capture:

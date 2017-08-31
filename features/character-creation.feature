@@ -1,17 +1,16 @@
-@wip @dungeon-studio @character
+@wip
 Feature: Character Creation
 
-  Background: Services are Running
-    Given dungeon-studio is running
-
-  Scanario Outline: Minimal Successful Character Creation
-    Given a discipline URL of <discipline>,
-    And a race URL of <race>,
-    When I create a character
-    Then I should receive the character
-    And the available actions should be:
-      | TODO
-
-    Examples: Character Attributes
-      | discipline                                          | race                                          |
-      | http://localhost:45753/earthdawn/4e/disciplines/... | http://localhost:45753/earthdawn/4e/races/... |
+  @dungeon-studio
+  Scenario: Minimal Successful Character Creation
+    Given a discipline of wizard,
+      And a race of dwarf,
+     When I create a character
+     Then I should receive a character
+      And the character's discipline is wizard,
+      And the character's race is dwarf,
+      And the available actions should be:
+            | name              | title               |
+            | change-race       | "Change Race"       |
+            | change-discipline | "Change Discipline" |
+            | change-attributes | "Change Attributes" |

@@ -1,13 +1,17 @@
-import logging
+from context import docker
 
 def before_tag(context, tag):
-    if 'dungeon-studio' == tag:
-        pass  # TODO setup docker-compose dungeon-studio
+    if docker.compose.found() and tag in docker.compose.services():
+        docker.compose.up(tag)
 
 def after_tag(context, tag):
-    if 'dungeon-studio' == tag:
-        pass  # TODO stop docker-compose dungeon-studio
+    if docker.compose.found() and tag in docker.compose.services():
+        docker.compose.down()
 
 def before_all(context):
-    if not context.config.log_capture:
-        logging.basicConfig(level = logging.DEBUG)
+    if docker.compose.found():
+        docker.compose.down()
+
+def after_all(context):
+    if docker.compose.found():
+        docker.compose.down()

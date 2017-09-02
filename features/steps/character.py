@@ -2,45 +2,42 @@
 
 from behave import *
 
-from collections import namedtuple
+import requests
 
-CharacterRequest = namedtuple(u'CharacterRequest', [u'discipline', u'race'])
+from internal import siren
 
+@given(u'a {property} of {value},')
+def step_impl(context, property, value):
+    setattr(context, property, value)
 
-@given(u'a discipline of {discipline},')
-def step_impl(context, discipline):
-    if 'character_request' not in context:
-        context.character_request = CharacterRequest(None, None)
-
-    context.character_request = context.character_request._replace(discipline = discipline)
-
-@given(u'a race of {race},')
-def step_impl(context, race):
-    if 'character_request' not in context:
-        context.character_request = CharacterRequest(None, None)
-
-    context.character_request = context.character_request._replace(race = race)
+@given(u'an {property} of {value},')
+def step_impl(context, property, value):
+    setattr(context, property, value)
 
 @when(u'I create a character')
 def step_impl(context):
-    assert 'character_request' in context, u'missing: Given a discipline of …'
+    assert context.discipline is not None, u'missing: Given a discipline of …'
+    assert context.race is not None, u'missing: Given a race of …'
 
-    assert context.character_request.discipline is not None, u'missing: Given a discipline of …'
-    assert context.character_request.race is not None, u'missing: Given a race of …'
+    r = requests.get('http://localhost:45753/earthdawn/4e/characters')
+    
+    assert r.headers['content-type'] == 'application/vnd.siren+json', 'Incorrect Content-Type'
 
-    assert False, u'TODO create a character'
+    e = siren.Entity(r.json())
+    r = e.create_character(discipline = context.discipline, race = context.race)
+
+    assert r.status_code == 201
+    assert r.headers['content-type'] == 'application/vnd.siren+json', 'Incorrect Content-Type'
+
+    context.character = siren.Entity(r.json())
 
 @then(u'I should receive a character')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then I should receive a character')
+    assert 'Character' in context.character.class_
 
-@then(u'the character\'s discipline is wizard,')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: Then the character\'s discipline is wizard,')
-
-@then(u'the character\'s race is dwarf,')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: Then the character\'s race is dwarf,')
+@then(u'the {object}\'s {property} is {value},')
+def step_impl(context, object, property, value):
+    assert getattr(context, object).properties[property] == value
 
 @then(u'the available actions should be')
 def step_impl(context):

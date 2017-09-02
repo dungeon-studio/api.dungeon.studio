@@ -89,6 +89,7 @@ cabal haddock
 [docker-compose]: https://docs.docker.com/compose/
 [docker]: https://docs.docker.com/
 [git flow]: http://nvie.com/posts/a-successful-gti-branching-model/
+[Haskell]: https://www.haskell.org/
 [issues]: https://github.com/alunduil/dungeon.studio/issues
 [nix-shell]: https://nixos.org/nix/manual/#sec-nix-shell
 [travis]: https://travis-ci.org/alunduil/dungeon.studio

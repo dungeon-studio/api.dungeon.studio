@@ -3,6 +3,7 @@ import select
 import subprocess
 
 LOGGER = logging.getLogger(__name__)
+LOGGER.addHandler(logging.NullHandler())
 
 def services():
     p = subprocess.Popen('docker-compose config --services', stdout = subprocess.PIPE, shell = True)
@@ -10,7 +11,7 @@ def services():
     return [ l.strip() for l in p.stdout.readlines() ]
 
 def up(service):
-    return _call('docker-compose up --no-color -d ' + service, shell = True)
+    return _call('docker-compose up --build --no-color -d ' + service, shell = True)
 
 def down():
     return _call('docker-compose down', shell = True)

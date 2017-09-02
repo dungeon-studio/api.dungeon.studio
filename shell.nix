@@ -4,20 +4,20 @@
 }:
 let
   inherit (nixpkgs) pkgs;
+  inherit (nixpkgs) stdenv;
 
-  haskellPackages = if compiler == "default"
-                       then pkgs.haskellPackages
-                       else pkgs.haskell.packages.${compiler};
+  pythonPackages = if interpreter == "default"
+                      then pkgs.pythonPackages
+                      else pkgs."${interpreter}Packages";
 
-  python = if interpreter == "default"
-              then pkgs.python
-              else pkgs.${interpreter};
+  dungeon-studio = import ./default.nix { inherit nixpkgs compiler; };
 
 in
-  rec {
-    dungeon-studio = import ./default.nix { inherit nixpkgs compiler; };
-    
-    myPython = python.withPackages (ps: [ps.docker_compose ps.requests]);
-
-    env = myPython.env // dungeon-studio.env;
-  }.env
+  stdenv.mkDerivation rec {
+    name = "dungeon-studio-shell";
+    buildInputs = [
+      dungeon-studio
+      pythonPackages.docker_compose
+      pythonPackages.requests
+    ];
+  }

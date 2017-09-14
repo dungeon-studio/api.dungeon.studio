@@ -54,7 +54,7 @@ instance ToEntity CharacterCollection where
                              , aMethod = methodPost
                              , aHref   = u
                              , aTitle  = Just "Create Character"
-                             , aType   = Just $ "application" // "x-www-form-urlencoded"
+                             , aType   = Just $ "application" // "json"
                              , aFields = [ Field { fName = "discipline", fClass = [], fType = URL, fValue = Nothing, fTitle = Just "Discipline" }
                                          , Field { fName = "race", fClass = [], fType = URL, fValue = Nothing, fTitle = Just "Race" }
                                          ]

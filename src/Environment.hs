@@ -8,7 +8,15 @@ License     : MIT
 
 A collection of types and functions that generalize environment interaction.
 -}
-module Environment where
+module Environment
+  ( Environment
+      ( Environment
+      , port
+      , bolt
+      )
+  , toPool
+  )
+  where
 
 import Database.Bolt (BoltCfg (..), close, connect, Pipe)
 import Data.Pool (createPool, Pool)
@@ -17,6 +25,22 @@ import System.Envy ((.!=), envMaybe, FromEnv (fromEnv))
 
 import Internal.Database.Bolt.Environment ()
 import Internal.Data.Time.Clock.Environment ()
+
+-- | Environment for dungeon.studio
+data Environment = Environment
+  { port :: Int                 -- ^ HTTP API port
+                                --   environment variable: DUNGEON_STUDIO_PORT
+                                --   default: 45753
+  , bolt :: BoltPoolEnvironment -- ^ Neo4j Configuration
+  }
+
+instance Show Environment where
+  show Environment{..} = "DUNGEON_STUDIO_PORT=" ++ show port ++ "\n" ++ show bolt
+
+instance FromEnv Environment where
+  fromEnv = Environment
+    <$> envMaybe "DUNGEON_STUDIO_PORT" .!= 45753
+    <*> fromEnv
 
 -- | Environment for Bolt Pool Parameters
 data BoltPoolEnvironment = BoltPoolEnvironment

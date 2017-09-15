@@ -1,5 +1,4 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
@@ -22,26 +21,11 @@ module Main
 import Data.Either.Combinators (whenLeft, whenRight)
 import Network.Wai.Handler.Warp (run)
 import Servant ((:>), Application, Proxy(Proxy), serve, Server)
-import System.Envy ((.!=), decodeEnv, envMaybe, FromEnv (fromEnv))
+import System.Envy (decodeEnv)
 
 import Environment
 
 import qualified Earthdawn.API as Earthdawn
-
-data Environment = Environment
-  { port :: Int                 -- ^ HTTP API port
-                                --   environment variable: DUNGEON_STUDIO_PORT
-                                --   default: 45753
-  , bolt :: BoltPoolEnvironment -- ^ Neo4j Configuration
-  }
-
-instance Show Environment where
-  show Environment{..} = "DUNGEON_STUDIO_PORT=" ++ show port ++ "\n" ++ show bolt
-
-instance FromEnv Environment where
-  fromEnv = Environment
-    <$> envMaybe "DUNGEON_STUDIO_PORT" .!= 45753
-    <*> fromEnv
 
 newtype Settings = Settings
   { earthdawn :: Earthdawn.Settings

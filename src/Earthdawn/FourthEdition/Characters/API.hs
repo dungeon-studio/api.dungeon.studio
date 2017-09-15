@@ -36,25 +36,25 @@ type API = Get '[SirenJSON] CharacterCollection
 
 -- | "Servant" 'Server' for Earthdawn 4th Edition Characters.
 server :: String -> Settings -> Server API
-server b s = characters b s
+server b s = charactersHandler b s
         :<|> create b s
         :<|> character b s
 
-characters :: String -> Settings -> Handler CharacterCollection
-characters u s = 
+charactersHandler :: String -> Settings -> Handler CharacterCollection
+charactersHandler u s = 
   do cs <- liftIO $ C.characters $ neo4j s
-     return $ CharacterCollection u' cs
+     return $ CharacterCollection u' cs (disciplines s) (races s)
   where u' = fromJust $ parseURIReference u
 
 create :: String -> Settings -> NewCharacter -> Handler (Headers '[Header "Location" URI] Character)
 create u s n =
   do c <- liftIO $ C.create (neo4j s) n
-     let u' = append (fromJust $ parseURIReference u) $ show (uuid c)
-     return $ addHeader u' $ c { url = u' }
+     let u' = append (fromJust $ parseURIReference u) $ show (cUUID c)
+     return $ addHeader u' $ c { cURL = u' }
 
 character :: String -> Settings -> UUID -> Handler Character
 character b s u =
   do c <- liftIO $ fromUUID (neo4j s) u
      when (isNothing c) $ throwError err404
-     return . (\ x -> x { url = u' }) $ fromJust c
+     return . (\ x -> x { cURL = u' }) $ fromJust c
   where u' = append (fromJust $ parseURIReference b) $ show u

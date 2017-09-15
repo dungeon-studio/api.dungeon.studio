@@ -12,13 +12,17 @@ Character and Collection Types.
 module Earthdawn.FourthEdition.Characters.Types
   ( CharacterCollection
       ( CharacterCollection
+      , url
+      , characters
+      , disciplines
+      , races
       )
   , Character
       ( Character
-      , url
-      , uuid
-      , discipline
-      , race
+      , cURL
+      , cUUID
+      , cDiscipline
+      , cRace
       )
   , NewCharacter
       ( NewCharacter
@@ -40,19 +44,26 @@ import Internal.Data.SirenJSON (Action (..), Entity (..), Field (..), Link (..),
 import Internal.Network.URI (append)
 
 -- | @application/vnd.siren+json@ compatible 'Character' collection.
-data CharacterCollection = CharacterCollection URI [Character]
+data CharacterCollection = CharacterCollection
+  { url         :: URI
+  , characters  :: [Character]
+  , disciplines :: URI
+  , races       :: URI
+  }
 
 instance ToEntity CharacterCollection where
-  toEntity (CharacterCollection u cs) = Entity
+  toEntity CharacterCollection{..} = Entity
     { eClass      = [ "CharacterCollection", "Earthdawn" ]
     , eProperties = Map.empty
-    , eEntities   = map (\ c -> EmbeddedRepresentation (toEntity $ c { url = append u ( show $ uuid c ) }) ["item"]) cs
-    , eLinks      = [ Link { lClass = [ "CharacterCollection" ], lRel = [ "self" ], lHref = u, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
+    , eEntities   = map (\ c -> EmbeddedRepresentation (toEntity $ c { cURL = url `append` show (cUUID c) }) ["item"]) characters
+    , eLinks      = [ Link { lClass = [ "CharacterCollection" ], lRel = [ "self" ], lHref = url, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
+                    , Link { lClass = [ "DisciplineCollection" ], lRel = [ "disciplines", "related" ], lHref = disciplines, lType = Just $ "application" // "vnd.collection+json", lTitle = Just "Disciplines" }
+                    , Link { lClass = [ "RaceCollection" ], lRel = [ "races", "related" ], lHref = races, lType = Just $ "application" // "vnd.collection+json", lTitle = Just "Races" }
                     ]
     , eActions    = [ Action { aName   = "create-character"
                              , aClass  = [ "Create" ]
                              , aMethod = methodPost
-                             , aHref   = u
+                             , aHref   = url
                              , aTitle  = Just "Create Character"
                              , aType   = Just $ "application" // "json"
                              , aFields = [ Field { fName = "discipline", fClass = [], fType = URL, fValue = Nothing, fTitle = Just "Discipline" }
@@ -65,10 +76,10 @@ instance ToEntity CharacterCollection where
 
 -- | Earthdawn character representation type.
 data Character = Character
-  { url        :: URI
-  , uuid       :: UUID
-  , discipline :: URI
-  , race       :: URI
+  { cURL        :: URI
+  , cUUID       :: UUID
+  , cDiscipline :: URI
+  , cRace       :: URI
   }
 
 instance ToEntity Character where
@@ -76,9 +87,9 @@ instance ToEntity Character where
     { eClass      = [ "Character", "Earthdawn" ]
     , eProperties = Map.empty
     , eEntities   = []
-    , eLinks      = [ Link { lClass = [ "Character" ], lRel = [ "self" ], lHref = url, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
-                    , Link { lClass = [ "Discipline" ], lRel = [ "discipline" ], lHref = discipline, lType = Just $ "application" // "vnd.collection+json", lTitle = Just "Discipline" }
-                    , Link { lClass = [ "Race" ], lRel = [ "race" ], lHref = race, lType = Just $ "application" // "vnd.collection+json", lTitle = Just "Race" }
+    , eLinks      = [ Link { lClass = [ "Character" ], lRel = [ "self" ], lHref = cURL, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
+                    , Link { lClass = [ "Discipline" ], lRel = [ "discipline" ], lHref = cDiscipline, lType = Just $ "application" // "vnd.collection+json", lTitle = Just "Discipline" }
+                    , Link { lClass = [ "Race" ], lRel = [ "race" ], lHref = cRace, lType = Just $ "application" // "vnd.collection+json", lTitle = Just "Race" }
                     ]
     , eActions    = []
     , eTitle      = Nothing

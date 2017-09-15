@@ -27,7 +27,7 @@ import Network.URI (nullURI, parseURI)
 
 import qualified Data.Map.Lazy as Map (Map, fromList)
 
-import Earthdawn.FourthEdition.Characters.Types
+import Earthdawn.FourthEdition.Characters.Types hiding (CharacterCollection (characters))
 
 -- | Retrieve all 'Character's.
 characters :: Pool Pipe -> IO [Character]
@@ -69,11 +69,11 @@ fromUUID p u = withResource p $ \ c -> do
 
 toCharacter :: Monad m => Value -> m Character
 toCharacter v =
-  do ps         <- nodeProps <$> exact v
+  do ps          <- nodeProps <$> exact v
 
-     uuid       <- (fromJust . fromString . unpack) <$> ((ps `at` "uuid") >>= exact)
-     let url = nullURI
-     discipline <- (fromJust . parseURI . unpack) <$> ((ps `at` "discipline") >>= exact)
-     race       <- (fromJust . parseURI . unpack) <$> ((ps `at` "race") >>= exact)
+     cUUID       <- (fromJust . fromString . unpack) <$> ((ps `at` "uuid") >>= exact)
+     let cURL = nullURI
+     cDiscipline <- (fromJust . parseURI . unpack) <$> ((ps `at` "discipline") >>= exact)
+     cRace       <- (fromJust . parseURI . unpack) <$> ((ps `at` "race") >>= exact)
 
      return Character{..}

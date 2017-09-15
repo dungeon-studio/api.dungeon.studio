@@ -26,7 +26,9 @@ import Data.Pool (Pool, withResource)
 
 -- | Earthdawn Settings.
 newtype Settings = Settings
-  { neo4j :: Pool Pipe
+  { neo4j       :: Pool Pipe
+  , disciplines :: URI
+  , races       :: URI
   }
 
 -- | Simplified 'Settings' Constructor.

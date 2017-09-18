@@ -4,14 +4,21 @@ steps:
     id: 'cabal-update'
     volumes:
       - name: 'cabal-config'
-        path: '/root/.cabal'
+        path: '/builder/home/.cabal'
   - name: 'haskell:8'
-    args: [ 'cabal', 'build', '-j', '--ghc-options="-optl-static -optl-pthread"' ]
-    id: 'cabal-build'
+    args: [ 'cabal', 'install', '-j', '--only-dependencies' ]
+    id: 'cabal-dependencies'
     waitFor: [ 'cabal-update' ]
     volumes:
       - name: 'cabal-config'
-        path: '/root/.cabal'
+        path: '/builder/home/.cabal'
+  - name: 'haskell:8'
+    args: [ 'cabal', 'build', '-j', '--ghc-options="-optl-static -optl-pthread"' ]
+    id: 'cabal-build'
+    waitFor: [ 'cabal-dependencies' ]
+    volumes:
+      - name: 'cabal-config'
+        path: '/builder/home/.cabal'
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-f', 'dungeon-studio.Dockerfile', '-t', 'gcr.io/$PROJECT_ID/dungeon-studio', '.' ]

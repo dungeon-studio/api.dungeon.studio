@@ -35,3 +35,5 @@ images:
   - 'gcr.io/$PROJECT_ID/dungeon-studio'
   - 'gcr.io/$PROJECT_ID/dungeon-studio:$BRANCH_NAME'
   - 'gcr.io/$PROJECT_ID/dungeon-studio:$COMMIT_SHA'
+
+timeout: 30m

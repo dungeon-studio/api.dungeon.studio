@@ -1,8 +1,14 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/dungeon-studio', '.' ]
+    id: 'dungeon-studio'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'tag', 'gcr.io/$PROJECT_ID/dungeon-studio', 'gcr.io/$PROJECT_ID/dungeon-studio:$BRANCH_NAME' ]
+    waitFor: [ 'dungeon-studio' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'tag', 'gcr.io/$PROJECT_ID/dungeon-studio', 'gcr.io/$PROJECT_ID/dungeon-studio:$COMMIT_SHA' ]
+    waitFor: [ 'dungeon-studio' ]
 images:
   - 'gcr.io/$PROJECT_ID/dungeon-studio'
-tags:
-  - '$BRANCH_NAME'
-  - '$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/dungeon-studio:$BRANCH_NAME'
+  - 'gcr.io/$PROJECT_ID/dungeon-studio:$COMMIT_SHA'

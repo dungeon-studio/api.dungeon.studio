@@ -1,0 +1,10 @@
+steps:
+  - name: 'gci.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/collection-server', '.' ]
+  - name: 'gci.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/dungeon-studio', '.' ]
+images:
+  - 'gcr.io/$PROJECT_ID/collection-server'
+  - 'gcr.io/$PROJECT_ID/dungeon-studio'
+tags:
+  - 

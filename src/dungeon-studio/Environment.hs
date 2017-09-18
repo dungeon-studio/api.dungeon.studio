@@ -12,35 +12,62 @@ module Environment
   ( Environment
       ( Environment
       , port
-      , bolt
+      , neo4j
+      , disciplines
+      , races
       )
-  , toPool
   )
   where
 
+import Control.Monad.Trans (liftIO)
 import Database.Bolt (BoltCfg (..), close, connect, Pipe)
+import Data.Maybe (fromJust)
 import Data.Pool (createPool, Pool)
 import Data.Time.Clock (NominalDiffTime)
+import Network.URI (parseURI, URI)
 import System.Envy ((.!=), envMaybe, FromEnv (fromEnv))
 
 import Internal.Database.Bolt.Environment ()
 import Internal.Data.Time.Clock.Environment ()
+import Internal.Network.URI ()
 
 -- | Environment for dungeon.studio
 data Environment = Environment
-  { port :: Int                 -- ^ HTTP API port
-                                --   environment variable: DUNGEON_STUDIO_PORT
-                                --   default: 45753
-  , bolt :: BoltPoolEnvironment -- ^ Neo4j Configuration
+  { port        :: Int       -- ^ HTTP API port
+                             --   environment variable: DUNGEON_STUDIO_PORT
+                             --   default: 45753
+  , neo4j       :: Pool Pipe -- ^ Neo4j Pool connection
+  , disciplines :: URI       -- ^ Earthdawn Disciplines URI
+                             --   environment variable: EARTHDAWN_DISCIPLINES_URI
+                             --   default: http://static.dungeon.studio/earthdawn/4e/disciplines
+                             --   TODO Change this to a system hosted under earthdawn.dungeon.studio
+  , races       :: URI       -- ^ Earthdawn Races URI
+                             --   environment variable: EARTHDAWN_RACES_URI
+                             --   default: http://static.dungeon.studio/earthdawn/4e/races
+
+  , neo4jSettings :: BoltPoolEnvironment -- Placeholder for presentation.
   }
 
 instance Show Environment where
-  show Environment{..} = "DUNGEON_STUDIO_PORT=" ++ show port ++ "\n" ++ show bolt
+  show Environment{..} = "DUNGEON_STUDIO_PORT=" ++ show port ++ "\n"
+                      ++ show neo4jSettings
+                      ++ "EARTHDAWN_DISCIPLINES_URI=" ++ show disciplines ++ "\n"
+                      ++ "EARTHDAWN_RACES_URI=" ++ show races ++ "\n"
 
 instance FromEnv Environment where
-  fromEnv = Environment
-    <$> envMaybe "DUNGEON_STUDIO_PORT" .!= 45753
-    <*> fromEnv
+  fromEnv = 
+    do port          <- envMaybe "DUNGEON_STUDIO_PORT"       .!= 45753
+
+       disciplines'  <- envMaybe "EARTHDAWN_DISCIPLINES_URI" .!= "http://static.dungeon.studio/earthdawn/4e/disciplines"
+       let disciplines = fromJust $ parseURI disciplines'
+      
+       races'        <- envMaybe "EARTHDAWN_RACES_URI"       .!= "http://static.dungeon.studio/earthdawn/4e/races"
+       let races = fromJust $ parseURI races'
+
+       neo4jSettings <- fromEnv
+       neo4j         <- liftIO $ toPool neo4jSettings
+
+       return Environment{..}
 
 -- | Environment for Bolt Pool Parameters
 data BoltPoolEnvironment = BoltPoolEnvironment
@@ -74,11 +101,10 @@ instance Show BoltPoolEnvironment where
 instance FromEnv BoltPoolEnvironment where
   fromEnv = BoltPoolEnvironment
     <$> fromEnv
-    <*> envMaybe "BOLT_POOL_STRIPE_COUNT"          .!= 1
-    <*> envMaybe "BOLT_POOL_IDLE_TIME"             .!= 30
+    <*> envMaybe "BOLT_POOL_STRIPE_COUNT"           .!= 1
+    <*> envMaybe "BOLT_POOL_IDLE_TIME"              .!= 30
     <*> envMaybe "BOLT_POOL_CONNECTIONS_PER_STRIPE" .!= 1
 
 -- | Convert 'BoltPoolEnvironment' to 'Pool' 'Pipe'.
---   TODO class?
 toPool :: BoltPoolEnvironment -> IO (Pool Pipe)
 toPool BoltPoolEnvironment{..} = createPool (connect configuration) close stripeCount idleTime maxResources

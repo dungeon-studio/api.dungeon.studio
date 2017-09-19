@@ -1,18 +1,18 @@
 steps:
-  - name: 'haskell:8'
+  - name: 'haskell:8.0'
     args: [ 'cabal', 'update' ]
     id: 'cabal-update'
     volumes:
       - name: 'cabal-config'
         path: '/builder/home/.cabal'
-  - name: 'haskell:8'
+  - name: 'haskell:8.0'
     args: [ 'cabal', 'install', '-j', '--only-dependencies' ]
     id: 'cabal-dependencies'
     waitFor: [ 'cabal-update' ]
     volumes:
       - name: 'cabal-config'
         path: '/builder/home/.cabal'
-  - name: 'haskell:8'
+  - name: 'haskell:8.0'
     args: [ 'cabal', 'build', '-j', '--ghc-options=-static -optc-static -optl-static -optl-pthread' ]
     id: 'cabal-build'
     waitFor: [ 'cabal-dependencies' ]

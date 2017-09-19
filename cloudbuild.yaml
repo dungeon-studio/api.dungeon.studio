@@ -13,7 +13,7 @@ steps:
       - name: 'cabal-config'
         path: '/builder/home/.cabal'
   - name: 'haskell:8'
-    args: [ 'cabal', 'build', '-j', '--ghc-options="-optl-static -optl-pthread"' ]
+    args: [ 'cabal', 'build', '-j', '--ghc-options="-static -optc-static -optl-static -optl-pthread"' ]
     id: 'cabal-build'
     waitFor: [ 'cabal-dependencies' ]
     volumes:

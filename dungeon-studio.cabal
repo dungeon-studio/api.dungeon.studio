@@ -75,7 +75,7 @@ executable dungeon-studio
 
   build-depends:
       aeson                == 1.0.*
-    , base                 == 4.9.*
+    , base                 >= 4.9 && < 4.11
     , bytestring           == 0.10.*
     , containers           == 0.5.*
     , data-default         == 0.7.*

@@ -2,6 +2,7 @@
 
 ### Haskell ###
 dist
+!dist/build/dungeon-studio/dungeon-studio
 dist-*
 cabal-dev
 *.o

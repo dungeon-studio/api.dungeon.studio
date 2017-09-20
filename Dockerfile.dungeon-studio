@@ -10,6 +10,6 @@ COPY ./dungeon-studio.cabal /usr/local/src/dungeon.studio/dungeon-studio.cabal
 RUN cabal install --only-dependencies
 
 COPY . /usr/local/src/dungeon.studio
-RUN cabal install
+RUN cabal install dungeon-studio
 
 ENTRYPOINT [ "dungeon-studio" ]

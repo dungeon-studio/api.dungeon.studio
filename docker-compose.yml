@@ -2,7 +2,9 @@ version: "3"
 
 services:
   dungeon-studio:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dungeon-studio
     environment:
       - BOLT_HOST=neo4j
       - BOLT_PORT=7687

@@ -14,38 +14,47 @@ module API
   , server
   ) where
 
-import Data.Text (Text)
-import Servant ((:>), CaptureAll, Get, Handler, Header, Server)
+import Control.Monad.IO.Class (liftIO)
+import Control.Monad (unless)
+import Data.List (isPrefixOf)
+import Data.Maybe (fromJust, isJust)
+import Network.URI (parseRelativeReference, URI)
+import Servant ((:>), CaptureAll, Get, Handler, Header, Server, throwError)
+import System.FilePath ((</>), joinPath, splitPath, takeBaseName, takeDirectory)
 
-import qualified Data.Text as T (pack)
+import Errors
+import Types
 
-import Internal.Data.CollectionJSON (Error (Error, eCode, eMessage, eTitle))
+import Internal.Network.URI (append)
 import Internal.Servant.API.ContentTypes.CollectionJSON (CollectionJSON)
 
 -- | "Servant" API for static @application/vnd.collection+json@ resources.
-type API = CaptureAll "path" FilePath :> Header "Host" Text :> Get '[CollectionJSON] Something
+type API = CaptureAll "path" FilePath :> Header "Host" URI :> Get '[CollectionJSON] DirectoryCollection
 
 -- | "Servant" 'Server' for static @application/vnd.collection+json@ resources.
 server :: FilePath -> Server API
 server = handler
 
-handler :: FilePath -> [FilePath] -> Text -> Handler Something
+handler :: FilePath -> [FilePath] -> Maybe URI -> Handler DirectoryCollection
 handler r ss h =
-  do when (commonPrefix [r, p] /= r) $ throwError $ collection404 u e -- Check for directory escapes.
+  do unless (r `isPrefixOf` p') $ throwError e404 -- Check for directory escapes.
 
-     return $ toCollection u $ fromPath (p <.> "yaml")
-  where p = collapse $ r </> joinPath ss
-        u = h `append` p
-        e = Error
-              { eTitle   = Just . T.pack $ "Element, " ++ takeBaseName p ++ ", Not Found"
-              , eCode    = Nothing
-              , eMessage = Nothing
-              }
+     c <- liftIO $ fromPath p'
+     case c of
+       DoesNotExist     -> throwError e404
+       (DoesNotParse m) -> throwError $ e500 m
+       _                -> return c
 
-fromFile :: FilePath -> IO (Maybe Something)
-fromFile = decodeFile
+  where p  = collapse $ foldl (</>) r ss
+        p' = if takeBaseName p == "index" then takeDirectory p else p
 
-fromDirectory :: FilePath -> IO (Maybe Something)
-fromDirectory p =
-  do fs <- listDirectory p
-     mapM decodeFile fs
+        u  = if isJust h then fromJust h `append` p' else fromJust (parseRelativeReference p') -- TODO Feels flaky.
+
+        e404 = collection404 p' u
+        e500 = flip collection500 u
+
+collapse :: FilePath -> FilePath
+collapse = joinPath . foldr combine [] . splitPath
+  where combine "/.." ps = init ps
+        combine "/."  ps = ps
+        combine p     ps = ps ++ [p]

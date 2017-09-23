@@ -44,7 +44,6 @@ executable collection-server
 
   other-modules:
       API
-    , Editions.Fourth.Race
     , Environment
     , Errors
     , Internal.Data.CollectionJSON

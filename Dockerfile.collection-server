@@ -11,6 +11,6 @@ RUN cabal install --only-dependencies
 COPY . /usr/local/src/dungeon.studio
 RUN cabal install
 
-EXPOSE 45753
+EXPOSE 33080
 
-ENTRYPOINT [ "dungeon-studio" ]
+ENTRYPOINT [ "collection-server" ]

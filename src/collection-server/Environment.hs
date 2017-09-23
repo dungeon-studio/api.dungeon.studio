@@ -21,10 +21,10 @@ import System.Envy ((.!=), env, envMaybe, FromEnv (fromEnv))
 -- | Environment for earthdawn-resources.
 data Environment = Environment
   { port         :: Int      -- ^ HTTP API port
-                             --   environment variable: EARTHDAWN_RESOURCES_PORT
-                             --   default: 80
+                             --   environment variable: COLLECTION_SERVER_PORT
+                             --   default: 33080
   , resourcePath :: FilePath -- ^ Resource Directory Path
-                             --   environment variable: EARTHDAWN_RESOURCES_DIRECTORY_PATH
+                             --   environment variable: COLLECTION_SERVER_RESOURCE_PATH
   }
 
 instance Show Environment where
@@ -33,5 +33,5 @@ instance Show Environment where
 
 instance FromEnv Environment where
   fromEnv = Environment
-    <$> envMaybe "COLLECTION_SERVER_PORT"          .!= 80
+    <$> envMaybe "COLLECTION_SERVER_PORT"          .!= 33080
     <*> env      "COLLECTION_SERVER_RESOURCE_PATH"

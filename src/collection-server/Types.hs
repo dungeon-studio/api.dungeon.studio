@@ -19,10 +19,11 @@ module Types
   ) where
 
 import Control.Monad.Extra (ifM)
+import Data.Either (partitionEithers)
 import Data.Yaml (decodeFileEither)
 import Network.URI (nullURI, URI)
-import System.FilePath ((<.>))
-import System.Directory (doesDirectoryExist, doesFileExist)
+import System.Directory (doesDirectoryExist, doesFileExist, listDirectory)
+import System.FilePath ((</>), (<.>))
 
 import Internal.Data.CollectionJSON (Collection (..), Item, ToCollection (toCollection))
 
@@ -57,7 +58,12 @@ fromPath p = let f = p <.> "yaml"
                         return DoesNotExist
 
 fromDirectory :: FilePath -> IO DirectoryCollection
-fromDirectory = undefined
+fromDirectory d =
+  do (es, xs) <- fmap partitionEithers . mapM (decodeFileEither . (d </>)) =<< listDirectory d
+     
+     if not (null es)
+        then return . DoesNotParse . show . last $ es
+        else return $ DirectoryCollection nullURI xs
 
 fromFile :: FilePath -> IO DirectoryCollection
 fromFile = fmap (either (DoesNotParse . show) $ DirectoryCollection nullURI . (:[])) . decodeFileEither

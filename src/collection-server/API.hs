@@ -37,11 +37,7 @@ server = handler
 
 handler :: FilePath -> [FilePath] -> Maybe URI -> Handler DirectoryCollection
 handler r ss h =
-  do liftIO $ print r
-     liftIO $ print ss
-     liftIO $ print h
-     
-     unless (r `isPrefixOf` p') $ throwError $ e404 p -- Check for directory escapes.
+  do unless (r `isPrefixOf` p') $ throwError $ e404 p -- Check for directory escapes.
 
      c <- liftIO $ fromPath p'
      case c of

@@ -32,7 +32,7 @@ steps:
     waitFor: [ 'dungeon-studio' ]
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-f', 'earthdawn-resources.Dockerfile', '-t', 'gcr.io/$PROJECT_ID/earthdawn-resources.' ]
+    args: [ 'build', '-f', 'earthdawn-resources.Dockerfile', '-t', 'gcr.io/$PROJECT_ID/earthdawn-resources', '.' ]
     id: 'earthdawn-resources'
     waitFor: [ 'cabal-build' ]
   - name: 'gcr.io/cloud-builders/docker'

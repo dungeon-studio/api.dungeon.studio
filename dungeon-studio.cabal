@@ -17,7 +17,7 @@ copyright:           (c) 2017 Alex Brandt
 category:            Game
 build-type:          Simple
 cabal-version:       >= 1.10
-tested-with:         GHC == 8.*
+tested-with:         GHC == 8.0.*
 
 extra-source-files:
     ChangeLog.md
@@ -28,8 +28,7 @@ extra-source-files:
   
 source-repository head
   type:     git
-  location: https://github.com/alunduil/dungeon-studio
-  branch:   develop
+  location: https://github.com/alunduil/dungeon-studio.git
 
 executable collection-server
   default-language:    Haskell2010
@@ -39,8 +38,6 @@ executable collection-server
 
   ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
                        -fwarn-unused-do-bind
-                       -- TODO parameterize static compilation
-                       -- -optl-static -optl-pthread
 
   other-modules:
       API
@@ -89,40 +86,24 @@ executable dungeon-studio
 
   ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
                        -fwarn-unused-do-bind
-                       -- TODO parameterize static compilation
-                       -- -optl-static -optl-pthread
 
   other-modules:
       API
     , Earthdawn.API
-    , Earthdawn.FourthEdition.Abilities.API
-    , Earthdawn.FourthEdition.Abilities.Queries
-    , Earthdawn.FourthEdition.Abilities.Types
-    , Earthdawn.FourthEdition.Abilities.Values
     , Earthdawn.FourthEdition.API
     , Earthdawn.FourthEdition.Characters.API
     , Earthdawn.FourthEdition.Characters.Queries
     , Earthdawn.FourthEdition.Characters.Types
-    , Earthdawn.FourthEdition.Disciplines.API
-    , Earthdawn.FourthEdition.Disciplines.Queries
-    , Earthdawn.FourthEdition.Disciplines.Types
-    , Earthdawn.FourthEdition.Disciplines.Values
-    , Earthdawn.FourthEdition.Races.API
-    , Earthdawn.FourthEdition.Races.Queries
-    , Earthdawn.FourthEdition.Races.Types
-    , Earthdawn.FourthEdition.Races.Values
     , Earthdawn.Settings
     , Environment
     , Errors
     , Initialize
     , Internal.Database.Bolt.Environment
-    , Internal.Data.CollectionJSON
     , Internal.Data.SirenJSON
     , Internal.Data.Time.Clock.Environment
     , Internal.Network.HTTP.Media
     , Internal.Network.HTTP.Types
     , Internal.Network.URI
-    , Internal.Servant.API.ContentTypes.CollectionJSON
     , Internal.Servant.API.ContentTypes.SirenJSON
     , Settings
 

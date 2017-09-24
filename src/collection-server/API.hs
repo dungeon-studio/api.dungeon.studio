@@ -37,24 +37,28 @@ server = handler
 
 handler :: FilePath -> [FilePath] -> Maybe URI -> Handler DirectoryCollection
 handler r ss h =
-  do unless (r `isPrefixOf` p') $ throwError e404 -- Check for directory escapes.
+  do liftIO $ print r
+     liftIO $ print ss
+     liftIO $ print h
+     
+     unless (r `isPrefixOf` p') $ throwError $ e404 p -- Check for directory escapes.
 
      c <- liftIO $ fromPath p'
      case c of
-       DoesNotExist     -> throwError e404
+       DoesNotExist     -> throwError $ e404 p'
        (DoesNotParse m) -> throwError $ e500 m
        _                -> return c
 
-  where p  = collapse $ foldl (</>) r ss
-        p' = if takeBaseName p == "index" then takeDirectory p else p
+  where p  = foldl (</>) r ss
+        p' = collapse $ if takeBaseName p == "index" then takeDirectory p else p
 
         u  = if isJust h then fromJust h `append` p' else fromJust (parseRelativeReference p') -- TODO Feels flaky.
 
-        e404 = collection404 p' u
+        e404 = flip collection404 u
         e500 = flip collection500 u
 
 collapse :: FilePath -> FilePath
-collapse = joinPath . foldr combine [] . splitPath
-  where combine "/.." ps = init ps
-        combine "/."  ps = ps
-        combine p     ps = ps ++ [p]
+collapse = joinPath . reverse . dots . reverse . splitPath
+  where dots ("/..":ss) = tail ss
+        dots ("/.":ss)  = ss
+        dots ss         = ss

@@ -1,0 +1,6 @@
+href: "/earthdawn/4e/disciplines/wizard"
+data:
+  - name: "name"
+    value: "wizard"
+    prompt: "Wizard"
+links: []

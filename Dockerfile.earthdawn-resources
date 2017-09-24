@@ -11,6 +11,9 @@ RUN cabal install --only-dependencies
 COPY . /usr/local/src/dungeon.studio
 RUN cabal install
 
+COPY resources/earthdawn /srv/earthdawn
+ENV COLLECTION_SERVER_RESOURCE_PATH /srv
+
 EXPOSE 33080
 
 ENTRYPOINT [ "collection-server" ]

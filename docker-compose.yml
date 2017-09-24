@@ -1,21 +1,6 @@
 version: "3"
 
 services:
-  collection-server:
-    build:
-      context: .
-      dockerfile: Dockerfile.collection-server
-    environment:
-      - COLLECTION_SERVER_PORT=33080
-      - COLLECTION_SERVER_RESOURCE_PATH=/srv
-    image: dungeon-studio/collection-server:latest
-    networks:
-      - dungeon-studio
-    ports:
-      - "33080:33080"
-    volumes:
-      - ./resources/earthdawn:/srv/earthdawn
-
   dungeon-studio:
     build:
       context: .
@@ -31,6 +16,18 @@ services:
       - dungeon-studio
     ports:
       - "45753:45753"
+
+  earthdawn-resources:
+    build:
+      context: .
+      dockerfile: Dockerfile.earthdawn-resources
+    environment:
+      - COLLECTION_SERVER_PORT=33080
+    image: dungeon-studio/collection-server:latest
+    networks:
+      - dungeon-studio
+    ports:
+      - "33080:33080"
 
   neo4j:
     environment:

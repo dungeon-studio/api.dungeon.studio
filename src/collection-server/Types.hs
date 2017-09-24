@@ -14,6 +14,7 @@ module Types
       , DoesNotParse
       , DoesNotExist
       )
+  , setURI
   , fromPath
   ) where
 
@@ -42,6 +43,11 @@ instance ToCollection DirectoryCollection where
     , cError    = Nothing
     }
   toCollection _ = error "invalid DirectoryCollection for ToCollection"
+
+-- | Set URI to passed value.
+setURI :: DirectoryCollection -> URI -> DirectoryCollection
+setURI (DirectoryCollection _ xs) u = DirectoryCollection u xs
+setURI c _ = c
 
 -- | Construct 'DirectoryCollection' from given 'FilePath'.
 fromPath :: FilePath -> IO DirectoryCollection

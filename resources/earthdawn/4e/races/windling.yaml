@@ -4,28 +4,28 @@ data:
     value: "windling"
     prompt: "Windling"
   - name: "dexterity"
-    value: 11
+    value: "11"
     prompt: "DEX"
   - name: "strength"
-    value: 4
+    value: "4"
     prompt: "STR"
   - name: "toughness"
-    value: 8
+    value: "8"
     prompt: "TOU"
   - name: "perception"
-    value: 11
+    value: "11"
     prompt: "PER"
   - name: "willpower"
-    value: 10
+    value: "10"
     prompt: "WIL"
   - name: "charisma"
-    value: 12
+    value: "12"
     prompt: "CHA"
   - name: "movement-rate"
     value: "6/16"
     prompt: "Movement Rate"
   - name: "karma-modifier"
-    value: 6
+    value: "6"
     prompt: "Karma Modifier"
 links:
   - href: "/earthdawn/4e/abilities/astral-sight"

@@ -52,7 +52,7 @@ handler r ss h =
   where p  = foldl (</>) r ss
         p' = collapse $ if takeBaseName p == "index" then takeDirectory p else p
 
-        u  = if isJust h then fromJust h `append` p' else fromJust (parseRelativeReference p') -- TODO Feels flaky.
+        u  = if isJust h then fromJust h `append` tail p' else fromJust (parseRelativeReference p') -- TODO Feels flaky.
 
         e404 = flip collection404 u
         e500 = flip collection500 u

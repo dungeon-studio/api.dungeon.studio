@@ -4,28 +4,28 @@ data:
     value: "ork"
     prompt: "Ork"
   - name: "dexterity"
-    value: 10
+    value: "10"
     prompt: "DEX"
   - name: "strength"
-    value: 13
+    value: "13"
     prompt: "STR"
   - name: "toughness"
-    value: 11
+    value: "11"
     prompt: "TOU"
   - name: "perception"
-    value: 10
+    value: "10"
     prompt: "PER"
   - name: "willpower"
-    value: 8
+    value: "8"
     prompt: "WIL"
   - name: "charisma"
-    value: 9
+    value: "9"
     prompt: "CHA"
   - name: "movement-rate"
     value: "12"
     prompt: "Movement Rate"
   - name: "karma-modifier"
-    value: 5
+    value: "5"
     prompt: "Karma Modifier"
 links:
   - href: "/earthdawn/4e/abilities/gahad"

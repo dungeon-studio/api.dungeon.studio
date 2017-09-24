@@ -4,28 +4,28 @@ data:
     value: "dwarf"
     prompt: "Dwarf"
   - name: "dexterity"
-    value: 9
+    value: "9"
     prompt: "DEX"
   - name: "strength"
-    value: 10
+    value: "10"
     prompt: "STR"
   - name: "toughness"
-    value: 12
+    value: "12"
     prompt: "TOU"
   - name: "perception"
-    value: 11
+    value: "11"
     prompt: "PER"
   - name: "willpower"
-    value: 11
+    value: "11"
     prompt: "WIL"
   - name: "charisma"
-    value: 10
+    value: "10"
     prompt: "CHA"
   - name: "movement-rate"
     value: "10"
     prompt: "Movement Rate"
   - name: "karma-modifier"
-    value: 4
+    value: "4"
     prompt: "Karma Modifier"
 links:
   - href: "/earthdawn/4e/abilities/heat-sight"

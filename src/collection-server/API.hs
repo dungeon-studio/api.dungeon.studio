@@ -43,7 +43,7 @@ handler r ss h =
      case c of
        DoesNotExist     -> throwError $ e404 p'
        (DoesNotParse m) -> throwError $ e500 m
-       _                -> return $ setURI c u
+       _                -> return $ c `withURI` u
 
   where p  = foldl1 (</>) ss
         p' = collapse $ r </> if takeBaseName p == "index" then takeDirectory p else p

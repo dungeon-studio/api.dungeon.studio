@@ -32,23 +32,23 @@ steps:
     waitFor: [ 'dungeon-studio' ]
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-f', 'collection-server.Dockerfile', '-t', 'gcr.io/$PROJECT_ID/collection-server', '.' ]
-    id: 'collection-server'
+    args: [ 'build', '-f', 'earthdawn-resources.Dockerfile', '-t', 'gcr.io/$PROJECT_ID/earthdawn-resources.' ]
+    id: 'earthdawn-resources'
     waitFor: [ 'cabal-build' ]
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'tag', 'gcr.io/$PROJECT_ID/collection-server', 'gcr.io/$PROJECT_ID/collection-server:$BRANCH_NAME' ]
-    waitFor: [ 'collection-server' ]
+    args: [ 'tag', 'gcr.io/$PROJECT_ID/earthdawn-resources', 'gcr.io/$PROJECT_ID/earthdawn-resources:$BRANCH_NAME' ]
+    waitFor: [ 'earthdawn-resources' ]
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'tag', 'gcr.io/$PROJECT_ID/collection-server', 'gcr.io/$PROJECT_ID/collection-server:$COMMIT_SHA' ]
-    waitFor: [ 'collection-server' ]
+    args: [ 'tag', 'gcr.io/$PROJECT_ID/earthdawn-resources', 'gcr.io/$PROJECT_ID/earthdawn-resources:$COMMIT_SHA' ]
+    waitFor: [ 'earthdawn-resources' ]
 
 images:
   - 'gcr.io/$PROJECT_ID/dungeon-studio'
   - 'gcr.io/$PROJECT_ID/dungeon-studio:$BRANCH_NAME'
   - 'gcr.io/$PROJECT_ID/dungeon-studio:$COMMIT_SHA'
 
-  - 'gcr.io/$PROJECT_ID/collection-server'
-  - 'gcr.io/$PROJECT_ID/collection-server:$BRANCH_NAME'
-  - 'gcr.io/$PROJECT_ID/collection-server:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/earthdawn-resources'
+  - 'gcr.io/$PROJECT_ID/earthdawn-resources:$BRANCH_NAME'
+  - 'gcr.io/$PROJECT_ID/earthdawn-resources:$COMMIT_SHA'
 
 timeout: 30m

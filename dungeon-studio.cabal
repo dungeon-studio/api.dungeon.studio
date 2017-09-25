@@ -17,7 +17,7 @@ copyright:           (c) 2017 Alex Brandt
 category:            Game
 build-type:          Simple
 cabal-version:       >= 1.10
-tested-with:         GHC == 8.*
+tested-with:         GHC == 8.0.*
 
 extra-source-files:
     ChangeLog.md
@@ -28,50 +28,82 @@ extra-source-files:
   
 source-repository head
   type:     git
-  location: https://github.com/alunduil/dungeon-studio
-  branch:   develop
+  location: https://github.com/alunduil/dungeon-studio.git
 
-executable dungeon-studio
+executable collection-server
   default-language:    Haskell2010
-  hs-source-dirs:      src
+  hs-source-dirs:      src/collection-server
 
   main-is:             Main.hs
 
   ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
                        -fwarn-unused-do-bind
-                       -- TODO parameterize static compilation
-                       -- -optl-static -optl-pthread
 
   other-modules:
-      Earthdawn.API
-    , Earthdawn.FourthEdition.Abilities.API
-    , Earthdawn.FourthEdition.Abilities.Queries
-    , Earthdawn.FourthEdition.Abilities.Types
-    , Earthdawn.FourthEdition.Abilities.Values
+      API
+    , Environment
+    , Errors
+    , Internal.Data.CollectionJSON
+    , Internal.Network.URI
+    , Internal.Servant.API.ContentTypes.CollectionJSON
+    , Types
+
+  build-depends:
+      aeson          == 1.0.*
+    , base           == 4.9.*
+    , directory      == 1.3.*
+    , envy           == 1.3.*
+    , extra          == 1.5.*
+    , filepath       == 1.4.*
+    , http-api-data  == 0.3.*
+    , http-media     == 0.6.*
+    , http-types     == 0.9.*
+    , MissingH       == 1.4.*
+    , network-uri    == 2.6.*
+    , servant        == 0.9.*
+    , servant-server == 0.9.*
+    , text           == 1.2.*
+    , wai-logger     == 2.3.*
+    , warp           == 3.2.*
+    , yaml           == 0.8.*
+
+  other-extensions:
+      DataKinds
+    , DeriveGeneric
+    , FlexibleInstances
+    , MultiParamTypeClasses
+    , OverloadedStrings
+    , RecordWildCards
+    , TypeOperators
+
+executable dungeon-studio
+  default-language:    Haskell2010
+  hs-source-dirs:      src/dungeon-studio
+
+  main-is:             Main.hs
+
+  ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
+                       -fwarn-unused-do-bind
+
+  other-modules:
+      API
+    , Earthdawn.API
     , Earthdawn.FourthEdition.API
     , Earthdawn.FourthEdition.Characters.API
     , Earthdawn.FourthEdition.Characters.Queries
     , Earthdawn.FourthEdition.Characters.Types
-    , Earthdawn.FourthEdition.Disciplines.API
-    , Earthdawn.FourthEdition.Disciplines.Queries
-    , Earthdawn.FourthEdition.Disciplines.Types
-    , Earthdawn.FourthEdition.Disciplines.Values
-    , Earthdawn.FourthEdition.Races.API
-    , Earthdawn.FourthEdition.Races.Queries
-    , Earthdawn.FourthEdition.Races.Types
-    , Earthdawn.FourthEdition.Races.Values
     , Earthdawn.Settings
     , Environment
     , Errors
+    , Initialize
     , Internal.Database.Bolt.Environment
-    , Internal.Data.CollectionJSON
     , Internal.Data.SirenJSON
     , Internal.Data.Time.Clock.Environment
     , Internal.Network.HTTP.Media
     , Internal.Network.HTTP.Types
     , Internal.Network.URI
-    , Internal.Servant.API.ContentTypes.CollectionJSON
     , Internal.Servant.API.ContentTypes.SirenJSON
+    , Settings
 
   build-depends:
       aeson                == 1.0.*
@@ -79,7 +111,6 @@ executable dungeon-studio
     , bytestring           == 0.10.*
     , containers           == 0.5.*
     , data-default         == 0.7.*
-    , either               == 4.4.*
     , envy                 == 1.3.*
     , exceptions           == 0.8.*
     , hasbolt              == 0.1.*
@@ -97,6 +128,7 @@ executable dungeon-studio
     , time                 == 1.6.*
     , unordered-containers == 0.2.*
     , uuid                 == 1.3.*
+    , wai-logger           == 2.3.*
     , warp                 == 3.2.*
 
   other-extensions:
@@ -106,76 +138,3 @@ executable dungeon-studio
     , OverloadedStrings
     , RecordWildCards
     , TypeOperators
-
-test-suite collection-json-Properties
-  default-language: Haskell2010
-  hs-source-dirs:   src test/collection-json
-
-  type:             exitcode-stdio-1.0
-  main-is:          Test.hs
-
-  ghc-options: -Wall -fwarn-tabs -fwarn-monomorphism-restriction
-               -fwarn-unused-do-bind
-
-  other-modules:
-      Internal.Data.CollectionJSON
-    , Internal.Data.CollectionJSON.Tests
-    
-    , Internal.Network.URI
-    , Internal.Network.URI.Tests
-
-  build-depends:
-      aeson                == 1.0.*
-    , base                 == 4.9.*
-    , http-api-data        == 0.3.*
-    , MissingH             == 1.4.*
-    , network-uri          == 2.6.*
-    , QuickCheck           == 2.9.*
-    , quickcheck-instances == 0.3.*
-    , test-invariant       == 0.4.*
-    , text                 == 1.2.*
-
-  other-extensions:
-      OverloadedStrings
-    , RecordWildCards
-    , TemplateHaskell
-
-test-suite siren-Properties
-  default-language: Haskell2010
-  hs-source-dirs:   src test/siren
-
-  type:             exitcode-stdio-1.0
-  main-is:          Test.hs
-
-  ghc-options: -Wall -fwarn-tabs -fwarn-monomorphism-restriction
-               -fwarn-unused-do-bind
-
-  other-modules:
-      Internal.Data.SirenJSON
-    , Internal.Data.SirenJSON.Tests
-
-    , Internal.Network.HTTP.Media
-    , Internal.Network.HTTP.Types
-    , Internal.Network.URI
-    , Internal.Network.URI.Tests
-
-  build-depends:
-      aeson                == 1.0.*
-    , base                 == 4.9.*
-    , bytestring           == 0.10.*
-    , containers           == 0.5.*
-    , http-api-data        == 0.3.*
-    , http-media           == 0.6.*
-    , http-types           == 0.9.*
-    , MissingH             == 1.4.*
-    , network-uri          == 2.6.*
-    , QuickCheck           == 2.9.*
-    , quickcheck-instances == 0.3.*
-    , test-invariant       == 0.4.*
-    , text                 == 1.2.*
-    , unordered-containers == 0.2.*
-
-  other-extensions:
-      OverloadedStrings
-    , RecordWildCards
-    , TemplateHaskell

@@ -26,7 +26,7 @@ data SirenJSON
 
 -- | @application/vnd.siren+json@
 instance Accept SirenJSON where
-  contentType _ = "applicatin" // "vnd.siren+json"
+  contentType _ = "application" // "vnd.siren+json"
 
 -- | Convert a 'ToEntity' instance to a 'ByteString'
 instance ToEntity a => MimeRender SirenJSON a where

@@ -16,10 +16,9 @@ module Internal.Servant.API.ContentTypes.CollectionJSON where
 
 import Control.Arrow (right)
 import Data.Aeson (eitherDecode, encode)
+import Data.CollectionJSON (FromCollection (fromCollection), ToCollection (toCollection))
 import Network.HTTP.Media ((//))
 import Servant.API (Accept (..), MimeRender (..), MimeUnrender (..))
-
-import Internal.Data.CollectionJSON (FromCollection (fromCollection), ToCollection (toCollection))
 
 -- | Content type suitable for use with "Servant".
 data CollectionJSON

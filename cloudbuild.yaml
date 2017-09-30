@@ -1,15 +1,7 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ '-m', 'rsync', '-r', '-d', 'gs://dungeon-studio-build-cache/', '/builder/home/.cabal' ]
-    id: 'populate-cache'
-    volumes:
-      - name: 'cabal-config'
-        path: '/builder/home/.cabal'
-        
   - name: 'haskell:8.0'
     args: [ 'cabal', 'update' ]
     id: 'cabal-update'
-    waitFor: [ 'populate-cache' ]
     volumes:
       - name: 'cabal-config'
         path: '/builder/home/.cabal'
@@ -24,13 +16,6 @@ steps:
     args: [ 'cabal', 'build', '-j', '--ghc-options=-static -optc-static -optl-static -optl-pthread' ]
     id: 'cabal-build'
     waitFor: [ 'cabal-dependencies' ]
-    volumes:
-      - name: 'cabal-config'
-        path: '/builder/home/.cabal'
-
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ '-m', 'rsync', '-r', '-d', '/builder/home/.cabal', 'gs://dungeon-studio-build-cache/' ]
-    waitFor: [ 'cabal-build' ]
     volumes:
       - name: 'cabal-config'
         path: '/builder/home/.cabal'

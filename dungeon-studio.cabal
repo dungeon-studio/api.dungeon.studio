@@ -43,29 +43,29 @@ executable collection-server
       API
     , Environment
     , Errors
-    , Internal.Data.CollectionJSON
     , Internal.Network.URI
     , Internal.Servant.API.ContentTypes.CollectionJSON
     , Types
 
   build-depends:
-      aeson          == 1.1.*
-    , base           == 4.9.*
-    , directory      == 1.3.*
-    , envy           == 1.3.*
-    , extra          == 1.5.*
-    , filepath       == 1.4.*
-    , http-api-data  == 0.3.*
-    , http-media     == 0.6.*
-    , http-types     == 0.9.*
-    , MissingH       == 1.4.*
-    , network-uri    == 2.6.*
-    , servant        == 0.11.*
-    , servant-server == 0.11.*
-    , text           == 1.2.*
-    , wai-logger     == 2.3.*
-    , warp           == 3.2.*
-    , yaml           == 0.8.*
+      aeson           == 1.1.*
+    , base            == 4.9.*
+    , collection-json == 1.0.*
+    , directory       == 1.3.*
+    , envy            == 1.3.*
+    , extra           == 1.5.*
+    , filepath        == 1.4.*
+    , http-api-data   == 0.3.*
+    , http-media      == 0.6.*
+    , http-types      == 0.9.*
+    , MissingH        == 1.4.*
+    , network-uri     == 2.6.*
+    , servant         == 0.11.*
+    , servant-server  == 0.11.*
+    , text            == 1.2.*
+    , wai-logger      == 2.3.*
+    , warp            == 3.2.*
+    , yaml            == 0.8.*
 
   other-extensions:
       DataKinds

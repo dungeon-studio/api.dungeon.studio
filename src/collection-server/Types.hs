@@ -19,13 +19,12 @@ module Types
   ) where
 
 import Control.Monad.Extra (ifM)
+import Data.CollectionJSON (Collection (..), Item, ToCollection (toCollection))
 import Data.Either (partitionEithers)
 import Data.Yaml (decodeFileEither)
 import Network.URI (nullURI, URI)
 import System.Directory (doesDirectoryExist, doesFileExist, listDirectory)
 import System.FilePath ((</>), (<.>))
-
-import Internal.Data.CollectionJSON (Collection (..), Item, ToCollection (toCollection))
 
 -- | Convenience type for converting files and directories to 'CollectionJSON'
 --   for "Servant".

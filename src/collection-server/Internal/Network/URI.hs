@@ -12,27 +12,14 @@ URI utility functions that don't belong anywhere else.
 -}
 module Internal.Network.URI where
 
-import Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import Data.Either.Utils (maybeToEither)
-import Data.Text (pack, unpack)
+import Data.Text (unpack)
 import Network.URI (parseURIReference, URI, uriPath)
-import Web.HttpApiData (FromHttpApiData (parseUrlPiece), ToHttpApiData (toUrlPiece))
-
-instance FromJSON URI where
-  parseJSON = withText "URI" $ \ v ->
-    case parseURIReference (unpack v) of
-      Nothing -> fail "invalid URI"
-      Just x  -> return x
-
-instance ToJSON URI where
-  toJSON = toJSON . show
+import Web.HttpApiData (FromHttpApiData (parseUrlPiece))
 
 instance FromHttpApiData URI where
   parseUrlPiece = maybeToEither "invalid URI" . parseURIReference . unpack
   
-instance ToHttpApiData URI where
-  toUrlPiece = pack . show
-
 -- | Add 'String' to 'URI''s 'uriPath'.
 append :: URI -> String -> URI
 append b c = b { uriPath = uriPath b ++ "/" ++ c }

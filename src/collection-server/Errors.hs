@@ -11,13 +11,12 @@ A collection of types and functions that generalize API error handling.
 module Errors where
 
 import Data.Aeson (encode)
+import Data.CollectionJSON (Collection (..), Error (..))
 import Network.HTTP.Types.Header (hContentType)
 import Network.URI (URI)
 import Servant (err404, err500, ServantErr (errBody, errHeaders))
 
 import qualified Data.Text as T (pack)
-
-import Internal.Data.CollectionJSON (Collection (..), Error (..))
 
 -- | 'Collection' (@application/vnd.collection+json@) item not found.
 collection404 :: String -> URI -> ServantErr

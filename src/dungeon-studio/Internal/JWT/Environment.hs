@@ -1,3 +1,5 @@
+{-# LANGUAGE RecordWildCards #-}
+
 {-|
 Module      : Internal.JWT.Environment
 Description : JWT Environment Variables
@@ -7,6 +9,11 @@ License     : MIT
 Environment types for JWT authorization.
 -}
 module Internal.JWT.Environment where
+
+import Network.URI (URI)
+import System.Envy (env, FromEnv (fromEnv))
+
+import Internal.Network.URI ()
 
 data Environment = Environment
   { audience :: URI -- ^ Accepted Oauth2 Audience

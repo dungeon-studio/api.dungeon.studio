@@ -11,7 +11,8 @@ Types and funcitons for JWT handling.
 -}
 module Internal.JWT.Types
   ( Claims
-      ( sub
+      ( Claims
+      , sub
       , scope
       )
   , claims

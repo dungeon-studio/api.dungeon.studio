@@ -25,16 +25,17 @@ import Servant ((:>), (:<|>) ((:<|>)), addHeader, AuthProtect, Capture, err403, 
 import Earthdawn.FourthEdition.Characters.Queries hiding (characters, create)
 import Earthdawn.FourthEdition.Characters.Types
 import Earthdawn.Settings
-import Internal.Auth0 (Claims (Claims, scope, sub))
+import Internal.JWT.Servant ()
+import Internal.JWT.Types (Claims (Claims, scope, sub))
 import Internal.Network.URI (append)
 import Internal.Servant.API.ContentTypes.SirenJSON (SirenJSON)
 
 import qualified Earthdawn.FourthEdition.Characters.Queries as C (characters, create)
 
 -- | "Servant" API for Earthdawn 4th Edition Characters.
-type API = AuthProtect "auth0" :> Get '[SirenJSON] CharacterCollection
-      :<|> AuthProtect "auth0" :> ReqBody '[FormUrlEncoded, JSON] NewCharacter :> PostCreated '[SirenJSON] (Headers '[Header "Location" URI] Character)
-      :<|> AuthProtect "auth0" :> Capture "character" UUID :> Get '[SirenJSON] Character
+type API = AuthProtect "jwt" :> Get '[SirenJSON] CharacterCollection
+      :<|> AuthProtect "jwt" :> ReqBody '[FormUrlEncoded, JSON] NewCharacter :> PostCreated '[SirenJSON] (Headers '[Header "Location" URI] Character)
+      :<|> AuthProtect "jwt" :> Capture "character" UUID :> Get '[SirenJSON] Character
 
 -- | "Servant" 'Server' for Earthdawn 4th Edition Characters.
 server :: String -> Settings -> Server API

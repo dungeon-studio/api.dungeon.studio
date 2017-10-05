@@ -37,7 +37,7 @@ executable collection-server
   main-is:             Main.hs
 
   ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
-                       -fwarn-unused-do-bind
+                       -fwarn-unused-do-bind -fprint-potential-instances
 
   other-modules:
       API
@@ -83,7 +83,7 @@ executable dungeon-studio
   main-is:             Main.hs
 
   ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
-                       -fwarn-unused-do-bind
+                       -fwarn-unused-do-bind -fprint-potential-instances
 
   other-modules:
       API

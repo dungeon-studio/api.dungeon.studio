@@ -12,56 +12,49 @@ License     : MIT
 "Servant" types for JWT authentication.
 -}
 module Internal.JWT.Servant
-  ( Claims
-      ( Claims
-      , sub
-      , scope
-      )
-  , handler
-  , publicJWKs
+  ( handler
   ) where
 
-import Control.Lens (view)
-import Control.Monad.Catch (catch, MonadThrow)
-import Control.Monad.Except (ExceptT, runExceptT, throwError, withExceptT)
-import Control.Monad ((<=<), forM_, when)
+import Control.Monad.Catch (MonadThrow)
+import Control.Monad.Except (runExceptT, throwError)
 import Control.Monad.IO.Class (MonadIO)
 import Control.Monad.Trans (liftIO)
-import Crypto.JOSE (decodeCompact, JWK, JWKSet (JWKSet), JWKStore)
-import Crypto.JWT (ClaimsSet, claimSub, JWTError, JWTValidationSettings, verifyClaims, unregisteredClaims)
-import Data.Aeson (fromJSON, Result (Error, Success), Value (String))
-import Data.Maybe (fromMaybe, fromJust, isNothing)
-import Data.Text (Text)
+import Control.Monad ((<=<), when)
+import Crypto.JOSE (decodeCompact, JWKSet)
+import Crypto.JWT (JWTError, JWTValidationSettings, verifyClaims)
+import Data.Either.Combinators (whenLeft)
+import Data.Maybe (fromJust, isNothing)
 import Network.HTTP.Simple (getResponseBody, httpJSON, parseRequest)
 import Network.URI (URI)
 import Network.Wai (Request, requestHeaders)
-import Servant (AuthProtect, err401, Handler, ServantErr)
+import Servant (AuthProtect, err401, err500)
 import Servant.Server.Experimental.Auth (AuthHandler, AuthServerData, mkAuthHandler)
-import System.Envy (env, FromEnv (fromEnv))
 
-import qualified Data.ByteString as BS (ByteString, stripPrefix)
+import qualified Data.ByteString as BS (stripPrefix)
 import qualified Data.ByteString.Lazy as BL (ByteString, fromStrict)
-import qualified Data.HashMap.Strict as Map (lookup)
-import qualified Data.Text as T (pack, words)
 
 import Internal.JWT.Types
 import Internal.Network.URI ()
 
-type instance AuthServerData (AuthProtect "auth0") = Claims
+type instance AuthServerData (AuthProtect "jwt") = Claims
 
 handler :: URI -> JWTValidationSettings -> AuthHandler Request Claims
 handler u v = mkAuthHandler $ \ r -> do
-    j <- maybe (throwError err401) decodeCompact $ compact r
-    k <- liftIO $ jwks u `catch` e500
-    c <- liftIO $ verifyClaims v k j `catchError` e401
+    k <- liftIO $ runExceptT $ jwks u
+    whenLeft k $ const $ throwError err500 -- TODO Error Content
+    let Right k' = k
 
-    either (throwError err401) return $ claims c
+    let compact' = compact r
+    when (isNothing compact') $ throwError err401 -- TODO Error Content
+    
+    result <- liftIO $ runExceptT $ decodeCompact (fromJust compact') >>= verifyClaims v k'
+    whenLeft result $ \ (_ :: JWTError) -> throwError err401 -- TODO Error Content
+    let Right result' = result
 
-e500 :: (Exception e, MonadThrow m) => String -> e -> m ServantErr
-e500 p e = throwError $ err500 { errBody = p ++ show e }
+    either (const $ throwError err401) return $ claims result' -- TODO Error Content
 
 compact :: Request -> Maybe BL.ByteString
-compact = BL.fromStrict <$> (BS.stripPrefix "Bearer" <=< lookup "authorization") . requestHeaders
+compact = fmap BL.fromStrict . (BS.stripPrefix "Bearer" <=< lookup "authorization") . requestHeaders
 
-jwks :: (MonadThrow m, MonadIO m, JWKStore a) => URI -> m a
-jwks = fmap getResponseBody (httpJSON =<< parseRequest . show)
+jwks :: (MonadThrow m, MonadIO m) => URI -> m JWKSet
+jwks = return . getResponseBody <=< httpJSON <=< parseRequest . show

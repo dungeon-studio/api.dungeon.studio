@@ -32,6 +32,8 @@ import Internal.Database.Bolt.Environment ()
 import Internal.Data.Time.Clock.Environment ()
 import Internal.Network.URI ()
 
+import qualified Internal.JWT.Environment as JWT
+
 -- | Environment for dungeon.studio
 data Environment = Environment
   { port        :: Int       -- ^ HTTP API port
@@ -46,7 +48,7 @@ data Environment = Environment
                              --   environment variable: EARTHDAWN_RACES_URI
                              --   default: http://static.dungeon.studio/earthdawn/4e/races
                   
-  , jwtSettings   :: Auth0.Environment   -- ^ JWT Settings.  TODO generalize
+  , jwtSettings   :: JWT.Environment   -- ^ JWT Settings.  TODO generalize
                                          --   environment settings
 
   , neo4jSettings :: BoltPoolEnvironment -- Placeholder for presentation.

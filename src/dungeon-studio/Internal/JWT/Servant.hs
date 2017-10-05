@@ -54,7 +54,7 @@ handler u v = mkAuthHandler $ \ r -> do
     either (const $ throwError err401) return $ claims result' -- TODO Error Content
 
 compact :: Request -> Maybe BL.ByteString
-compact = fmap BL.fromStrict . (BS.stripPrefix "Bearer" <=< lookup "authorization") . requestHeaders
+compact = fmap BL.fromStrict . (BS.stripPrefix "Bearer " <=< lookup "authorization") . requestHeaders
 
 jwks :: (MonadThrow m, MonadIO m) => URI -> m JWKSet
 jwks = return . getResponseBody <=< httpJSON <=< parseRequest . show

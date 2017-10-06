@@ -25,12 +25,14 @@ import Crypto.JWT (JWTError, JWTValidationSettings, verifyClaims)
 import Data.Either.Combinators (whenLeft)
 import Data.Maybe (fromJust, isNothing)
 import Network.HTTP.Simple (getResponseBody, httpJSON, parseRequest)
+import Network.HTTP.Types.Header (hWWWAuthenticate)
 import Network.URI (URI)
 import Network.Wai (Request, requestHeaders)
-import Servant (AuthProtect, err401, err500)
+import Servant (AuthProtect, err401, err500, ServantErr (errHeaders))
 import Servant.Server.Experimental.Auth (AuthHandler, AuthServerData, mkAuthHandler)
 
 import qualified Data.ByteString as BS (stripPrefix)
+import qualified Data.ByteString.Char8 as BS (pack)
 import qualified Data.ByteString.Lazy as BL (ByteString, fromStrict)
 
 import Internal.JWT.Types
@@ -45,16 +47,26 @@ handler u v = mkAuthHandler $ \ r -> do
     let Right k' = k
 
     let compact' = compact r
-    when (isNothing compact') $ throwError err401 -- TODO Error Content
+    when (isNothing compact') $ throwError (e401 MissingAuthorization)
     
     result <- liftIO $ runExceptT $ decodeCompact (fromJust compact') >>= verifyClaims v k'
-    whenLeft result $ \ (_ :: JWTError) -> throwError err401 -- TODO Error Content
+    whenLeft result $ \ (e :: JWTError) -> throwError (e401 $ InvalidToken $ show e)
     let Right result' = result
 
-    either (const $ throwError err401) return $ claims result' -- TODO Error Content
+    either (\ e -> throwError (e401 $ InvalidToken e)) return $ claims result'
 
 compact :: Request -> Maybe BL.ByteString
 compact = fmap BL.fromStrict . (BS.stripPrefix "Bearer " <=< lookup "authorization") . requestHeaders
 
 jwks :: (MonadThrow m, MonadIO m) => URI -> m JWKSet
 jwks = return . getResponseBody <=< httpJSON <=< parseRequest . show
+
+e401 :: OAuth2Error -> ServantErr -- TODO Make this suck less
+e401 e = err401
+           { errHeaders = [ (hWWWAuthenticate, BS.pack (h e)) ]
+           }
+  where h MissingAuthorization  = p
+        h (InvalidToken d)      = p ++ ", error=\"invalid_token\", error_description=\"" ++ d ++ "\""
+        h (InsufficientScope d) = p ++ ", error=\"insufficient_scope\", error_description=\"" ++ d ++ "\""
+        
+        p = "Bearer realm=\"AUDIENCE\"" :: String

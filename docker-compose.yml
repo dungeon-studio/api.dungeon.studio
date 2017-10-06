@@ -10,8 +10,8 @@ services:
       - BOLT_PORT=7687
       - DUNGEON_STUDIO_PORT=45753
       - JWT_AUDIENCE=https://api.dungeon.studio
-      - JWT_ISSUER=https://dev-445801.oktapreview.com/oauth2/earthdawn
-      - JWT_JWKS_URI=https://dev-445801.oktapreview.com/oauth2/earthdawn/v1/keys
+      - JWT_ISSUER=https://dev-445801.oktapreview.com/oauth2/dungeonstudio
+      - JWT_JWKS_URI=https://dev-445801.oktapreview.com/oauth2/dungeonstudio/v1/keys
     image: dungeon-studion/dungeon-studio:latest
     links:
       - neo4j:neo4j

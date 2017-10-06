@@ -16,6 +16,11 @@ module Internal.JWT.Types
       , scope
       )
   , claims
+  , OAuth2Error
+      ( InvalidToken
+      , InsufficientScope
+      , MissingAuthorization
+      )
   ) where
 
 import Control.Lens (view)
@@ -45,3 +50,7 @@ claims c =
                 Error m   -> fail $ "malformed scope: " ++ m
 
      return Claims {..}
+
+data OAuth2Error = InvalidToken String
+                 | InsufficientScope String
+                 | MissingAuthorization

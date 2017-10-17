@@ -2,18 +2,32 @@ version: "3"
 
 services:
   dungeon-studio:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dungeon-studio
     environment:
       - BOLT_HOST=neo4j
       - BOLT_PORT=7687
       - DUNGEON_STUDIO_PORT=45753
-    image: alunduil/dungeon-studio:latest
+    image: dungeon-studion/dungeon-studio:latest
     links:
       - neo4j:neo4j
-    ports:
-      - "45753:45753"
     networks:
       - dungeon-studio
+    ports:
+      - "45753:45753"
+
+  earthdawn-resources:
+    build:
+      context: .
+      dockerfile: Dockerfile.earthdawn-resources
+    environment:
+      - COLLECTION_SERVER_PORT=33080
+    image: dungeon-studio/collection-server:latest
+    networks:
+      - dungeon-studio
+    ports:
+      - "33080:33080"
 
   neo4j:
     environment:
@@ -21,11 +35,11 @@ services:
     image: neo4j:3.2
     logging:
       driver: none
+    networks:
+      - dungeon-studio
     ports:
       - "7474:7474"
       - "7687:7687"
-    networks:
-      - dungeon-studio
 
 networks:
   dungeon-studio:

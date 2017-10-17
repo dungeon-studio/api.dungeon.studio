@@ -10,6 +10,47 @@ other normal game elements.
 
 The API is available at <https://api.dungeon.studio>.
 
+Developer documentation can be generated with:
+
+```bash
+cabal haddock --executables
+```
+
+Once the documentation is generated, it is available at:
+`./dist/doc/html/dungeon-studio/dungeon-studio/index.html`.
+
+## Locally with [`docker-compose`][docker-compose]
+
+This project is setup to run with [`docker-compose`][docker-compose].  Running
+the following command will build a [docker] image (includes building
+dungeon-studio), and start all requisite services as [docker] containers.
+
+```bash
+docker-compose up -d
+```
+
+dungeon-studio will be available at <http://localhost:45753> once this command
+finishes executing.
+
+## Locally with [`nix-shell`][nix-shell]
+
+This project is setup with [`nix-shell`][nix-shell].  Running the following
+command will build a local development environment where all of the
+supplementary tools are pre-installed.
+
+```bash
+nix-shell
+```
+
+Once this command finishes executing, [`cabal`][cabal] and other tools are
+available.
+
+## Others
+
+This project utilizes [`cabal`][cabal] like most [Haskell] projects and the
+standard [Haskell] development environment for your platform should work just
+fine.
+
 # Reporting Issues
 
 Any issues discovered should be recorded on [github][issues].  If you believe
@@ -24,8 +65,31 @@ check pull requests before a manual review.
 
 The `COPYRIGHT` file contains a list of contributors with their respective
 copyrights and other information.  If you submit a pull request and would like
-attributino; please, add yourself to the `COPYRIGHT` file.
+attribution; please, add yourself to the `COPYRIGHT` file.
 
+I suggest the following script for validating any changes you might submit:
+
+```bash
+#!/usr/bin/env bash
+
+set -e
+
+hlint .
+
+cabal clean
+
+cabal configure -O0 --enable-tests --enable-benchmarks
+cabal build -j --ghc-options="-Werror"
+cabal test  -j --ghc-options="-Werror" --show-details=always
+
+cabal haddock
+```
+
+[cabal]: https://www.haskell.org/cabal/
+[docker-compose]: https://docs.docker.com/compose/
+[docker]: https://docs.docker.com/
 [git flow]: http://nvie.com/posts/a-successful-gti-branching-model/
+[Haskell]: https://www.haskell.org/
 [issues]: https://github.com/alunduil/dungeon.studio/issues
+[nix-shell]: https://nixos.org/nix/manual/#sec-nix-shell
 [travis]: https://travis-ci.org/alunduil/dungeon.studio

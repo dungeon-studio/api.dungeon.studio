@@ -22,14 +22,17 @@ import Control.Monad.Trans (liftIO)
 import Control.Monad ((<=<), when)
 import Crypto.JOSE (decodeCompact, JWKSet)
 import Crypto.JWT (JWTError, JWTValidationSettings, verifyClaims)
+import Data.Aeson (eitherDecode)
 import Data.Either.Combinators (whenLeft)
+import Data.List (isInfixOf)
 import Data.Maybe (fromJust, isNothing)
-import Network.HTTP.Simple (getResponseBody, httpJSON, parseRequest)
+import Network.HTTP.Simple (getResponseBody, httpLBS, parseRequest)
 import Network.HTTP.Types.Header (hWWWAuthenticate)
 import Network.URI (URI)
 import Network.Wai (Request, requestHeaders)
 import Servant (AuthProtect, err401, err500, ServantErr (errHeaders))
 import Servant.Server.Experimental.Auth (AuthHandler, AuthServerData, mkAuthHandler)
+import Text.Regex (mkRegex, subRegex)
 
 import qualified Data.ByteString as BS (stripPrefix)
 import qualified Data.ByteString.Char8 as BS (pack)
@@ -59,7 +62,14 @@ compact :: Request -> Maybe BL.ByteString
 compact = fmap BL.fromStrict . (BS.stripPrefix "Bearer " <=< lookup "authorization") . requestHeaders
 
 jwks :: (MonadThrow m, MonadIO m) => URI -> m JWKSet
-jwks = return . getResponseBody <=< httpJSON <=< parseRequest . show
+jwks u =
+  do r  <- parseRequest $ show u
+     bs <- fix . getResponseBody <$> httpLBS r
+     either fail return $ eitherDecode bs
+  where fix = if "auth0" `isInfixOf` show u
+                 then read . flip (subRegex re) "" . show -- HACK for Auth0
+                 else id
+        re  = mkRegex "[,{][[:space:]]*\"x5t\":[^,}]+"
 
 e401 :: OAuth2Error -> ServantErr -- TODO Make this suck less
 e401 e = err401

@@ -10,8 +10,8 @@ services:
       - BOLT_PORT=7687
       - DUNGEON_STUDIO_PORT=45753
       - JWT_AUDIENCE=https://api.dungeon.studio
-      - JWT_ISSUER=https://dev-445801.oktapreview.com/oauth2/dungeonstudio
-      - JWT_JWKS_URI=https://dev-445801.oktapreview.com/oauth2/dungeonstudio/v1/keys
+      - JWT_ISSUER=https://alunduil.auth0.com
+      - JWT_JWKS_URI=https://alunduil.auth0.com/.well-known/jwks.json
     image: dungeon-studion/dungeon-studio:latest
     links:
       - neo4j:neo4j

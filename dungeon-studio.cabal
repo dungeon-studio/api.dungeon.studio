@@ -37,7 +37,7 @@ executable collection-server
   main-is:             Main.hs
 
   ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
-                       -fwarn-unused-do-bind
+                       -fwarn-unused-do-bind -fprint-potential-instances
 
   other-modules:
       API
@@ -83,7 +83,7 @@ executable dungeon-studio
   main-is:             Main.hs
 
   ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
-                       -fwarn-unused-do-bind
+                       -fwarn-unused-do-bind -fprint-potential-instances
 
   other-modules:
       API
@@ -98,6 +98,9 @@ executable dungeon-studio
     , Internal.Database.Bolt.Environment
     , Internal.Data.SirenJSON
     , Internal.Data.Time.Clock.Environment
+    , Internal.JWT.Environment
+    , Internal.JWT.Servant
+    , Internal.JWT.Types
     , Internal.Network.HTTP.Media
     , Internal.Network.HTTP.Types
     , Internal.Network.URI
@@ -110,23 +113,30 @@ executable dungeon-studio
     , bytestring           == 0.10.*
     , containers           == 0.5.*
     , data-default         == 0.7.*
+    , either               == 4.4.*
     , envy                 == 1.3.*
     , exceptions           == 0.8.*
-    , hasbolt              == 0.1.*
+    , hasbolt              == 0.1.2.*
     , http-api-data        == 0.3.*
+    , http-conduit         == 2.2.*
     , http-media           == 0.6.*
     , http-types           == 0.9.*
+    , jose                 == 0.6.*
+    , lens                 == 4.15.*
     , MissingH             == 1.4.*
     , mtl                  == 2.2.*
     , network-uri          == 2.6.*
+    , regex-compat         == 0.95.*
     , resource-pool        == 0.2.*
     , retry                == 0.7.*
     , servant              == 0.11.*
     , servant-server       == 0.11.*
     , text                 == 1.2.*
     , time                 == 1.6.*
+    , transformers         == 0.5.*
     , unordered-containers == 0.2.*
     , uuid                 == 1.3.*
+    , wai                  == 3.2.*
     , wai-logger           == 2.3.*
     , warp                 == 3.2.*
 

@@ -15,6 +15,7 @@ module Environment
       , neo4j
       , disciplines
       , races
+      , jwtSettings
       )
   )
   where
@@ -31,6 +32,8 @@ import Internal.Database.Bolt.Environment ()
 import Internal.Data.Time.Clock.Environment ()
 import Internal.Network.URI ()
 
+import qualified Internal.JWT.Environment as JWT
+
 -- | Environment for dungeon.studio
 data Environment = Environment
   { port        :: Int       -- ^ HTTP API port
@@ -44,6 +47,9 @@ data Environment = Environment
   , races       :: URI       -- ^ Earthdawn Races URI
                              --   environment variable: EARTHDAWN_RACES_URI
                              --   default: http://static.dungeon.studio/earthdawn/4e/races
+                  
+  , jwtSettings   :: JWT.Environment   -- ^ JWT Settings.  TODO generalize
+                                         --   environment settings
 
   , neo4jSettings :: BoltPoolEnvironment -- Placeholder for presentation.
   }
@@ -53,6 +59,7 @@ instance Show Environment where
                       ++ show neo4jSettings
                       ++ "EARTHDAWN_DISCIPLINES_URI=" ++ show disciplines ++ "\n"
                       ++ "EARTHDAWN_RACES_URI=" ++ show races ++ "\n"
+                      ++ show jwtSettings
 
 instance FromEnv Environment where
   fromEnv = 
@@ -63,6 +70,8 @@ instance FromEnv Environment where
       
        races'        <- envMaybe "EARTHDAWN_RACES_URI"       .!= "http://static.dungeon.studio/earthdawn/4e/races"
        let races = fromJust $ parseURI races'
+
+       jwtSettings   <- fromEnv
 
        neo4jSettings <- fromEnv
        neo4j         <- liftIO $ toPool neo4jSettings

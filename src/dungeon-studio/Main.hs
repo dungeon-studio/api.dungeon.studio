@@ -11,15 +11,24 @@ License     : MIT
 -}
 module Main (main) where
 
+import Control.Lens ((.~), (&), preview)
+import Crypto.JWT (defaultJWTValidationSettings, issuerPredicate, stringOrUri)
+import Data.Maybe (fromJust)
 import Network.Wai.Handler.Warp (defaultSettings, runSettings, setLogger, setPort)
 import Network.Wai.Logger (withStdoutLogger)
-import Servant (Application, Proxy (Proxy), serve)
+import Network.Wai (Request)
+import Servant (Application, Context ((:.), EmptyContext), Proxy (Proxy), serveWithContext)
+import Servant.Server.Experimental.Auth (AuthHandler)
 import System.Envy (decodeEnv)
 
 import API
 import Environment
 import Initialize
 import Settings
+
+import qualified Internal.JWT.Environment as JWT (audience, issuer, jwksURI)
+import qualified Internal.JWT.Servant as JWT (handler)
+import qualified Internal.JWT.Types as JWT (Claims)
 
 -- | Sets up and runs a "Network.Wai.Handler.Warp" server with our "Servant"
 --   'API'.
@@ -36,7 +45,13 @@ main = withStdoutLogger $ \ l -> do
             setLogger l
             defaultSettings
 
-    runSettings w $ application s
+    runSettings w $ application env s
 
-application :: Settings -> Application
-application = serve (Proxy :: Proxy API) . server
+application :: Environment -> Settings -> Application
+application e = serveWithContext (Proxy :: Proxy API) (context e) . server
+
+context :: Environment -> Context (AuthHandler Request JWT.Claims ': '[])
+context Environment { jwtSettings = s } = JWT.handler u v :. EmptyContext
+  where u = JWT.jwksURI s
+        v = defaultJWTValidationSettings (== (fromJust . preview stringOrUri . show $ JWT.audience s))
+              & issuerPredicate   .~ (== (fromJust . preview stringOrUri . show $ JWT.issuer s))

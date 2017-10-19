@@ -1,9 +1,9 @@
 { mkDerivation, aeson, base, bytestring, collection-json
-, containers, data-default, directory, envy, exceptions, extra
-, filepath, hasbolt, http-api-data, http-media, http-types
-, MissingH, mtl, network-uri, resource-pool, retry, servant
-, servant-server, stdenv, text, time, unordered-containers, uuid
-, wai-logger, warp, yaml
+, containers, data-default, directory, either, envy, exceptions
+, extra, filepath, hasbolt, http-api-data, http-conduit, http-media
+, http-types, jose, lens, MissingH, mtl, network-uri, resource-pool
+, retry, servant, servant-server, stdenv, text, time, transformers
+, unordered-containers, uuid, wai, wai-logger, warp, yaml
 }:
 mkDerivation {
   pname = "dungeon-studio";
@@ -13,10 +13,11 @@ mkDerivation {
   isExecutable = true;
   executableHaskellDepends = [
     aeson base bytestring collection-json containers data-default
-    directory envy exceptions extra filepath hasbolt http-api-data
-    http-media http-types MissingH mtl network-uri resource-pool retry
-    servant servant-server text time unordered-containers uuid
-    wai-logger warp yaml
+    directory either envy exceptions extra filepath hasbolt
+    http-api-data http-conduit http-media http-types jose lens MissingH
+    mtl network-uri resource-pool retry servant servant-server text
+    time transformers unordered-containers uuid wai wai-logger warp
+    yaml
   ];
   homepage = "https://github.com/alunduil/dungeon.studio";
   description = "Game Master's Companion";

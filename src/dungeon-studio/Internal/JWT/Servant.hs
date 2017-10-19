@@ -37,6 +37,7 @@ import Text.Regex (mkRegex, subRegex)
 import qualified Data.ByteString as BS (stripPrefix)
 import qualified Data.ByteString.Char8 as BS (pack)
 import qualified Data.ByteString.Lazy as BL (ByteString, fromStrict)
+import qualified Data.ByteString.Lazy.Char8 as BL (pack, unpack)
 
 import Internal.JWT.Types
 import Internal.Network.URI ()
@@ -67,7 +68,7 @@ jwks u =
      bs <- fix . getResponseBody <$> httpLBS r
      either fail return $ eitherDecode bs
   where fix = if "auth0" `isInfixOf` show u
-                 then read . flip (subRegex re) "" . show -- HACK for Auth0
+                 then BL.pack . flip (subRegex re) "" . BL.unpack -- HACK for Auth0
                  else id
         re  = mkRegex "[,{][[:space:]]*\"x5t\":[^,}]+"
 

@@ -10,7 +10,7 @@ services:
       - BOLT_PORT=7687
       - DUNGEON_STUDIO_PORT=45753
       - JWT_AUDIENCE=https://api.dungeon.studio
-      - JWT_ISSUER=https://alunduil.auth0.com
+      - JWT_ISSUER=https://alunduil.auth0.com/
       - JWT_JWKS_URI=https://alunduil.auth0.com/.well-known/jwks.json
     image: dungeon-studion/dungeon-studio:latest
     links:

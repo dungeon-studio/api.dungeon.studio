@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -Wno-orphans #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -16,6 +16,7 @@ import Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import Data.Either.Utils (maybeToEither)
 import Data.Text (pack, unpack)
 import Network.URI (parseURIReference, URI, uriPath)
+import System.Envy (Var (toVar, fromVar))
 import Web.HttpApiData (FromHttpApiData (parseUrlPiece), ToHttpApiData (toUrlPiece))
 
 instance FromJSON URI where
@@ -32,6 +33,10 @@ instance FromHttpApiData URI where
   
 instance ToHttpApiData URI where
   toUrlPiece = pack . show
+
+instance Var URI where
+  toVar   = show
+  fromVar = parseURIReference
 
 -- | Add 'String' to 'URI''s 'uriPath'.
 append :: URI -> String -> URI

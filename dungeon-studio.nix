@@ -1,8 +1,9 @@
 { mkDerivation, aeson, base, bytestring, collection-json
-, containers, data-default, directory, envy, exceptions, extra
-, filepath, hasbolt, hspec, http-api-data, http-media, http-types
-, MissingH, mtl, network-uri, resource-pool, retry, servant
-, servant-server, stdenv, text, time, unordered-containers, uuid
+, containers, data-default, directory, either, envy, exceptions
+, extra, filepath, hasbolt, hspec, http-api-data, http-conduit
+, http-media, http-types, jose, lens, MissingH, mtl, network-uri
+, regex-compat, resource-pool, retry, servant, servant-server
+, stdenv, text, time, transformers, unordered-containers, uuid, wai
 , wai-logger, warp, yaml
 }:
 mkDerivation {
@@ -13,9 +14,10 @@ mkDerivation {
   isExecutable = true;
   executableHaskellDepends = [
     aeson base bytestring collection-json containers data-default
-    directory envy exceptions extra filepath hasbolt http-api-data
-    http-media http-types MissingH mtl network-uri resource-pool retry
-    servant servant-server text time unordered-containers uuid
+    directory either envy exceptions extra filepath hasbolt
+    http-api-data http-conduit http-media http-types jose lens MissingH
+    mtl network-uri regex-compat resource-pool retry servant
+    servant-server text time transformers unordered-containers uuid wai
     wai-logger warp yaml
   ];
   testHaskellDepends = [ base hspec ];

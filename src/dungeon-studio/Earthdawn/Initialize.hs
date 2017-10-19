@@ -20,13 +20,15 @@ import Database.Bolt (query_, run)
 import Data.Monoid ((<>))
 import Data.Pool (withResource)
 
+import Earthdawn.FourthEdition.Characters.Queries (constraints)
 import Earthdawn.Settings
 
 -- | Startup initialization and configuration for Earthdawn.
 initialize :: Settings -> IO ()
-initialize Settings{..} = recovering p hs $ \ _ -> do
-    withResource neo4j $ \ c -> run c $ query_ "RETURN 1"
-    putStrLn "Neo4j check passed"
+initialize Settings{..} =
+  recovering p hs $ \ _ -> withResource neo4j $ \ c -> do
+    run c $ query_ "RETURN 1"
+    mapM_ (run c . query_) constraints 
   where p  :: RetryPolicy
         p  = limitRetries 10 <> constantDelay 3000000
 

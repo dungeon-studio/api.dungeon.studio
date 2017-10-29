@@ -148,11 +148,11 @@ executable dungeon-studio
     , RecordWildCards
     , TypeOperators
 
-test-suite dungeon-studio-system
+test-suite dungeon-studio-api
   type:                exitcode-stdio-1.0
 
   default-language:    Haskell2010
-  hs-source-dirs:      test/system/dungeon-studio test/common
+  hs-source-dirs:      test/api/dungeon-studio test/common
 
   main-is:             Spec.hs
 
@@ -160,9 +160,18 @@ test-suite dungeon-studio-system
                        -fwarn-unused-do-bind
 
   other-modules:
+      Character.ListSpec
+    , Internal.Docker.Compose
+    , Internal.Test.Contexts.Docker.Compose
 
   build-depends:
-      base  == 4.9.*
-    , hspec == 2.4.*
+      base         == 4.9.*
+    , bytestring   == 0.10.*
+    , exceptions   == 0.8.*
+    , extra        == 1.5.*
+    , hspec        == 2.4.*
+    , http-conduit == 2.2.*
+    , http-types   == 0.9.*
+    , process      == 1.4.*
 
   other-extensions:

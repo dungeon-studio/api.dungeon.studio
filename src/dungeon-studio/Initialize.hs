@@ -1,10 +1,10 @@
 {-|
 Module      : Initialize
-Description : Intialization of dungeon.studio
+Description : Intialization of api.dungeon.studio
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-Initialization of dungeon.studio.
+Initialization of api.dungeon.studio.
 -}
 module Initialize
   ( initialize

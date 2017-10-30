@@ -7,7 +7,7 @@ Module      : Main
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-"Main" Module for dungeon.studio.
+"Main" Module for api.dungeon.studio.
 -}
 module Main (main) where
 

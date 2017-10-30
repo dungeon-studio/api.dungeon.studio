@@ -21,7 +21,7 @@ mkDerivation {
     wai-logger warp yaml
   ];
   testHaskellDepends = [ base hspec ];
-  homepage = "https://github.com/alunduil/dungeon.studio";
+  homepage = "https://github.com/alunduil/api.dungeon.studio";
   description = "Game Master's Companion";
   license = stdenv.lib.licenses.mit;
 }

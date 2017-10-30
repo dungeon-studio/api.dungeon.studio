@@ -3,12 +3,12 @@ MAINTAINER Alex Brandt <alunduil@alunduil.com>
 
 RUN cabal update
 
-WORKDIR /usr/local/src/dungeon.studio
+WORKDIR /usr/local/src/api.dungeon.studio
 
-COPY ./dungeon-studio.cabal /usr/local/src/dungeon.studio/dungeon-studio.cabal
+COPY ./dungeon-studio.cabal /usr/local/src/api.dungeon.studio/dungeon-studio.cabal
 RUN cabal install --only-dependencies
 
-COPY . /usr/local/src/dungeon.studio
+COPY . /usr/local/src/api.dungeon.studio
 RUN cabal install
 
 COPY resources/earthdawn /srv/earthdawn

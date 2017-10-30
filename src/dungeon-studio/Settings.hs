@@ -1,10 +1,10 @@
 {-|
 Module      : Settings
-Description : Settings for dungeon.studio
+Description : Settings for api.dungeon.studio
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-Settings for dungeon.studio.
+Settings for api.dungeon.studio.
 -}
 module Settings
   ( Settings
@@ -18,7 +18,7 @@ import Environment
 
 import qualified Earthdawn.Settings as Earthdawn
 
--- | 'Settings' for dungeon.studio.
+-- | 'Settings' for api.dungeon.studio.
 newtype Settings = Settings
   { earthdawn :: Earthdawn.Settings
   }

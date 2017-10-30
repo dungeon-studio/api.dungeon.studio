@@ -3,11 +3,11 @@
 
 {-|
 Module:     : API
-Description : HTTP API for dungeon.studio
+Description : HTTP API for api.dungeon.studio
 Copyright   : (c) Alex Brandt, 2017
 License     : MIT
 
-API for dungeon.studio.
+API for api.dungeon.studio.
 -}
 module API
   ( API
@@ -27,6 +27,6 @@ import qualified Earthdawn.API as Earthdawn
 --   * "Earthdawn.API"
 type API = "earthdawn" :> Earthdawn.API
 
--- | "Servant" 'Server' for dungeon.studio.
+-- | "Servant" 'Server' for api.dungeon.studio.
 server :: Settings -> Server API
 server = Earthdawn.server "/earthdawn" . earthdawn

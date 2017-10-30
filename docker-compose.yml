@@ -12,7 +12,7 @@ services:
       - JWT_AUDIENCE=https://api.dungeon.studio
       - JWT_ISSUER=https://alunduil.auth0.com/
       - JWT_JWKS_URI=https://alunduil.auth0.com/.well-known/jwks.json
-    image: dungeon-studion/dungeon-studio:latest
+    image: dungeon-studio/dungeon-studio:latest
     links:
       - neo4j:neo4j
     networks:

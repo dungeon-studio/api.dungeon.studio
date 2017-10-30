@@ -90,6 +90,6 @@ cabal haddock
 [docker]: https://docs.docker.com/
 [git flow]: http://nvie.com/posts/a-successful-gti-branching-model/
 [Haskell]: https://www.haskell.org/
-[issues]: https://github.com/alunduil/dungeon.studio/issues
+[issues]: https://github.com/alunduil/api.dungeon.studio/issues
 [nix-shell]: https://nixos.org/nix/manual/#sec-nix-shell
-[travis]: https://travis-ci.org/alunduil/dungeon.studio
+[travis]: https://travis-ci.org/alunduil/api.dungeon.studio

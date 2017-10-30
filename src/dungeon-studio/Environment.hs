@@ -34,7 +34,7 @@ import Internal.Network.URI ()
 
 import qualified Internal.JWT.Environment as JWT
 
--- | Environment for dungeon.studio
+-- | Environment for api.dungeon.studio
 data Environment = Environment
   { port        :: Int       -- ^ HTTP API port
                              --   environment variable: DUNGEON_STUDIO_PORT

@@ -45,7 +45,7 @@ server b s = characters b s
 
 characters :: String -> Settings -> Claims -> Handler CharacterCollection
 characters u s Claims{sub = o, scope = ss} = 
-  if "read:character" `elem` ss then
+  if "read:characters" `elem` ss then
     do cs <- liftIO $ C.characters (neo4j s) o
        return $ CharacterCollection u' cs
   else throwError err403
@@ -53,7 +53,7 @@ characters u s Claims{sub = o, scope = ss} =
 
 create :: String -> Settings -> Claims -> NewCharacter -> Handler (Headers '[Header "Location" URI] Character)
 create u s Claims{sub = o, scope = ss} n =
-  if "create:character" `elem` ss then
+  if "create:characters" `elem` ss then
     do c <- liftIO $ C.create (neo4j s) o n
        let u' = append (fromJust $ parseURIReference u) $ show (uuid c)
        return $ addHeader u' $ c { url = u' }
@@ -61,7 +61,7 @@ create u s Claims{sub = o, scope = ss} n =
 
 character :: String -> Settings -> Claims -> UUID -> Handler Character
 character b s Claims{sub = o, scope = ss} u =
-  if "read:character" `elem` ss then
+  if "read:characters" `elem` ss then
     do c <- liftIO $ fromUUID (neo4j s) o u
        when (isNothing c) $ throwError err404
        return . (\ x -> x { url = u' }) $ fromJust c

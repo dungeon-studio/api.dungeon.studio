@@ -11,6 +11,4 @@ RUN cabal install --only-dependencies
 COPY . /usr/local/src/api.dungeon.studio
 RUN cabal install
 
-EXPOSE 45753
-
 ENTRYPOINT [ "api-dungeon-studio" ]

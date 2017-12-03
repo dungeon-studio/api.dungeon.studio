@@ -17,6 +17,7 @@ module API
 import Network.URI (URI)
 import Servant ((:>), Server)
 
+import Internal.Network.URI (addPathPart)
 import Settings (Settings)
 
 import qualified Characters.API as C
@@ -26,4 +27,4 @@ type API = "characters" :> C.API
 
 -- | "Servant" 'Server' for api.dungeon.studio.
 server :: URI -> Settings -> Server API
-server = C.server
+server u = C.server $ u `addPathPart` "characters"

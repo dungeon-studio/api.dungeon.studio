@@ -91,7 +91,7 @@ create p o n =
         cypher = "MERGE (o:Owner {sub:{sub}}) " <>
                  "CREATE UNIQUE (o)-[:OWNS]->(c:Character {uuid:{uuid}, discipline:{discipline}, race:{race}}) " <>
                  "CREATE UNIQUE (o)-[:CAN_READ]->(c) " <>
-                 "RETURN c" <>
+                 "RETURN c " <>
                  "LIMIT 1"
 
         ps :: Map.Map Text Value

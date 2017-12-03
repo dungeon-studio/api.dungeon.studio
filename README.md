@@ -17,20 +17,20 @@ cabal haddock --executables
 ```
 
 Once the documentation is generated, it is available at:
-`./dist/doc/html/dungeon-studio/dungeon-studio/index.html`.
+`./dist/doc/html/api-dungeon-studio/api-dungeon-studio/index.html`.
 
 ## Locally with [`docker-compose`][docker-compose]
 
 This project is setup to run with [`docker-compose`][docker-compose].  Running
 the following command will build a [docker] image (includes building
-dungeon-studio), and start all requisite services as [docker] containers.
+api-dungeon-studio), and start all requisite services as [docker] containers.
 
 ```bash
 docker-compose up -d
 ```
 
-dungeon-studio will be available at <http://localhost:45753> once this command
-finishes executing.
+api-dungeon-studio will be available at <http://localhost:45753> once this
+command finishes executing.
 
 ## Locally with [`nix-shell`][nix-shell]
 
@@ -88,8 +88,8 @@ cabal haddock
 [cabal]: https://www.haskell.org/cabal/
 [docker-compose]: https://docs.docker.com/compose/
 [docker]: https://docs.docker.com/
-[git flow]: http://nvie.com/posts/a-successful-gti-branching-model/
+[git flow]: http://nvie.com/posts/a-successful-git-branching-model/
 [Haskell]: https://www.haskell.org/
-[issues]: https://github.com/alunduil/dungeon.studio/issues
+[issues]: https://github.com/alunduil/api.dungeon.studio/issues
 [nix-shell]: https://nixos.org/nix/manual/#sec-nix-shell
-[travis]: https://travis-ci.org/alunduil/dungeon.studio
+[travis]: https://travis-ci.org/alunduil/api.dungeon.studio

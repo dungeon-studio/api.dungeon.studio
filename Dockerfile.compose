@@ -1,0 +1,14 @@
+FROM haskell:8.0
+MAINTAINER Alex Brandt <alunduil@alunduil.com>
+
+RUN cabal update
+
+WORKDIR /usr/local/src/api.dungeon.studio
+
+COPY ./api-dungeon-studio.cabal /usr/local/src/api.dungeon.studio/api-dungeon-studio.cabal
+RUN cabal install --only-dependencies
+
+COPY . /usr/local/src/api.dungeon.studio
+RUN cabal install
+
+ENTRYPOINT [ "api-dungeon-studio" ]

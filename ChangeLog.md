@@ -1,4 +1,4 @@
-# Revision history for dungeon-studio
+# Revision history for api-dungeon-studio
 
 ## 0.1.0.0  -- YYYY-mm-dd
 

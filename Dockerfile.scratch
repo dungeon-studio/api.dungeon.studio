@@ -1,0 +1,6 @@
+FROM scratch
+MAINTAINER Alex Brandt <alunduil@alunduil.com>
+
+COPY dist/build/api-dungeon-studio/api-dungeon-studio /
+
+ENTRYPOINT [ "/api-dungeon-studio" ]

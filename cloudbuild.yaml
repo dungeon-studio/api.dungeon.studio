@@ -40,4 +40,4 @@ images:
   - 'gcr.io/$PROJECT_ID/api-dungeon-studio:$BRANCH_NAME'
   - 'gcr.io/$PROJECT_ID/api-dungeon-studio:$COMMIT_SHA'
 
-timeout: 30m
+timeout: 60m

@@ -1,9 +1,34 @@
 steps:
+  - name: 'haskell:8.0'
+    args: [ 'cabal', 'update' ]
+    id: 'cabal-update'
+    volumes:
+      - name: 'cabal-config'
+        path: '/builder/home/.cabal'
+  - name: 'haskell:8.0'
+    args: [ 'cabal', 'install', '-j', '--only-dependencies' ]
+    id: 'cabal-dependencies'
+    waitFor: [ 'cabal-update' ]
+    volumes:
+      - name: 'cabal-config'
+        path: '/builder/home/.cabal'
+  - name: 'haskell:8.0'
+    args: [ 'cabal', 'build', '-j', '--ghc-options=-static -optc-static -optl-static -optl-pthread' ]
+    id: 'cabal-build'
+    waitFor: [ 'cabal-dependencies' ]
+    volumes:
+      - name: 'cabal-config'
+        path: '/builder/home/.cabal'
+
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-f', 'Dockerfile', '-t', 'registry.heroku.com/r-api-dungeon-studio/web', '.' ]
+    args: [ 'build', '-f', 'Dockerfile.scratch', '-t', 'registry.heroku.com/r-api-dungeon-studio/web', '.' ]
+    id: 'api-dungeon-studio'
+    waitFor: [ 'cabal-build' ]
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'login', '--username=_', '--password=d6f58e2e-95c6-4de8-836c-ad5fec3b49d7', 'registry.heroku.com' ]
 
 images:
   - 'registry.heroku.com/r-api-dungeon-studio/web'
+
+timeout: 60m

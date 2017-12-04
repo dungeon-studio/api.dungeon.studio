@@ -20,10 +20,6 @@ steps:
       - name: 'cabal-config'
         path: '/builder/home/.cabal'
 
-  - name: 'ubuntu'
-    args: [ 'bash', '-c', 'ls -l dist/build/api-dungeon-studio' ]
-    waitFor: [ 'cabal-build' ]
-
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-f', 'Dockerfile.scratch', '-t', 'gcr.io/$PROJECT_ID/api-dungeon-studio', '.' ]
     id: 'api-dungeon-studio'

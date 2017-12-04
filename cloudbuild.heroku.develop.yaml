@@ -21,19 +21,14 @@ steps:
         path: '/builder/home/.cabal'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-f', 'Dockerfile.scratch', '-t', 'gcr.io/$PROJECT_ID/api-dungeon-studio', '.' ]
+    args: [ 'build', '-f', 'Dockerfile.scratch', '-t', 'registry.heroku.com/d-api-dungeon-studio/web', '.' ]
     id: 'api-dungeon-studio'
     waitFor: [ 'cabal-build' ]
+
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'tag', 'gcr.io/$PROJECT_ID/api-dungeon-studio', 'gcr.io/$PROJECT_ID/api-dungeon-studio:$BRANCH_NAME' ]
-    waitFor: [ 'api-dungeon-studio' ]
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'tag', 'gcr.io/$PROJECT_ID/api-dungeon-studio', 'gcr.io/$PROJECT_ID/api-dungeon-studio:$COMMIT_SHA' ]
-    waitFor: [ 'api-dungeon-studio' ]
+    args: [ 'login', '--username=_', '--password=d6f58e2e-95c6-4de8-836c-ad5fec3b49d7', 'registry.heroku.com' ]
 
 images:
-  - 'gcr.io/$PROJECT_ID/api-dungeon-studio'
-  - 'gcr.io/$PROJECT_ID/api-dungeon-studio:$BRANCH_NAME'
-  - 'gcr.io/$PROJECT_ID/api-dungeon-studio:$COMMIT_SHA'
+  - 'registry.heroku.com/d-api-dungeon-studio/web'
 
 timeout: 60m

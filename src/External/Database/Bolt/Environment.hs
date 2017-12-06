@@ -25,3 +25,4 @@ instance FromEnv BoltCfg where
     <*> envMaybe "BOLT_PORT"           .!= port def
     <*> envMaybe "BOLT_USERNAME"       .!= user def
     <*> envMaybe "BOLT_PASSWORD"       .!= password def
+    <*> envMaybe "BOLT_SECURE"         .!= secure def

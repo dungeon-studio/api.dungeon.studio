@@ -4,7 +4,7 @@ services:
   api-dungeon-studio:
     build:
       context: .
-      dockerfile: Dockerfile.compose
+      dockerfile: Dockerfile
     environment:
       - BOLT_HOST=neo4j
       - BOLT_PORT=7687

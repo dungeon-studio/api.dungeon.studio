@@ -7,6 +7,9 @@ let
           api-dungeon-studio =
             haskellPackagesNew.callPackage ./default.nix { };
 
+          hasbolt =
+            haskellPackagesNew.callPackage ./hasbolt.nix { };
+
           network-uri-json =
             haskellPackagesNew.callPackage ./network-uri-json.nix { };
 

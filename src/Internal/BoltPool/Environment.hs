@@ -55,7 +55,8 @@ instance Show Environment where
                           "BOLT_HOST=" ++ show host ++ "\n" ++
                           "BOLT_PORT=" ++ show port ++ "\n" ++
                           "BOLT_USERNAME=" ++ show user ++ "\n" ++
-                          "BOLT_PASSWORD=" ++ show password ++ "\n"
+                          "BOLT_PASSWORD=" ++ show password ++ "\n" ++
+                          "BOLT_SECURE=" ++ show secure ++ "\n"
 
 instance FromEnv Environment where
   fromEnv = Environment

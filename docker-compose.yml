@@ -11,7 +11,7 @@ services:
       - DUNGEON_STUDIO_PORT=80
       - EARTHDAWN_DISCIPLINES_URI=http://d.earthdawn.static.dungeon.studio/4e/disciplines
       - EARTHDAWN_RACES_URI=http://d.earthdawn.static.dungeon.studio/4e/races
-      - JWT_AUDIENCE=https://api.dungeon.studio
+      - JWT_AUDIENCE=https://d.api.dungeon.studio
       - JWT_ISSUER=https://alunduil.auth0.com/
       - JWT_JWKS_URI=https://alunduil.auth0.com/.well-known/jwks.json
     image: dungeon-studio/api.dungeon.studio:latest

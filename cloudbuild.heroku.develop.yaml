@@ -1,11 +1,11 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-f', 'Dockerfile', '-t', 'registry.heroku.com/d-api-dungeon-studio/web', '.' ]
+    args: [ 'build', '-f', 'Dockerfile', '-t', 'registry.heroku.com/api-dungeon-studio-d/web', '.' ]
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'login', '--username=_', '--password=d6f58e2e-95c6-4de8-836c-ad5fec3b49d7', 'registry.heroku.com' ]
 
 images:
-  - 'registry.heroku.com/d-api-dungeon-studio/web'
+  - 'registry.heroku.com/api-dungeon-studio-d/web'
 
 timeout: 60m

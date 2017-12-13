@@ -55,7 +55,9 @@ executable api-dungeon-studio
     , External.Network.URI.Envy
     , External.Network.URI.HttpApiData
     , External.Servant.API.BearerAuth
+    , External.Servant.API.BearerAuth.Errors
     , External.Servant.API.BearerAuth.Internal
+    , External.Servant.API.BearerAuth.Types
     , External.Servant.API.ContentTypes.SirenJSON
     , Initialize
     , Internal.BoltPool.Environment
@@ -67,6 +69,7 @@ executable api-dungeon-studio
       aeson                == 1.1.*
     , base                 == 4.9.*
     , bytestring           == 0.10.*
+    , connection           == 0.2.*
     , containers           == 0.5.*
     , data-default         == 0.7.*
     , either               == 4.4.*

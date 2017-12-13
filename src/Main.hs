@@ -50,7 +50,12 @@ application :: Environment -> Settings -> Application
 application e = serveWithContext (Proxy :: Proxy API) (context e) . server nullURI -- TODO use a configured URI
 
 context :: Environment -> Context (AuthHandler Request Claims ': '[])
-context Environment { jwtEnvironment = s } = handler u v :. EmptyContext
-  where u = JWT.jwksURI s
+context Environment { jwtEnvironment = s } = handler s' :. EmptyContext
+  where s' = BearerSettings
+               { jwksURI = JWT.jwksURI s
+               , jwtValidationSettings = v
+               , audience = JWT.audience s
+               }
+
         v = defaultJWTValidationSettings (== (fromJust . preview stringOrUri . show $ JWT.audience s))
               & issuerPredicate .~ (== (fromJust . preview stringOrUri . show $ JWT.issuer s))

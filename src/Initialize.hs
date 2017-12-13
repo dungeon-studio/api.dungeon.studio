@@ -20,6 +20,7 @@ import Control.Retry (constantDelay, limitRetries, recovering, RetryPolicy, Retr
 import Database.Bolt (Pipe, query_, run)
 import Data.Monoid ((<>))
 import Data.Pool (Pool, withResource)
+import Network.Connection (HostCannotConnect)
 
 import Settings
 
@@ -27,20 +28,31 @@ import qualified Characters.Queries as C (constraints)
 
 -- | Startup initialization and configuration for Earthdawn.
 initialize :: (MonadIO m, MonadMask m) => Settings -> m ()
-initialize Settings{..} = recovering iPolicy [hNeo4j] $ const $ iNeo4j neo4j
+initialize Settings{..} = recovering iPolicy hNeo4j $ const $ iNeo4j neo4j
 
 iPolicy :: RetryPolicy
 iPolicy = limitRetries 10 <> constantDelay 3000000
 
-retryIOError :: (MonadIO m, MonadMask m) => String -> IOError -> m Bool
-retryIOError m e =
-  do liftIO $ putStrLn $ m ++ show e
-     return True
+-- * Neo4j
 
 iNeo4j :: (MonadIO m) => Pool Pipe -> m ()
 iNeo4j p = liftIO $ withResource p $ \ c ->
   do run c $ query_ "RETURN 1"
      mapM_ (run c . query_) C.constraints
 
-hNeo4j :: (MonadIO m, MonadMask m) => RetryStatus -> Handler m Bool
-hNeo4j = const $ Handler $ retryIOError "neo4j initialization failed: "
+hNeo4j :: (MonadIO m, MonadMask m) => [RetryStatus -> Handler m Bool]
+hNeo4j = [ const $ Handler $ retryIOError "neo4j initialization failed: "
+         , const $ Handler $ retryHostCannotConnect "neo4j initialization failed: "
+         ]
+
+-- * Retry Functions
+
+retryIOError :: (MonadIO m, MonadMask m) => String -> IOError -> m Bool
+retryIOError m e =
+  do liftIO $ putStrLn $ m ++ show e
+     return True
+
+retryHostCannotConnect :: (MonadIO m, MonadMask m) => String -> HostCannotConnect -> m Bool
+retryHostCannotConnect m e =
+  do liftIO $ putStrLn $ m ++ show e
+     return True

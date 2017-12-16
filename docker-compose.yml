@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  api-dungeon-studio:
+  api.dungeon.studio:
     build:
       context: .
       dockerfile: Dockerfile

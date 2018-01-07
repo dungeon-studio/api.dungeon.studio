@@ -12,12 +12,12 @@ Arbitrary instances for "External.Data.Problem".
 -}
 module External.Data.Problem.Arbitrary where
 
+import Network.URI.Arbitrary ()
 import Network.URI (uriIsAbsolute)
 import Test.QuickCheck (Arbitrary (arbitrary, shrink))
 import Test.QuickCheck.Instances ()
 
 import External.Data.Problem
-import External.Network.URI.Arbitrary ()
 
 instance Arbitrary Problem where
   arbitrary = Problem <$> arbitrary

@@ -8,13 +8,13 @@ Tests for "External.Network.URI.Envy".
 -}
 module External.Network.URI.EnvySpec (main, spec) where
 
+import Network.URI.Arbitrary ()
 import Network.URI (URI)
 import System.Envy (fromVar, toVar)
 import Test.Hspec (describe, hspec, Spec)
 import Test.Hspec.QuickCheck (prop)
 import Test.Invariant ((<=>))
 
-import External.Network.URI.Arbitrary ()
 import External.Network.URI.Envy ()
 
 main :: IO ()

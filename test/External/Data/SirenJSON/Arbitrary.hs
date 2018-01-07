@@ -15,12 +15,12 @@ module External.Data.SirenJSON.Arbitrary where
 import Control.Applicative ((<$>), (<*>))
 import Data.Maybe (mapMaybe)
 import Data.SirenJSON
+import Network.HTTP.Media.MediaType.Arbitrary ()
+import Network.HTTP.Types.Method.Arbitrary ()
+import Network.URI.Arbitrary ()
 import Test.QuickCheck (Arbitrary (arbitrary, shrink), elements, oneof, scale)
 import Test.QuickCheck.Instances ()
 
-import External.Network.HTTP.Media.MediaType.Arbitrary ()
-import External.Network.HTTP.Types.Method.Arbitrary ()
-import External.Network.URI.Arbitrary ()
 
 instance Arbitrary Entity where
   arbitrary = Entity <$> arbitrary

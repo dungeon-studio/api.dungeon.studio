@@ -10,6 +10,9 @@ let
           hasbolt =
             haskellPackagesNew.callPackage ./hasbolt.nix { };
 
+          network-arbitrary =
+            haskellPackagesNew.callPackage ./network-arbitrary.nix { };
+
           network-uri-json =
             haskellPackagesNew.callPackage ./network-uri-json.nix { };
 

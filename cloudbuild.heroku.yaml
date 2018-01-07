@@ -1,0 +1,11 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-f', 'Dockerfile', '-t', '$_IMAGE_NAME', '.' ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'login', '--username=_', '--password=$_HEROKU_API_KEY', 'registry.heroku.com' ]
+
+images:
+  - '$_IMAGE_NAME'
+
+timeout: 60m

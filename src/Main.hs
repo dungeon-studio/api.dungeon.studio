@@ -17,6 +17,7 @@ import Data.Maybe (fromJust)
 import Network.URI (nullURI)
 import Network.Wai.Handler.Warp (defaultSettings, runSettings, setLogger, setPort)
 import Network.Wai.Logger (withStdoutLogger)
+import Network.Wai.Middleware.Cors (simpleCors)
 import Network.Wai (Request)
 import Servant (Application, Context ((:.), EmptyContext), Proxy (Proxy), serveWithContext)
 import Servant.Server.Experimental.Auth (AuthHandler)
@@ -44,7 +45,7 @@ main = withStdoutLogger $ \ l ->
              setLogger l
              defaultSettings
 
-     runSettings w $ application e s
+     runSettings w $ simpleCors $ application e s
 
 application :: Environment -> Settings -> Application
 application e = serveWithContext (Proxy :: Proxy API) (context e) . server nullURI -- TODO use a configured URI

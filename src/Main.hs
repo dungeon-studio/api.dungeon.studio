@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
@@ -17,7 +18,7 @@ import Data.Maybe (fromJust)
 import Network.URI (nullURI)
 import Network.Wai.Handler.Warp (defaultSettings, runSettings, setLogger, setPort)
 import Network.Wai.Logger (withStdoutLogger)
-import Network.Wai.Middleware.Cors (simpleCors)
+import Network.Wai.Middleware.Cors (cors, corsRequestHeaders, simpleCorsResourcePolicy, simpleHeaders)
 import Network.Wai (Request)
 import Servant (Application, Context ((:.), EmptyContext), Proxy (Proxy), serveWithContext)
 import Servant.Server.Experimental.Auth (AuthHandler)
@@ -45,7 +46,10 @@ main = withStdoutLogger $ \ l ->
              setLogger l
              defaultSettings
 
-     runSettings w $ simpleCors $ application e s
+     runSettings w $ cors (const $ Just corsPolicy) $ application e s
+  where corsPolicy = simpleCorsResourcePolicy
+                       { corsRequestHeaders = "Authorization" : simpleHeaders
+                       }
 
 application :: Environment -> Settings -> Application
 application e = serveWithContext (Proxy :: Proxy API) (context e) . server nullURI -- TODO use a configured URI

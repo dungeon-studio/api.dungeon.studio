@@ -4,14 +4,15 @@ MAINTAINER Alex Brandt <alunduil@alunduil.com>
 RUN apk add --no-cache musl-dev zlib-dev
 RUN apk add --no-cache cabal ghc
 
-RUN cabal update
-
 WORKDIR /usr/local/src/api.dungeon.studio
 
-COPY ./api-dungeon-studio.cabal /usr/local/src/api.dungeon.studio/api-dungeon-studio.cabal
+RUN cabal sandbox init
+RUN cabal update
+
+COPY ./api-dungeon-studio.cabal ./
 RUN cabal install -j --only-dependencies
 
-COPY . /usr/local/src/api.dungeon.studio
+COPY . ./
 RUN cabal build -j --ghc-options="-static -optc-static -optl-static -optl-pthread"
 
 FROM alpine:3.7

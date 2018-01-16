@@ -1,41 +1,12 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ '-m', 'rsync', '-r', '-d', 'gs://cache.dungeon.studio/api.dungeon.studio/.cabal/', '/.cabal' ]
-    id: 'cabal'
-    volumes:
-      - name: 'cabal'
-        path: '/.cabal'
-
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ '-m', 'rsync', '-r', '-d', 'gs://cache.dungeon.studio/api.dungeon.studio/.ghc/', '/.ghc' ]
-    id: 'ghc'
-    volumes:
-      - name: 'ghc'
-        path: '/.ghc'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'pull', 'gcr.io/$PROJECT_ID/api.dungeon.studio' ]
+    id: 'pull-image'
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-f', 'Dockerfile', '-t', '$_IMAGE_NAME', '.' ]
-    waitFor: [ 'cabal', 'ghc' ]
+    waitFor: [ 'pull-image' ]
     id: 'api.dungeon.studio'
-    volumes:
-      - name: 'cabal'
-        path: '/root/.cabal'
-      - name: 'ghc'
-        path: '/root/.ghc'
-
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ '-m', 'rsync', '-r', '-d', '/.cabal', 'gs://cache.dungeon.studio/api.dungeon.studio/.cabal' ]
-    waitFor: [ 'api.dungeon.studio' ]
-    volumes:
-      - name: 'cabal'
-        path: '/.cabal'
-
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ '-m', 'rsync', '-r', '-d', '/.ghc', 'gs://cache.dungeon.studio/api.dungeon.studio/.ghc' ]
-    waitFor: [ 'api.dungeon.studio' ]
-    volumes:
-      - name: 'ghc'
-        path: '/.ghc'
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'login', '--username=_', '--password=$_HEROKU_API_KEY', 'registry.heroku.com' ]

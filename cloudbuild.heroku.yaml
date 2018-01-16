@@ -1,12 +1,12 @@
 steps:
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ 'rsync', '-r', '-d', 'gs://cache.dungeon.studio/api.dungeon.studio', '.cabal-sandbox' ]
+    args: [ 'rsync', '-r', '-d', 'gs://cache.dungeon.studio/api.dungeon.studio/', '.cabal-sandbox/' ]
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-f', 'Dockerfile', '-t', '$_IMAGE_NAME', '.' ]
 
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ 'rsync', '-r', '-d', '.cabal-sandbox', 'gs://cache.dungeon.studio/api.dungeon.studio' ]
+    args: [ 'rsync', '-r', '-d', '.cabal-sandbox/', 'gs://cache.dungeon.studio/api.dungeon.studio/' ]
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'login', '--username=_', '--password=$_HEROKU_API_KEY', 'registry.heroku.com' ]

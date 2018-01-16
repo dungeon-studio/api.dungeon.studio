@@ -1,12 +1,12 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'pull', 'gcr.io/$PROJECT_ID/api.dungeon.studio' ]
-    id: 'pull-image'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-f', 'Dockerfile', '-t', '$_IMAGE_NAME', '.' ]
-    waitFor: [ 'pull-image' ]
-    id: 'api.dungeon.studio'
+    args: [ 'build',
+            '--cache-from', 'gcr.io/$PROJECT_ID/api.dungeon.studio',
+            '-t', '$_IMAGE_NAME',
+            '-f', 'Dockerfile', '.' ]
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'login', '--username=_', '--password=$_HEROKU_API_KEY', 'registry.heroku.com' ]

@@ -1,19 +1,14 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'pull', 'gcr.io/$PROJECT_ID/api.dungeon.studio' ]
-    id: 'pull-image'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-f', 'Dockerfile', '-t', 'gcr.io/$PROJECT_ID/api.dungeon.studio', '.' ]
-    waitFor: [ 'pull-image' ]
-    id: 'api.dungeon.studio'
-
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'tag', 'gcr.io/$PROJECT_ID/api.dungeon.studio', 'gcr.io/$PROJECT_ID/api.dungeon.studio:$BRANCH_NAME' ]
-    waitFor: [ 'api.dungeon.studio' ]
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'tag', 'gcr.io/$PROJECT_ID/api.dungeon.studio', 'gcr.io/$PROJECT_ID/api.dungeon.studio:$COMMIT_SHA' ]
-    waitFor: [ 'api.dungeon.studio' ]
+    args: [ 'build',
+            '--cache-from', 'gcr.io/$PROJECT_ID/api.dungeon.studio',
+            '-t', 'gcr.io/$PROJECT_ID/api.dungeon.studio',
+            '-t', 'gcr.io/$PROJECT_ID/api.dungeon.studio:$BRANCH_NAME',
+            '-t', 'gcr.io/$PROJECT_ID/api.dungeon.studio:$COMMIT_SHA',
+            '-f', 'Dockerfile', '.' ]
 
 images:
   - 'gcr.io/$PROJECT_ID/api.dungeon.studio'

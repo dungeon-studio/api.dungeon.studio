@@ -9,7 +9,7 @@ steps:
     args: [ 'build',
             '--cache-from', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio',
             '-t', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio',
-            '--target builder',
+            '--target', 'builder',
             '-f', 'Dockerfile', '.' ]
 
   - name: 'gcr.io/cloud-builders/docker'

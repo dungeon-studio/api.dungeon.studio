@@ -1,9 +1,20 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'pull', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio' ]
+
+  - name: 'gcr.io/cloud-builders/docker'
     args: [ 'pull', 'gcr.io/$PROJECT_ID/api.dungeon.studio' ]
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build',
+            '--cache-from', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio'
+            '-t', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio',
+            '--target builder',
+            '-f', 'Dockerfile', '.' ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build',
+            '--cache-from', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio'
             '--cache-from', 'gcr.io/$PROJECT_ID/api.dungeon.studio',
             '-t', 'gcr.io/$PROJECT_ID/api.dungeon.studio',
             '-t', 'gcr.io/$PROJECT_ID/api.dungeon.studio:$BRANCH_NAME',
@@ -11,6 +22,7 @@ steps:
             '-f', 'Dockerfile', '.' ]
 
 images:
+  - 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio'
   - 'gcr.io/$PROJECT_ID/api.dungeon.studio'
   - 'gcr.io/$PROJECT_ID/api.dungeon.studio:$BRANCH_NAME'
   - 'gcr.io/$PROJECT_ID/api.dungeon.studio:$COMMIT_SHA'

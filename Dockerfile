@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.7 as builder
 MAINTAINER Alex Brandt <alunduil@alunduil.com>
 
 RUN apk add --no-cache musl-dev zlib-dev
@@ -8,7 +8,7 @@ WORKDIR /usr/local/src/api.dungeon.studio
 
 RUN cabal update
 
-COPY ./api-dungeon-studio.cabal ./
+COPY ./*.cabal ./
 RUN cabal install -j --only-dependencies
 
 COPY . ./
@@ -19,7 +19,7 @@ MAINTAINER Alex Brandt <alunduil@alunduil.com>
 
 RUN apk add --no-cache ca-certificates
 
-COPY --from=0 /usr/local/src/api.dungeon.studio/dist/build/api-dungeon-studio/api-dungeon-studio /
+COPY --from=builder /usr/local/src/api.dungeon.studio/dist/build/api-dungeon-studio/api-dungeon-studio /
 
 ENTRYPOINT [ "/api-dungeon-studio" ]
 CMD [ "Thanks Heroku!" ]

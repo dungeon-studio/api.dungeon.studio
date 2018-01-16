@@ -6,7 +6,6 @@ RUN apk add --no-cache cabal ghc
 
 WORKDIR /usr/local/src/api.dungeon.studio
 
-RUN cabal sandbox init
 RUN cabal update
 
 COPY ./api-dungeon-studio.cabal ./

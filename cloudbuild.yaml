@@ -1,16 +1,41 @@
 steps:
-  - name: 'ubuntu'
-    args: ['bash', '-c', 'mkdir -p .cabal-sandbox' ]
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: [ '-m', 'rsync', '-r', '-d', 'gs://cache.dungeon.studio/api.dungeon.studio/.cabal/', '/.cabal' ]
+    id: 'cabal'
+    volumes:
+      - name: 'cabal'
+        path: '/.cabal'
 
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ 'rsync', '-r', '-d', 'gs://cache.dungeon.studio/api.dungeon.studio/', '.cabal-sandbox/' ]
+    args: [ '-m', 'rsync', '-r', '-d', 'gs://cache.dungeon.studio/api.dungeon.studio/.ghc/', '/.ghc' ]
+    id: 'ghc'
+    volumes:
+      - name: 'ghc'
+        path: '/.ghc'
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-f', 'Dockerfile', '-t', 'gcr.io/$PROJECT_ID/api.dungeon.studio', '.' ]
+    waitFor: [ 'cabal', 'ghc' ]
     id: 'api.dungeon.studio'
+    volumes:
+      - name: 'cabal'
+        path: '/root/.cabal'
+      - name: 'ghc'
+        path: '/root/.ghc'
 
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: [ 'rsync', '-r', '-d', '.cabal-sandbox/', 'gs://cache.dungeon.studio/api.dungeon.studio/' ]
+    args: [ '-m', 'rsync', '-r', '-d', '/.cabal', 'gs://cache.dungeon.studio/api.dungeon.studio/.cabal' ]
+    waitFor: [ 'api.dungeon.studio' ]
+    volumes:
+      - name: 'cabal'
+        path: '/.cabal'
+
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: [ '-m', 'rsync', '-r', '-d', '/.ghc', 'gs://cache.dungeon.studio/api.dungeon.studio/.ghc' ]
+    waitFor: [ 'api.dungeon.studio' ]
+    volumes:
+      - name: 'ghc'
+        path: '/.ghc'
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'tag', 'gcr.io/$PROJECT_ID/api.dungeon.studio', 'gcr.io/$PROJECT_ID/api.dungeon.studio:$BRANCH_NAME' ]

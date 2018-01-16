@@ -1,6 +1,6 @@
 steps:
   - name: 'ubuntu'
-    ars: ['bash', '-c', 'mkdir -p .cabal-sandbox' ]
+    args: ['bash', '-c', 'mkdir -p .cabal-sandbox' ]
 
   - name: 'gcr.io/cloud-builders/gsutil'
     args: [ 'rsync', '-r', '-d', 'gs://cache.dungeon.studio/api.dungeon.studio/', '.cabal-sandbox/' ]

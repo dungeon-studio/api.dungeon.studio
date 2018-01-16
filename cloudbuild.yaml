@@ -1,6 +1,6 @@
 steps:
-  #- name: 'gcr.io/cloud-builders/docker'
-  #  args: [ 'pull', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'pull', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio' ]
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'pull', 'gcr.io/$PROJECT_ID/api.dungeon.studio' ]

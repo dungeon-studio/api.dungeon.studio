@@ -21,6 +21,7 @@ import Network.Wai (Request)
 import Servant (Application, Context ((:.), EmptyContext), Proxy (Proxy), serveWithContext)
 import Servant.Server.Experimental.Auth (AuthHandler)
 import System.Envy (decodeEnv)
+import System.IO (hFlush, stdout)
 
 import API
 import Environment
@@ -35,7 +36,7 @@ import qualified Internal.JWT.Environment as JWT (audience, issuer, jwksURI)
 main :: IO ()
 main = withStdoutLogger $ \ l ->
   do e <- either fail return =<< decodeEnv
-     print e
+     print e >> hFlush stdout
 
      s <- settings e
      initialize s

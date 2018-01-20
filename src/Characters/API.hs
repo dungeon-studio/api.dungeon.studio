@@ -28,6 +28,7 @@ import External.Servant.API.ContentTypes.SirenJSON (SirenJSON)
 import Settings
 
 import qualified Characters.Queries as Q
+import qualified Characters.Scopes as S
 
 -- | "Servant" API for Characters.
 type API = AuthProtect "jwt" :> Get '[SirenJSON] Characters
@@ -44,13 +45,13 @@ server uri s = characters uri s
 
 characters :: URI -> Settings -> Claims -> Handler Characters
 characters uri s cs@Claims{sub = o} =
-  do cs `hasScope` "read:characters"
+  do cs `hasScope` S.read S.Characters
 
      ($ uri) <$> Q.all (neo4j s) o `catch` throwServantErr
 
 create :: URI -> Settings -> Claims -> NewCharacter -> Handler (Headers '[Header "Location" URI] Character)
 create uri s cs@Claims{sub = o} n =
-  do cs `hasScope` "create:characters"
+  do cs `hasScope` S.create S.Characters
 
      c <- ($ uri) <$> Q.create (neo4j s) o n `catch` throwServantErr
 
@@ -58,13 +59,13 @@ create uri s cs@Claims{sub = o} n =
 
 character :: URI -> Settings -> Claims -> UUID -> Handler Character
 character uri s cs@Claims{sub = o} u =
-  do cs `hasScope` "read:characters"
+  do cs `hasScope` S.read S.Characters
 
      ($ uri) <$> Q.fromUUID (neo4j s) o u `catch` throwServantErr
 
 delete :: Settings -> Claims -> UUID -> Handler NoContent
 delete s cs@Claims{sub = o} u =
-  do cs `hasScope` "delete:characters"
+  do cs `hasScope` S.delete S.Characters
 
      Q.delete (neo4j s) o u `catch` throwServantErr
 

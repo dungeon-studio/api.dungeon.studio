@@ -7,7 +7,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build',
-            '--cache-from', 'gcr.io/$PORJECT_ID/builder-api.dungeon.studio',          
+            '--cache-from', 'gcr.io/$PROJECT_ID/builder-api.dungeon.studio',          
             '--cache-from', 'gcr.io/$PROJECT_ID/api.dungeon.studio',
             '-t', '$_IMAGE_NAME',
             '-f', 'Dockerfile', '.' ]

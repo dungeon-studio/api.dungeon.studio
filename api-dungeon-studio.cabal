@@ -44,6 +44,7 @@ executable api-dungeon-studio
       API
     , Characters.API
     , Characters.Queries
+    , Characters.Scopes
     , Characters.Types
     , Environment
     , Errors

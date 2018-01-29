@@ -5,7 +5,8 @@
 , network-uri, network-uri-json, process, QuickCheck
 , quickcheck-instances, regex-compat, resource-pool, retry, servant
 , servant-server, siren-json, stdenv, test-invariant, text, time
-, transformers, unordered-containers, uuid, wai, wai-logger, warp
+, transformers, unordered-containers, uuid, wai, wai-cors
+, wai-logger, warp
 }:
 mkDerivation {
   pname = "api-dungeon-studio";
@@ -18,8 +19,8 @@ mkDerivation {
     envy exceptions hasbolt http-api-data http-conduit http-media
     http-types jose lens MissingH mtl network-uri network-uri-json
     regex-compat resource-pool retry servant servant-server siren-json
-    text time transformers unordered-containers uuid wai wai-logger
-    warp
+    text time transformers unordered-containers uuid wai wai-cors
+    wai-logger warp
   ];
   testHaskellDepends = [
     aeson base bytestring case-insensitive envy exceptions extra hspec

@@ -42,15 +42,14 @@ import External.Network.URI.HttpApiData ()
 import Internal.Network.URI (addPathPart)
 
 -- | @application/vnd.siren+json@ compatible 'Character' collection.
-data Characters = Characters URI [Character]
+data Characters = Characters URI [Character] [Link]
 
 instance ToEntity Characters where
-  toEntity (Characters u cs) = Entity
+  toEntity (Characters u cs ls) = Entity
     { eClass      = [ "Characters" ]
     , eProperties = Map.empty
     , eEntities   = map (toSubEntity u) cs
-    , eLinks      = [ Link { lClass = [ "Characters" ], lRel = [ "self" ], lHref = u, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing }
-                    ]
+    , eLinks      = Link { lClass = [ "Characters" ], lRel = [ "self" ], lHref = u, lType = Just $ "application" // "vnd.siren+json", lTitle = Nothing } : ls
     , eActions    = [ Action { aName   = "create-character"
                              , aClass  = [ "Create" ]
                              , aMethod = Just POST

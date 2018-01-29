@@ -16,7 +16,10 @@ module Characters.API
   ) where
 
 import Control.Monad.Catch (catch)
+import Data.SirenJSON (Link (..))
+import Data.Text ()
 import Data.UUID (toString, UUID)
+import Network.HTTP.Media ((//))
 import Network.URI (URI)
 import Servant ((:>), (:<|>) ((:<|>)), addHeader, AuthProtect, Capture, DeleteNoContent, err404, err500, FormUrlEncoded, Get, Handler, Header, Headers, JSON, NoContent (NoContent), PostCreated, ReqBody, Server, throwError)
 
@@ -47,7 +50,11 @@ characters :: URI -> Settings -> Claims -> Handler Characters
 characters uri s cs@Claims{sub = o} =
   do cs `hasScope` S.read S.Characters
 
-     ($ uri) <$> Q.all (neo4j s) o `catch` throwServantErr
+     cs' <- Q.all (neo4j s) o `catch` throwServantErr
+     return $ cs' uri ls
+  where ls = [ Link { lClass = [ "Races" ], lRel = [ "races" ], lHref = races s, lType = Just $ "application" // "vnd.collection+json", lTitle = Just "Earthdawn Races" }
+             , Link { lClass = [ "Disciplines" ], lRel = [ "disciplines" ], lHref = disciplines s, lType = Just $ "application" // "vnd.collection+json", lTitle = Just "Earthdawn Disciplines" }
+             ]
 
 create :: URI -> Settings -> Claims -> NewCharacter -> Handler (Headers '[Header "Location" URI] Character)
 create uri s cs@Claims{sub = o} n =

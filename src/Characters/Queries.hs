@@ -26,6 +26,7 @@ import Control.Monad ((<=<), void)
 import Database.Bolt (at, exact, nodeProps, Value (T), Pipe, queryP, Record, run, Value)
 import Data.Monoid ((<>))
 import Data.Pool (Pool, withResource)
+import Data.SirenJSON (Link)
 import Data.Text (Text, pack)
 import Data.Typeable (Typeable)
 import Data.UUID (UUID, toString, toText)
@@ -64,7 +65,7 @@ instance Exception CharacterException
 -- * Queries
 
 -- | Retrieve all 'Character's.
-all :: (MonadIO m, MonadCatch m) => Pool Pipe -> Text -> m (URI -> Characters)
+all :: (MonadIO m, MonadCatch m) => Pool Pipe -> Text -> m (URI -> [Link] -> Characters)
 all p o =
   do cs <- mapM (toCharacter <=< (`at` "c")) =<< q p cypher ps
      return $ flip Characters cs

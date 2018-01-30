@@ -1,12 +1,10 @@
-{ mkDerivation, aeson, base, bytestring, case-insensitive
-, connection, containers, data-default, either, envy, exceptions
-, extra, hasbolt, hspec, http-api-data, http-conduit, http-media
-, http-types, ieee754, jose, lens, MissingH, mtl, network-arbitrary
-, network-uri, network-uri-json, process, QuickCheck
+{ mkDerivation, aeson, base, bytestring, connection, containers
+, data-default, envy, exceptions, hasbolt, hspec, http-api-data
+, http-conduit, http-media, http-types, ieee754, jose, lens, mtl
+, network-arbitrary, network-uri, network-uri-json, QuickCheck
 , quickcheck-instances, regex-compat, resource-pool, retry, servant
 , servant-server, siren-json, stdenv, test-invariant, text, time
-, transformers, unordered-containers, uuid, wai, wai-cors
-, wai-logger, warp
+, unordered-containers, uuid, wai, wai-cors, wai-logger, warp
 }:
 mkDerivation {
   pname = "api-dungeon-studio";
@@ -15,19 +13,18 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [
-    aeson base bytestring connection containers data-default either
-    envy exceptions hasbolt http-api-data http-conduit http-media
-    http-types jose lens MissingH mtl network-uri network-uri-json
-    regex-compat resource-pool retry servant servant-server siren-json
-    text time transformers unordered-containers uuid wai wai-cors
-    wai-logger warp
+    aeson base bytestring connection containers data-default envy
+    exceptions hasbolt http-api-data http-conduit http-media http-types
+    jose lens mtl network-uri network-uri-json regex-compat
+    resource-pool retry servant servant-server siren-json text time
+    unordered-containers uuid wai wai-cors wai-logger warp
   ];
   testHaskellDepends = [
-    aeson base bytestring case-insensitive envy exceptions extra hspec
-    http-api-data http-conduit http-media http-types ieee754 jose lens
-    mtl network-arbitrary network-uri network-uri-json process
-    QuickCheck quickcheck-instances regex-compat servant servant-server
-    siren-json test-invariant text time unordered-containers wai
+    aeson base envy exceptions hspec http-api-data http-media
+    http-types ieee754 jose lens network-arbitrary network-uri
+    network-uri-json QuickCheck quickcheck-instances servant
+    servant-server siren-json test-invariant text time
+    unordered-containers
   ];
   homepage = "https://github.com/alunduil/api.dungeon.studio";
   description = "Game Master's Companion";

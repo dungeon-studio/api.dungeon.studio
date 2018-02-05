@@ -72,7 +72,7 @@ all p o =
 
   where cypher :: Text
         cypher = "MATCH (c:Character)<-[:OWNS|:CAN_READ]-(:Owner {sub:{sub}}) " <>
-                 "RETURN c"
+                 "RETURN DISTINCT c"
 
         ps :: Map.Map Text Value
         ps = Map.fromList [("sub", T o)]

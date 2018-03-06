@@ -94,8 +94,8 @@ instance ToEntity Character where
 
 -- | Earthdawn new character representation type.
 data NewCharacter = NewCharacter
-  { nDiscipline :: URI
-  , nRace       :: URI
+  { nDiscipline :: AbsoluteURI
+  , nRace       :: AbsoluteURI
   }
 
 instance FromForm NewCharacter where

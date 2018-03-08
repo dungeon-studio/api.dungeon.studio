@@ -1,0 +1,184 @@
+name:                api-dungeon-studio
+version:             0.1.0.0
+synopsis:            Game Master's Companion
+
+description:
+  A set of APIs that assist a game master during a table top game session.  The
+  APIs allow a game master or players to manipulate characters, equipment, and
+  other normal game elements.
+
+homepage:            https://github.com/alunduil/api.dungeon.studio
+bug-reports:         https://github.com/alunduil/api.dungeon.studio/issues
+license:             MIT
+license-file:        LICENSE
+author:              Alex Brandt
+maintainer:          alunduil@alunduil.com
+copyright:           (c) 2017 Alex Brandt
+category:            Game
+build-type:          Simple
+cabal-version:       >= 1.10
+tested-with:         GHC == 8.0.*
+
+extra-source-files:
+    ChangeLog.md
+  , COPYRIGHT
+  , LICENSE
+  , README.md
+  , Setup.hs
+  
+source-repository head
+  type:     git
+  location: https://github.com/alunduil/api.dungeon.studio.git
+
+executable api-dungeon-studio
+  default-language:    Haskell2010
+  main-is:             Main.hs
+
+  ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
+                       -fwarn-unused-do-bind
+
+  hs-source-dirs:
+      src
+
+  other-modules:
+      API
+    , Characters.API
+    , Characters.Queries
+    , Characters.Types
+    , Environment
+    , Errors
+    , External.Database.Bolt.Environment
+    , External.Data.Problem
+    , External.Data.Time.Clock.Envy
+    , External.Data.UUID.Bolt
+    , External.Network.URI.Bolt
+    , External.Network.URI.Envy
+    , External.Network.URI.HttpApiData
+    , External.Servant.API.BearerAuth
+    , External.Servant.API.BearerAuth.Errors
+    , External.Servant.API.BearerAuth.Internal
+    , External.Servant.API.BearerAuth.Types
+    , External.Servant.API.ContentTypes.SirenJSON
+    , Initialize
+    , Internal.BoltPool.Environment
+    , Internal.JWT.Environment
+    , Internal.Network.URI
+    , Settings
+
+  build-depends:
+      aeson                == 1.1.*
+    , base                 == 4.9.*
+    , bytestring           == 0.10.*
+    , connection           == 0.2.*
+    , containers           == 0.5.*
+    , data-default         == 0.7.*
+    , either               == 4.4.*
+    , envy                 == 1.3.*
+    , exceptions           == 0.8.*
+    , hasbolt              == 0.1.*
+    , http-api-data        == 0.3.*
+    , http-conduit         == 2.2.*
+    , http-media           == 0.6.*
+    , http-types           == 0.9.*
+    , jose                 == 0.6.*
+    , lens                 == 4.15.*
+    , MissingH             == 1.4.*
+    , mtl                  == 2.2.*
+    , network-uri          == 2.6.*
+    , network-uri-json     == 0.1.*
+    , regex-compat         == 0.95.*
+    , resource-pool        == 0.2.*
+    , retry                == 0.7.*
+    , servant              == 0.11.*
+    , servant-server       == 0.11.*
+    , siren-json           == 0.1.*
+    , text                 == 1.2.*
+    , time                 == 1.6.*
+    , transformers         == 0.5.*
+    , unordered-containers == 0.2.*
+    , uuid                 == 1.3.*
+    , wai                  == 3.2.*
+    , wai-cors             == 0.2.*
+    , wai-logger           == 2.3.*
+    , warp                 == 3.2.*
+
+  other-extensions:
+      DataKinds
+    , FlexibleInstances
+    , MultiParamTypeClasses
+    , OverloadedStrings
+    , RecordWildCards
+    , TypeOperators
+
+test-suite api-dungeon-studio-tests
+  default-language:    Haskell2010
+  type:                exitcode-stdio-1.0
+  main-is:             Spec.hs
+
+  ghc-options:         -Wall -fwarn-tabs -fwarn-monomorphism-restriction
+                       -fwarn-unused-do-bind
+
+  hs-source-dirs:
+      src
+    , test
+
+  other-modules:
+      External.Data.Problem
+    , External.Data.Problem.Arbitrary
+    , External.Data.Problem.Norm
+    , External.Data.ProblemSpec
+    , External.Data.SirenJSON.Arbitrary
+    , External.Data.SirenJSON.Norm
+    , External.Data.Time.Clock.Envy
+    , External.Data.Time.Clock.EnvySpec
+    , External.Network.HTTP.Media.MediaType.Arbitrary
+    , External.Network.HTTP.Media.MediaType.ArbitrarySpec
+    , External.Network.HTTP.Types.Method.Arbitrary
+    , External.Network.HTTP.Types.Method.ArbitrarySpec
+    , External.Network.URI.Arbitrary
+    , External.Network.URI.ArbitrarySpec
+    , External.Network.URI.Envy
+    , External.Network.URI.EnvySpec
+    , External.Network.URI.HttpApiData
+    , External.Network.URI.HttpApiDataSpec
+    , External.Servant.API.BearerAuth.Internal
+    , External.Servant.API.BearerAuth.InternalSpec
+    , External.Servant.API.ContentTypes.SirenJSON
+    , External.Servant.API.ContentTypes.SirenJSONSpec
+
+  build-tool-depends:
+      hspec-discover:hspec-discover == 2.4.*
+
+  build-depends:
+      aeson                == 1.1.*
+    , base                 == 4.9.*
+    , bytestring           == 0.10.*
+    , case-insensitive     == 1.2.*
+    , envy                 == 1.3.*
+    , exceptions           == 0.8.*
+    , extra                == 1.5.*
+    , hspec                == 2.4.*
+    , http-api-data        == 0.3.*
+    , http-conduit         == 2.2.*
+    , http-media           == 0.6.*
+    , http-types           == 0.9.*
+    , ieee754              == 0.8.*
+    , jose                 == 0.6.*
+    , lens                 == 4.15.*
+    , mtl                  == 2.2.*
+    , network-uri          == 2.6.*
+    , network-uri-json     == 0.1.*
+    , process              == 1.4.*
+    , QuickCheck           == 2.9.*
+    , quickcheck-instances == 0.3.*
+    , regex-compat         == 0.95.*
+    , servant              == 0.11.*
+    , servant-server       == 0.11.*
+    , siren-json           == 0.1.*
+    , test-invariant       == 0.4.*
+    , text                 == 1.2.*
+    , time                 == 1.6.*
+    , unordered-containers == 0.2.*
+    , wai                  == 3.2.*
+
+  other-extensions:

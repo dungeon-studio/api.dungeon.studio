@@ -1,0 +1,17 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-f', 'Dockerfile', '-t', 'gcr.io/$PROJECT_ID/api.dungeon.studio', '.' ]
+    id: 'api.dungeon.studio'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'tag', 'gcr.io/$PROJECT_ID/api.dungeon.studio', 'gcr.io/$PROJECT_ID/api.dungeon.studio:$BRANCH_NAME' ]
+    waitFor: [ 'api.dungeon.studio' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'tag', 'gcr.io/$PROJECT_ID/api.dungeon.studio', 'gcr.io/$PROJECT_ID/api.dungeon.studio:$COMMIT_SHA' ]
+    waitFor: [ 'api.dungeon.studio' ]
+
+images:
+  - 'gcr.io/$PROJECT_ID/api.dungeon.studio'
+  - 'gcr.io/$PROJECT_ID/api.dungeon.studio:$BRANCH_NAME'
+  - 'gcr.io/$PROJECT_ID/api.dungeon.studio:$COMMIT_SHA'
+
+timeout: 60m

@@ -66,10 +66,7 @@ instance Exception CharacterException
 
 -- | Retrieve all 'Character's.
 all :: (MonadIO m, MonadCatch m) => Pool Pipe -> Text -> m (URI -> [Link] -> Characters)
-all p o =
-  do cs <- mapM (toCharacter <=< (`at` "c")) =<< q p cypher ps
-     return $ flip Characters cs
-
+all p o = flip Characters <$> mapM (toCharacter <=< (`at` "c")) =<< q p cypher ps
   where cypher :: Text
         cypher = "MATCH (c:Character)<-[:OWNS|:CAN_READ]-(:Owner {sub:{sub}}) " <>
                  "RETURN DISTINCT c"

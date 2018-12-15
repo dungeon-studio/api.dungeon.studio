@@ -1,10 +1,11 @@
 { mkDerivation, aeson, base, bytestring, connection, containers
-, data-default, envy, exceptions, hasbolt, hspec, http-api-data
-, http-conduit, http-media, http-types, ieee754, jose, lens, mtl
-, network-arbitrary, network-uri, network-uri-json, QuickCheck
-, quickcheck-instances, regex-compat, resource-pool, retry, servant
-, servant-server, siren-json, stdenv, test-invariant, text, time
-, unordered-containers, uuid, wai, wai-cors, wai-logger, warp
+, data-default, envy, exceptions, hasbolt, hspec, hspec-discover
+, http-api-data, http-conduit, http-media, http-types, ieee754
+, jose, lens, mtl, network-arbitrary, network-uri, network-uri-json
+, QuickCheck, quickcheck-instances, regex-compat, resource-pool
+, retry, servant, servant-server, siren-json, stdenv
+, test-invariant, text, time, unordered-containers, uuid, wai
+, wai-cors, wai-logger, warp
 }:
 mkDerivation {
   pname = "api-dungeon-studio";
@@ -26,6 +27,7 @@ mkDerivation {
     servant-server siren-json test-invariant text time
     unordered-containers
   ];
+  testToolDepends = [ hspec-discover ];
   homepage = "https://github.com/alunduil/api.dungeon.studio";
   description = "Game Master's Companion";
   license = stdenv.lib.licenses.mit;

@@ -33,19 +33,19 @@ spec =
 
        it "should throw InvalidToken \"sub claim invalid\"" $
          let cs = emptyClaimsSet &
-                    claimSub .~ Just "mailto://user@example.com"
+                    (claimSub ?~ Just "mailto://user@example.com")
          in claims nullURI cs `shouldThrow` invalidToken "sub claim invalid"
 
        it "should throw InvalidToken \"scope claim missing\"" $
          let cs = emptyClaimsSet &
-                    claimSub .~ Just "user@example.com"
+                    (claimSub ?~ Just "user@example.com")
          in claims nullURI cs `shouldThrow` invalidToken "scope claim missing"
 
        it "should throw InvalidToken \"scope claim invalid\"" pending
 
        it "should return valid Claims" $
          let cs = emptyClaimsSet &
-                    claimSub .~ Just "subject" &
+                    (claimSub ?~ Just "subject") &
                     unregisteredClaims .~ HashMap.fromList [ ("scope", String "s1 s2") ]
          in claims nullURI cs `shouldReturn` Claims { sub = "subject", scope = [ "s1", "s2" ], audience = nullURI } 
 

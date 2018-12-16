@@ -156,7 +156,7 @@ test-suite api-dungeon-studio-tests
     , network-arbitrary    == 0.3.*
     , network-uri          == 2.6.*
     , network-uri-json     == 0.1.*
-    , QuickCheck           == 2.9.*
+    , QuickCheck           >= 2.9 && < 2.13
     , quickcheck-instances == 0.3.*
     , servant              == 0.11.*
     , servant-server       == 0.11.*

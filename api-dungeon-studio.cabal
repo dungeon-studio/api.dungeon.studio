@@ -88,7 +88,7 @@ executable api-dungeon-studio
     , regex-compat         == 0.95.*
     , resource-pool        == 0.2.*
     , retry                == 0.7.*
-    , servant              == 0.11.*
+    , servant              >= 0.11 && < 0.16
     , servant-server       >= 0.11 && < 0.16
     , siren-json           == 0.1.*
     , text                 == 1.2.*
@@ -158,7 +158,7 @@ test-suite api-dungeon-studio-tests
     , network-uri-json     == 0.1.*
     , QuickCheck           >= 2.9 && < 2.13
     , quickcheck-instances == 0.3.*
-    , servant              == 0.11.*
+    , servant              >= 0.11 && < 0.16
     , servant-server       >= 0.11 && < 0.16
     , siren-json           == 0.1.*
     , test-invariant       == 0.4.*

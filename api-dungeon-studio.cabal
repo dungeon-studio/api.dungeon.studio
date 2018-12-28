@@ -84,7 +84,7 @@ executable api-dungeon-studio
     , lens                 == 4.15.*
     , mtl                  == 2.2.*
     , network-uri          == 2.6.*
-    , network-uri-json     == 0.1.*
+    , network-uri-json     >= 0.1 && < 0.3
     , regex-compat         == 0.95.*
     , resource-pool        == 0.2.*
     , retry                == 0.7.*
@@ -155,7 +155,7 @@ test-suite api-dungeon-studio-tests
     , lens                 == 4.15.*
     , network-arbitrary    >= 0.3 && < 0.5
     , network-uri          == 2.6.*
-    , network-uri-json     == 0.1.*
+    , network-uri-json     >= 0.1 && < 0.3
     , QuickCheck           >= 2.9 && < 2.13
     , quickcheck-instances == 0.3.*
     , servant              >= 0.11 && < 0.16

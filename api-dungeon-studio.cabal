@@ -74,7 +74,7 @@ executable api-dungeon-studio
     , containers           == 0.5.*
     , data-default         == 0.7.*
     , envy                 >= 1.3 && < 1.6
-    , exceptions           == 0.8.*
+    , exceptions           >= 0.8 && < 0.11
     , hasbolt              == 0.1.*
     , http-api-data        >= 0.3 && < 0.5
     , http-conduit         >= 2.2 && < 2.4
@@ -145,7 +145,7 @@ test-suite api-dungeon-studio-tests
       aeson                >= 1.1 && < 1.5
     , base                 >= 4.9 && < 4.13
     , envy                 >= 1.3 && < 1.6
-    , exceptions           == 0.8.*
+    , exceptions           >= 0.8 && < 0.11
     , hspec                >= 2.4 && < 2.7
     , http-api-data        >= 0.3 && < 0.5
     , http-media           >= 0.6 && < 0.8

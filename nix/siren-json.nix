@@ -1,25 +1,22 @@
-{ mkDerivation, aeson, base, bytestring, case-insensitive
-, containers, fetchgit, hspec, http-media, http-types, network-uri
-, network-uri-json, QuickCheck, quickcheck-instances, stdenv
-, test-invariant, text, unordered-containers
+{ mkDerivation, aeson, base, bytestring, containers, hspec
+, hspec-discover, http-media, http-types, network-arbitrary
+, network-uri, network-uri-json, QuickCheck, quickcheck-instances
+, stdenv, test-invariant, text, unordered-containers
 }:
 mkDerivation {
   pname = "siren-json";
-  version = "0.1.0.2";
-  src = fetchgit {
-    url = "https://github.com/alunduil/siren-json.hs";
-    sha256 = "01mib3qmmdvi335asxxwhrysz4i08i8kpkf18pnzj416ic4rns1s";
-    rev = "7d0880db49adac2c521a461dafd9a999afcb9af9";
-  };
+  version = "0.2.0.0";
+  sha256 = "0a108d41da3cebb6888c279a375be93c4a4734561f5da74b1fcc5999eb8d0767";
   libraryHaskellDepends = [
     aeson base bytestring containers http-media http-types network-uri
     network-uri-json text unordered-containers
   ];
   testHaskellDepends = [
-    aeson base bytestring case-insensitive containers hspec http-media
-    http-types network-uri network-uri-json QuickCheck
+    aeson base bytestring containers hspec http-media http-types
+    network-arbitrary network-uri network-uri-json QuickCheck
     quickcheck-instances test-invariant text unordered-containers
   ];
+  testToolDepends = [ hspec-discover ];
   homepage = "https://github.com/alunduil/siren-json.hs";
   description = "Siren Tools for Haskell";
   license = stdenv.lib.licenses.mit;

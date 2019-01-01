@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 
@@ -25,7 +26,11 @@ import External.Servant.API.BearerAuth.Types
 claims :: (MonadThrow m) => URI -> ClaimsSet -> m Claims
 claims a c =
   do sub'  <- maybe (throwM $ InvalidToken "sub claim missing") return (c ^. claimSub)
+#if MIN_VERSION_jose(0, 8, 0)
+     sub   <- maybe (throwM $ InvalidToken "sub claim invalid") return (sub' ^? string)
+#else
      sub   <- maybe (throwM $ InvalidToken "sub claim invalid") (return . T.pack) (sub' ^? string)
+#endif
 
      other <- maybe (throwM $ InvalidToken "scope claim missing") return (Map.lookup "scope" $ c ^. unregisteredClaims)
      scope <- case fromJSON other of

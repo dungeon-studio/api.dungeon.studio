@@ -1,26 +1,25 @@
 let
   config = {
     packageOverrides = pkgs: rec {
-      haskellPackages = pkgs.haskellPackages.override {
-        overrides = haskellPackagesNew: haskellPackageOld: rec {
+      haskellPackages =
+        let
+          generatedOverrides = haskellPackagesNew: haskellPackagesOld:
+            let
+              toPackage = file: _: {
+                name = builtins.replaceStrings [ ".nix" ] [ "" ] file;
+                value = haskellPackagesNew.callPackage (./. + "/nix/${file}") { };
+              };
+            in
+              pkgs.lib.mapAttrs' toPackage (builtins.readDir ./nix);
 
-          api-dungeon-studio =
-            haskellPackagesNew.callPackage ./default.nix { };
-
-          hasbolt =
-            haskellPackagesNew.callPackage ./hasbolt.nix { };
-
-          network-arbitrary =
-            haskellPackagesNew.callPackage ./network-arbitrary.nix { };
-
-          network-uri-json =
-            haskellPackagesNew.callPackage ./network-uri-json.nix { };
-
-          siren-json =
-            haskellPackagesNew.callPackage ./siren-json.nix { };
-
-        };
-      };
+          manualOverrides = haskellPackagesNew: haskellPackagesOld: {
+            # See https://github.com/Gabriel439/haskell-nix/blob/master/project4/README.md#composing-overrides
+          };
+        in
+          pkgs.haskellPackages.override {
+            overrides =
+              pkgs.lib.composeExtensions generatedOverrides manualOverrides;
+          };
     };
   };
 

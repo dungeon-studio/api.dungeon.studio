@@ -91,7 +91,7 @@ executable api-dungeon-studio
     , retry                == 0.7.*
     , servant              >= 0.11 && < 0.16
     , servant-server       >= 0.11 && < 0.16
-    , siren-json           >= 0.1 && < 0.3
+    , siren-json           >= 0.1 && < 0.4
     , text                 == 1.2.*
     , time                 >= 1.6 && < 1.10
     , unordered-containers == 0.2.*
@@ -163,7 +163,7 @@ test-suite api-dungeon-studio-tests
     , quickcheck-instances == 0.3.*
     , servant              >= 0.11 && < 0.16
     , servant-server       >= 0.11 && < 0.16
-    , siren-json           >= 0.1 && < 0.3
+    , siren-json           >= 0.1 && < 0.4
     , test-invariant       == 0.4.*
     , text                 == 1.2.*
     , time                 >= 1.6 && < 1.10

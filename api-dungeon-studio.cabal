@@ -81,7 +81,7 @@ executable api-dungeon-studio
     , http-conduit         >= 2.2 && < 2.4
     , http-media           >= 0.6 && < 0.8
     , http-types           >= 0.9 && < 0.13
-    , jose                 >= 0.6 && < 0.9
+    , jose >=0.6 && <0.13
     , lens                 >= 4.15 && < 4.18
     , mtl                  == 2.2.*
     , network-uri          == 2.6.*
@@ -154,7 +154,7 @@ test-suite api-dungeon-studio-tests
     , http-media           >= 0.6 && < 0.8
     , http-types           >= 0.9 && < 0.13
     , ieee754              == 0.8.*
-    , jose                 >= 0.6 && < 0.9
+    , jose >=0.6 && <0.13
     , lens                 >= 4.15 && < 4.18
     , network-arbitrary    >= 0.3 && < 0.5
     , network-uri          == 2.6.*

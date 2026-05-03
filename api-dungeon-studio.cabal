@@ -93,7 +93,7 @@ executable api-dungeon-studio
     , servant-server >=0.11 && <0.21
     , siren-json           >= 0.1 && < 0.4
     , text                 == 1.2.*
-    , time                 >= 1.6 && < 1.10
+    , time >=1.6 && <1.17
     , unordered-containers == 0.2.*
     , uuid                 == 1.3.*
     , wai                  == 3.2.*
@@ -166,7 +166,7 @@ test-suite api-dungeon-studio-tests
     , siren-json           >= 0.1 && < 0.4
     , test-invariant       == 0.4.*
     , text                 == 1.2.*
-    , time                 >= 1.6 && < 1.10
+    , time >=1.6 && <1.17
     , unordered-containers == 0.2.*
 
   other-extensions:
